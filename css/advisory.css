@@ -1,0 +1,518 @@
+/*
+ * advisory.css - FINAL CORRECTED & UPDATED CODE
+ * This version includes styles for soil card background images,
+ * removes duplicate code, and improves overall formatting.
+ */
+
+/* --- Root Variables & Base Styles --- */
+:root {
+    --primary-color: #4CAF50;    /* Green for growth/Select */
+    --secondary-color: #2196F3;   /* Blue for titles/Water */
+    --accent-color: #FF9800;      /* Orange for alerts/Details button */
+    --text-color: #333;
+    --light-text-color: #777;
+    --background-color: #f0f4f8;
+    --card-bg-color: #ffffff;
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --border-radius-card: 15px;
+    --button-border-radius: 8px;
+    --fert-card-bg: #e1f5fe;      /* Light Blue for Fertilizer cards */
+    --fert-card-border: #b3e5fc;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* --- Main Layout and Advisory Sections --- */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.advisory-flow-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.advisory-section {
+    background-color: var(--card-bg-color);
+    padding: 2rem;
+    border-radius: var(--border-radius-card);
+    box-shadow: var(--shadow-light);
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease-in-out;
+}
+
+.advisory-section h2 {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.advisory-section.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+    background-color: #fcfcfc;
+}
+
+/* --- 1. Horizontal Soil Selection (UPDATED FOR IMAGES) --- */
+.horizontal-scroll-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.soil-card-horizontal {
+    min-width: 200px;
+    padding: 15px;
+    border-radius: var(--button-border-radius);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    border: 3px solid transparent; /* Border mota kiya for better visibility */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* Styles for background image support */
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    background-size: cover;
+    background-position: center;
+}
+
+.soil-card-horizontal:hover {
+    transform: scale(1.03); /* Changed from translateY for better effect with images */
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.soil-card-horizontal.active {
+    border-color: var(--accent-color); /* Changed to accent color for better contrast */
+    box-shadow: 0 0 15px rgba(255, 152, 0, 0.6);
+    transform: scale(1.05);
+}
+
+.soil-card-horizontal .info-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: help;
+    color: white; /* Changed to white to be visible on images */
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 0.9rem;
+    pointer-events: all;
+}
+
+.region-popup {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    padding: 10px;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: var(--shadow-light);
+    border-radius: 4px;
+    line-height: 1.4;
+    max-width: 300px;
+    transform: translateY(10px);
+    font-size: 0.9em;
+}
+
+/* --- 2. Related Crops (Season Tabs and Cards) --- */
+.season-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.season-tab {
+    background-color: #e0e0e0;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.season-tab.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.crop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.crop-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--card-bg-color);
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: var(--border-radius-card);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.crop-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.crop-card .crop-image-container {
+    height: 120px;
+    overflow: hidden;
+}
+
+.crop-card .crop-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.crop-card:hover .crop-image {
+    transform: scale(1.05);
+}
+
+.crop-card .crop-details-content {
+    padding: 15px;
+    flex-grow: 1;
+}
+
+.crop-card .crop-header h4 {
+    font-size: 1.3rem;
+    margin: 0 0 5px 0;
+}
+
+.crop-card .tag {
+    font-size: 0.8rem;
+    padding: 0.3em 0.8em;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.tag.profitable {
+    background-color: #e8f5e9;
+    color: var(--primary-color);
+}
+
+.tag.high-yield {
+    background-color: #e3f2fd;
+    color: var(--secondary-color);
+}
+
+/* --- CROP CARD BUTTONS (CLEANED - DUPLICATE CODE REMOVED) --- */
+.crop-card>div:last-child {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-top: 1px solid #eee;
+    background-color: #f9f9f9;
+    border-bottom-left-radius: var(--border-radius-card);
+    border-bottom-right-radius: var(--border-radius-card);
+}
+
+.details-btn,
+.select-btn-crop {
+    flex-grow: 1;
+    border: none;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: var(--button-border-radius);
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+
+.details-btn {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.details-btn:hover {
+    background-color: #e68a00;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.select-btn-crop {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.select-btn-crop:hover {
+    background-color: #43a047;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.select-btn-crop[style*="background: rgb(0, 188, 212)"] {
+    background-color: #00bcd4 !important;
+    box-shadow: 0 0 0 2px #00bcd4, 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.select-btn-crop[style*="background: rgb(0, 188, 212)"]:hover {
+    background-color: #00acc1 !important;
+}
+
+/* --- 4. Recommended Fertilizers Display --- */
+.fertilizer-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.fertilizer-card {
+    position: relative;
+    text-align: center;
+    padding: 15px;
+    border: 1px solid var(--fert-card-border);
+    border-radius: 10px;
+    background-color: var(--fert-card-bg);
+    box-shadow: 0 2px 5px rgba(33, 150, 243, 0.1);
+    transition: box-shadow 0.2s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.fertilizer-card:hover {
+    box-shadow: 0 4px 10px rgba(33, 150, 243, 0.2);
+}
+
+.fertilizer-card .card-top-bar {
+    position: relative;
+    height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.fertilizer-card img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: white;
+    padding: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.fertilizer-card:hover img {
+    transform: scale(1.05);
+}
+
+.fertilizer-card h4 {
+    font-size: 1.1em;
+    margin: 5px 0;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.fertilizer-card p {
+    min-height: 2.4em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    font-size: 0.9em;
+    color: var(--light-text-color);
+    flex-grow: 1;
+}
+
+.fertilizer-card .fert-tag {
+    font-size: 0.75rem;
+    background: #4fc3f7;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-top: auto;
+}
+
+.info-icon-fert {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    background: white;
+    border-radius: 50%;
+    padding: 3px;
+    line-height: 1;
+    z-index: 5;
+}
+
+/* --- 5. Equipment Advisory --- */
+.equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.equipment-card {
+    position: relative;
+    text-align: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: var(--card-bg-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s;
+}
+
+.equipment-card p {
+    min-height: 2.4em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.equipment-card .card-top-bar {
+    position: relative;
+    height: 90px;
+    margin-bottom: 5px;
+}
+
+.equip-image {
+    width: 100%;
+    max-height: 90px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.info-icon-equip {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    background: white;
+    border-radius: 50%;
+    padding: 3px;
+    line-height: 1;
+    z-index: 5;
+}
+
+/* --- Shared Tooltip/Popup Style --- */
+.equip-popup-tooltip {
+    display: none;
+    position: absolute;
+    z-index: 2000;
+    background: #ffffed;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    max-width: 350px;
+    text-align: left;
+    line-height: 1.4;
+    font-size: 0.95em;
+    pointer-events: none;
+}
+
+/* --- Modal (Full Process Details) --- */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    display: none;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    overflow: auto;
+    align-items: center; /* Vertically center */
+    justify-content: center; /* Horizontally center */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    padding: 2rem;
+    border-radius: var(--border-radius-card);
+    width: 90%;
+    max-width: 900px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    margin: 20px; /* Add some margin for safety */
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: var(--light-text-color);
+    font-size: 36px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px 10px;
+    line-height: 0.5; /* Align cross better */
+    border-radius: 4px;
+    transition: color 0.3s, background-color 0.3s;
+    z-index: 1001;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .crop-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .fertilizer-cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .advisory-section {
+        padding: 1rem;
+    }
+
+    .crop-card>div:last-child {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
