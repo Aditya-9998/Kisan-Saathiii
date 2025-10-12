@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <header id="navbar"></header>
+    <div id="navbar"></div> 
 
     <main class="content">
         <section id="home" class="hero-section">
@@ -73,9 +73,35 @@
 
     <div id="footer"></div>
 
-    <script src="Js/navbar.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
+            authDomain: "kisan-saathiii.firebaseapp.com",
+            projectId: "kisan-saathiii",
+            storageBucket: "kisan-saathiii.appspot.com", 
+            messagingSenderId: "1069746635685",
+            appId: "1:1069746635685:web:b6cade8247e56094011e4c",
+            measurementId: "G-XJ0T10GRND"
+        };
+
+        // Initialize Firebase and set global variables
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        
+        window.firebaseApp = app;
+        window.firebaseAuth = auth;
+    </script>
+
+    <script src="Js/navbar.js"></script> 
     <script src="Js/language.js"></script>
+    
     <script src="Js/schemes.js"></script>
     <script src="Js/footer.js"></script>
-</body>
+    
+    <script src="Js/user_status.js"></script>
+    
+    </body>
 </html>

@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <header id="navbar"></header>
+    <div id="navbar"></div>
 
     <main class="container">
         <h1 class="page-title" data-lang-key="advisory.pageTitle">Smart Crop Advisory</h1>
@@ -83,12 +83,36 @@
         </div>
     </div>
 
-    <footer id="footer"></footer>
+    <div id="footer"></div>
 
-    <script src="Js/navbar.js"></script>
-    <script src="Js/footer.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+    <script>
+        // 🚨 REPLACE WITH YOUR ACTUAL CONFIGURATION
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY", 
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase and set global variables
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        window.firebaseApp = app;
+        window.firebaseAuth = auth;
+    </script>
+
+    <script src="Js/navbar.js"></script> 
     <script src="Js/language.js"></script>
+    <script src="Js/user_status.js"></script>
+    
     <script src="Js/advisory.js" type="module"></script>
-</body>
+    <script src="Js/footer.js"></script>
+
+    </body>
 
 </html>

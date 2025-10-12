@@ -24,7 +24,32 @@ ek name fertilizer.js banana hoga jisme sare tyes fertilizeer avilavle ho dap jo
 similsrly ek new equpmwent.js file sare equpment choti se choti bae se bade jo kissan workme use hoti like sikale kudal se leke tractor , compaonei tak sab kuch
 
 -->
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
+  authDomain: "kisan-saathiii.firebaseapp.com",
+  projectId: "kisan-saathiii",
+  storageBucket: "kisan-saathiii.firebasestorage.app",
+  messagingSenderId: "1069746635685",
+  appId: "1:1069746635685:web:b6cade8247e56094011e4c",
+  measurementId: "G-XJ0T10GRND"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+
 '''
+
 
 
 '''

@@ -1,79 +1,58 @@
-document.addEventListener("DOMContentLoaded", async () => {
-  // Load translations first
-  const preferredLang = localStorage.getItem("preferredLang") || "en";
-  let translations = {};
-  try {
-    const resp = await fetch(`./data/${preferredLang}.json`);
-    translations = await resp.json();
-  } catch (err) {
-    console.error("Failed to load translations:", err);
-  }
+// Js/navbar.js
 
-  // Helper to get translation
-  function t(key) {
-    return key.split('.').reduce((obj, k) => (obj && obj[k] !== undefined ? obj[k] : null), translations) || `[KEY NOT FOUND: ${key}]`;
-  }
+document.addEventListener("DOMContentLoaded", () => {
+    // Nav bar content create karne ke liye t() function ki zaroorat nahi hai, 
+    // kyunki language.js baad mein translation handle karega.
 
-  // Create header
-  const header = document.createElement("header");
-  header.classList.add("navbar");
-  header.innerHTML = `
-    <div class="logo-and-language">
-        <div class="logo">🌿किसान Saathiii🌿</div>
-        <div class="language-switcher">
-            <select id="language-select">
-                <option value="en">English</option>
-                <option value="hi">Hindi</option>
-            </select>
+    // Create header (using the standard English text, which will be replaced by language.js)
+    const header = document.createElement("header");
+    header.classList.add("navbar");
+    header.innerHTML = `
+        <div class="logo-and-language">
+            <div class="logo">🌿किसान Saathiii🌿</div>
+            <div class="language-switcher">
+                <select id="language-select">
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                </select>
+            </div>
         </div>
-    </div>
-    <input type="checkbox" id="menu-toggle">
-    <label for="menu-toggle" class="menu-icon">
-    <span class="hamburger">&#9776;</span>
-    <span class="close">✕</span>
-    </label>
-    <nav class="nav-links">
-        <ul>
-            <li><a href="index.html" data-lang-key="navbar.home">${t("navbar.home")}</a></li>
-            <li><a href="weather.html" data-lang-key="navbar.weather">${t("navbar.weather")}</a></li>
-            <li><a href="advisory.html" data-lang-key="navbar.advisory">${t("navbar.advisory")}</a></li>
-            <li><a href="news.html" data-lang-key="navbar.news">${t("navbar.news")}</a></li>
-            <li><a href="insurance.html" data-lang-key="navbar.insurance">${t("navbar.insurance")}</a></li>
-            <li><a href="mrp-rate.html" data-lang-key="navbar.mrpRate">${t("navbar.mrpRate")}</a></li>
-            <li><a href="about.html" data-lang-key="navbar.about">${t("navbar.about")}</a></li>
-            <li><a href="login.html" data-lang-key="navbar.loginSignup">${t("navbar.loginSignup")}</a></li>
-        </ul>
-    </nav>
-  `;
-  document.body.prepend(header);
-
-  // Highlight active page
-  const links = header.querySelectorAll("a");
-  links.forEach(link => {
-    if (window.location.pathname.includes(link.getAttribute("href"))) {
-      link.classList.add("active");
-    }
-  });
-
-  // Language change handler
-  const langSelect = header.querySelector("#language-select");
-  langSelect.value = preferredLang;
-  langSelect.addEventListener("change", async (e) => {
-    const lang = e.target.value;
-    localStorage.setItem("preferredLang", lang);
-
-    // Reload translations
-    try {
-      const resp = await fetch(`./data/${lang}.json`);
-      translations = await resp.json();
-    } catch (err) {
-      console.error("Failed to load translations:", err);
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">
+            <span class="hamburger">&#9776;</span>
+            <span class="close">✕</span>
+        </label>
+        <nav class="nav-links">
+            <ul>
+                <li><a href="index.html" data-lang-key="navbar.home">Home</a></li>
+                <li><a href="weather.html" data-lang-key="navbar.weather">Weather</a></li>
+                <li><a href="advisory.html" data-lang-key="navbar.advisory">Advisory</a></li>
+                <li><a href="news.html" data-lang-key="navbar.news">News</a></li>
+                <li><a href="insurance.html" data-lang-key="navbar.insurance">Insurance</a></li>
+                <li><a href="mrp-rate.html" data-lang-key="navbar.mrpRate">MRP Rate</a></li>
+                <li><a href="about.html" data-lang-key="navbar.about">About</a></li>
+                <li><a href="login.html" data-lang-key="navbar.loginSignup" id="auth-link">Login / Sign Up</a></li>
+            </ul>
+        </nav>
+    `;
+    
+    // Inject the created header into the container
+    const navbarElement = document.getElementById("navbar");
+    if (navbarElement) {
+        navbarElement.appendChild(header);
+    } else {
+        document.body.prepend(header);
     }
 
-    // Update all navbar links dynamically
+    // Highlight active page
+    const links = header.querySelectorAll("a");
     links.forEach(link => {
-      const key = link.getAttribute("data-lang-key");
-      link.textContent = key.split('.').reduce((obj, k) => (obj && obj[k] !== undefined ? obj[k] : `[KEY NOT FOUND: ${key}]`), translations);
+        const currentPath = window.location.pathname.split('/').pop();
+        const linkPath = link.getAttribute("href");
+        if (currentPath === linkPath || (currentPath === "" && linkPath === "index.html")) {
+            link.classList.add("active");
+        }
     });
-  });
+
+    // NOTE: Language change handler ko language.js mein shift kiya gaya hai.
 });

@@ -12,8 +12,7 @@
 </head>
 
 <body>
-    <header id="navbar"></header>
-    <main class="container news-page">
+    <div id="navbar"></div> <main class="container news-page">
         <section class="content-section">
             <h2 data-lang-key="news.newsTitle">Latest Agri-News</h2>
             <p data-lang-key="news.newsSubtitle">Stay up-to-date with the latest news, market trends, and innovations in
@@ -64,21 +63,6 @@
                         <option value="">Select State</option>
                         <option value="AP">Andhra Pradesh</option>
                         <option value="AS">Assam</option>
-                        <option value="BR">Bihar</option>
-                        <option value="CT">Chhattisgarh</option>
-                        <option value="GJ">Gujarat</option>
-                        <option value="HR">Haryana</option>
-                        <option value="HP">Himachal Pradesh</option>
-                        <option value="JH">Jharkhand</option>
-                        <option value="KA">Karnataka</option>
-                        <option value="KL">Kerala</option>
-                        <option value="MP">Madhya Pradesh</option>
-                        <option value="MH">Maharashtra</option>
-                        <option value="OD">Odisha</option>
-                        <option value="PB">Punjab</option>
-                        <option value="RJ">Rajasthan</option>
-                        <option value="TN">Tamil Nadu</option>
-                        <option value="TS">Telangana</option>
                         <option value="UP">Uttar Pradesh</option>
                         <option value="WB">West Bengal</option>
                     </select>
@@ -86,13 +70,6 @@
                     <select id="graph-crop-select">
                         <option value="">Select Crop</option>
                         <option value="Rice">Rice (Dhan)</option>
-                        <option value="Wheat">Wheat (Gehun)</option>
-                        <option value="Maize">Maize (Makka)</option>
-                        <option value="Sugarcane">Sugarcane (Ganna)</option>
-                        <option value="Cotton">Cotton (Kapas)</option>
-                        <option value="Soybean">Soybean</option>
-                        <option value="Pulses">Pulses (Dal)</option>
-                        <option value="Mustard">Mustard (Sarson)</option>
                         <option value="Potato">Potato (Aalu)</option>
                         <option value="Tea">Tea</option>
                     </select>
@@ -107,10 +84,35 @@
 
     <div id="footer"></div>
 
-    <script src="Js/navbar.js"></script>
-    <script src="Js/footer.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+    <script>
+        // 🚨 REPLACE WITH YOUR ACTUAL CONFIGURATION (login.html se copy karein)
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
+            authDomain: "kisan-saathiii.firebaseapp.com",
+            projectId: "kisan-saathiii",
+            storageBucket: "kisan-saathiii.appspot.com", 
+            messagingSenderId: "1069746635685",
+            appId: "1:1069746635685:web:b6cade8247e56094011e4c",
+            measurementId: "G-XJ0T10GRND"
+        };
+
+        // Initialize Firebase and set global variables
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        window.firebaseApp = app;
+        window.firebaseAuth = auth;
+    </script>
+
+    <script src="Js/navbar.js"></script> 
     <script src="Js/language.js"></script>
+    <script src="Js/user_status.js"></script>
+    
     <script src="Js/news_dashboard.js" defer></script>
-</body>
+    <script src="Js/footer.js"></script>
+
+    </body>
 
 </html>

@@ -7,7 +7,9 @@
     "insurance": "Crop Insurance",
     "mrpRate": "MRP Rate",
     "about": "About",
-    "loginSignup": "Login/Signup"
+    "loginSignup": "Login/Signup",
+    "welcomePrefix": "Welcome",
+    "logoutSuffix": "Logout"
   },
   "hero": {
     "title": "Your Farming Partner",
@@ -141,10 +143,12 @@
     "stateLabel": "State",
     "pincodeLabel": "Pincode",
     "signupButton": "Sign Up",
-    "noAccountText": "Don't have an account?",
     "signupLink": "Sign Up",
     "haveAccountText": "Already have an account?",
-    "loginLink": "Login"
+    "loginLink": "Login",
+    "googleSignIn": "Continue with Google",
+    "forgotPassword": "Forgot Password?",
+    "noAccountText": "Don't have an account?"
   },
   "about": {
     "ourStoryTitle": "Our Story",

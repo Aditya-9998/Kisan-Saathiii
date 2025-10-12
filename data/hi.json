@@ -7,7 +7,9 @@
     "insurance": "फसल बीमा",
     "mrpRate": "एमआरपी दर",
     "about": "हमारे बारे में",
-    "loginSignup": "लॉगिन / साइन अप करें"
+    "loginSignup": "लॉगिन / साइन अप करें",
+    "welcomePrefix": "नमस्ते",
+    "logoutSuffix": "लॉगआउट"
   },
   "hero": {
     "title": "आपका कृषि साथी",
@@ -141,10 +143,12 @@
     "stateLabel": "राज्य",
     "pincodeLabel": "पिनकोड",
     "signupButton": "साइन अप करें",
-    "noAccountText": "खाता नहीं है?",
     "signupLink": "साइन अप करें",
     "haveAccountText": "पहले से ही खाता है?",
-    "loginLink": "लॉगिन करें"
+    "loginLink": "लॉगिन करें",
+    "googleSignIn": "गूगल के साथ जारी रखें",
+    "forgotPassword": "पासवर्ड भूल गए?", 
+    "noAccountText": "खाता नहीं है?"
   },
   "about": {
     "ourStoryTitle": "हमारी कहानी",

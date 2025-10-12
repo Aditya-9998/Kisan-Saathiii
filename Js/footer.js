@@ -1,3 +1,5 @@
+// footer.js (Original code, kept intact)
+
 // Footer HTML content as a JavaScript string
 const footerHTML = `
 <footer class="footer">

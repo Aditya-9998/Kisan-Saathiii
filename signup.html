@@ -11,51 +11,50 @@
 </head>
 
 <body>
-    <header class="navbar">
-        <div class="logo-and-language">
-            <div class="logo">🌿किसान Saathiii 🌿</div>
-            <div class="language-switcher">
-                <select id="language-select">
-                    <option value="en">English</option>
-                    <option value="hi">Hindi</option>
-                </select>
-            </div>
-        </div>
-        <input type="checkbox" id="menu-toggle">
-        <label for="menu-toggle" class="menu-icon">&#9776;</label>
-        <nav class="nav-links">
-            <ul>
-                <li><a href="index.html" data-lang-key="navbar.home">Home</a></li>
-                <li><a href="weather.html" data-lang-key="navbar.weather">Weather</a></li>
-                <li><a href="advisory.html" data-lang-key="navbar.advisory">Advisory</a></li>
-                <li><a href="news.html" data-lang-key="navbar.news">News</a></li>
-                <li><a href="insurance.html" data-lang-key="navbar.insurance">Crop Insurance</a></li>
-                <li><a href="mrp-rate.html" data-lang-key="navbar.mrpRate">MRP Rate</a></li>
-                <li><a href="about.html" data-lang-key="navbar.about">About</a></li>
-                <li><a href="login.html" data-lang-key="navbar.loginSignup">Login / Sign Up</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div id="navbar"></div>
 
     <main class="content login-page">
         <section class="login-container">
             <h2 data-lang-key="login.signupTitle">Create a Kisaan Saathi Account</h2>
-            <form>
+
+            <div id="auth-message" style="color: red; margin-bottom: 15px;"></div>
+
+            <form id="signup-form">
+
+                <div class="input-group profile-upload-group">
+                    <label data-lang-key="signup.profileImageLabel">Profile Picture (Optional)</label>
+                    <div class="profile-preview-container">
+                        <img id="profile-preview" src="images/Abhi 2.png" alt="Profile Image Preview">
+
+                        <input type="file" id="profile-image-upload" accept="image/*" style="display: none;">
+
+                        <div class="button-row">
+                            <button type="button" class="btn-secondary" id="upload-img-btn">
+                                <i class="fas fa-camera"></i> Upload Image
+                            </button>
+                            <button type="button" class="btn-remove-img" id="remove-img-btn" style="display:none;">
+                                <i class="fas fa-times"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="input-group">
                     <label for="name" data-lang-key="login.nameLabel">Full Name</label>
-                    <input type="text" id="name" name="name" required>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
                 </div>
                 <div class="input-group">
                     <label for="phone" data-lang-key="login.phoneLabel">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" required>
+                    <input type="tel" id="phone" name="phone" required placeholder="e.g., +91 9876543210">
                 </div>
                 <div class="input-group">
                     <label for="email" data-lang-key="login.emailLabel">Email</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email address">
                 </div>
                 <div class="input-group">
                     <label for="password" data-lang-key="login.passwordLabel">Password</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password" required
+                        placeholder="Create a strong password (min 6 chars)">
                 </div>
                 <div class="input-group">
                     <label for="location" data-lang-key="login.locationLabel">Location</label>
@@ -65,16 +64,17 @@
                 </div>
                 <div class="input-group">
                     <label for="state" data-lang-key="login.stateLabel">State</label>
-                    <input type="text" id="state" name="state" required>
+                    <input type="text" id="state" name="state" required placeholder="e.g., Punjab">
                 </div>
                 <div class="input-group">
                     <label for="pincode" data-lang-key="login.pincodeLabel">Pincode</label>
-                    <input type="text" id="pincode" name="pincode" pattern="[0-9]{6}" required>
+                    <input type="text" id="pincode" name="pincode" pattern="[0-9]{6}" required
+                        placeholder="e.g., 141001">
                 </div>
+
                 <button type="submit" class="btn-primary" data-lang-key="login.signupButton">Sign Up</button>
             </form>
 
-            <!-- ✅ FIXED: Text और link अलग elements में -->
             <p class="signup-text">
                 <span data-lang-key="login.haveAccountText">Already have an account?</span>
                 <a href="login.html" data-lang-key="login.loginLink">Login</a>
@@ -82,9 +82,48 @@
         </section>
     </main>
 
+    <div id="status-popup" class="status-popup">
+        <p id="popup-message"></p>
+    </div>
+
     <div id="footer"></div>
-    <script src="Js/footer.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+
+    <script>
+        // =================================================================
+        // ⭐ FINAL, COMPLETE FIREBASE COMPAT CONFIGURATION ⭐
+        // =================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
+            authDomain: "kisan-saathiii.firebaseapp.com",
+            projectId: "kisan-saathiii",
+            storageBucket: "kisan-saathiii.appspot.com",
+            messagingSenderId: "1069746635685",
+            appId: "1:1069746635685:web:b6cade8247e56094011e4c",
+            measurementId: "G-XJ0T10GRND"
+        };
+
+        // Initialize Firebase and Services (using compat syntax)
+        const app = firebase.initializeApp(firebaseConfig);
+        window.firebaseAuth = app.auth();
+        window.firebaseDb = app.firestore();
+        window.firebaseStorage = app.storage();
+    </script>
+
+    <script src="Js/navbar.js"></script>
     <script src="Js/language.js"></script>
+
+    <script src="Js/utility.js"></script>
+    <script src="Js/profile.js"></script>
+    <script src="Js/footer.js"></script>
+
+    <script src="Js/user_status.js"></script>
+    <script src="Js/signup_auth.js"></script>
+
 </body>
 
 </html>
