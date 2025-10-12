@@ -1,5 +1,24 @@
 /* File Location: Kissan Saktiii/css/style.css */
-/* This is the complete, final code with all fixes for homepage layout, mobile menu, and login/signup styles. */
+/* --- FULLY UPDATED & CONSOLIDATED CODE FOR KISAN-USER-FRIENDLY DESIGN (FIXED MOBILE TEXT OVERFLOW) --- */
+
+/* --- Global Design System: Colors, Fonts, & Legibility --- */
+:root {
+    /* Earth Tones for Agriculture */
+    --color-primary-green: #38761D; /* Rich, deep green (Soil/Forest) */
+    --color-secondary-gold: #F2C94C; /* Warm mustard/gold (Mustard flowers, Sun) */
+    --color-accent-brown: #A0522D; /* Terracotta/Brown (Soil, Trust) */
+    --color-background-light: #F9F7F1; /* Off-white/Cream (Less strain) */
+    
+    /* Text Colors */
+    --color-text-dark: #333333;
+    --color-text-light: #ffffff;
+    --color-text-placeholder: #777777; /* Darker placeholder for better contrast */
+    
+    /* Font and Size for Readability (Increased for accessibility) */
+    --font-size-base: 18px; 
+    --font-size-large: 20px;
+    --font-size-input: 1.05rem; /* Slightly larger input text */
+}
 
 /* --- General Body Styles --- */
 body {
@@ -7,15 +26,20 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: #f0f4f7;
-    color: #333;
+    background-color: var(--color-background-light); /* Lighter background */
+    color: var(--color-text-dark);
     line-height: 1.6;
+    font-size: var(--font-size-base); /* Applied base font size */
+}
+
+h1, h2, h3 {
+    line-height: 1.2;
 }
 
 /* --- Navbar Styles (Global) --- */
 .navbar {
-    background-color: #4CAF50;
-    color: white;
+    background-color: var(--color-primary-green); /* Deep Green Navbar */
+    color: var(--color-text-light);
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
@@ -36,12 +60,24 @@ body {
     font-weight: bold;
 }
 
+/* ⭐ Language Selector ⭐ */
 .language-switcher select {
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    padding: 8px 15px; 
+    border-radius: 8px; 
+    border: 2px solid var(--color-secondary-gold); 
     cursor: pointer;
+    background-color: var(--color-background-light);
+    color: var(--color-text-dark);
+    font-size: 1.1rem; 
+    font-weight: bold;
+    appearance: none; /* Remove default arrow */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2338761D%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.4L146.2%20209.3%2018.8%2074.8a17.6%2017.6%200%200%200-26.4%2023l130.5%20130.5c6.5%206.5%2014.3%209.4%2022.2%209.4s15.7-2.9%2022.2-9.4l130.5-130.5c11.5-11.4%2011.5-30%200-41.4z%22%2F%3E%3C%2Fsvg%3E'); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    padding-right: 30px; /* Make space for the arrow */
 }
+
 
 .nav-links ul {
     list-style: none;
@@ -51,31 +87,30 @@ body {
 }
 
 .nav-links li {
-    margin-left: 15px; /* Spacing between links */
+    margin-left: 15px; 
 }
 
 .nav-links a {
-    color: white;
+    color: var(--color-text-light);
     text-decoration: none;
     font-size: 1rem;
     padding: 0.5rem 0;
     transition: color 0.3s ease;
-    white-space: nowrap; /* Prevents text from breaking */
+    white-space: nowrap;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-    color: #ffc107; /* Amber color for active link */
+    color: var(--color-secondary-gold); /* Gold color for active/hover */
 }
 
 /* --- MOBILE NAVIGATION STYLES --- */
 #menu-toggle {
-    display: none; /* Checkbox is always hidden */
+    display: none; 
 }
 .menu-icon {
-    display: none; /* Hamburger icon is hidden on desktop */
+    display: none; 
 }
-
 
 /* --- Hero Section (Homepage) --- */
 .hero-section {
@@ -89,44 +124,47 @@ body {
     gap: 2rem;
     padding: 2rem 1rem;
     overflow: hidden;
-    background-image: url('../images/Home.png');
+    background-image: url('../images/Home1.png'); /* IMPORTANT: Update this with your chosen image path! */
     background-size: cover;
     background-position: center;
     background-blend-mode: multiply;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
+    background-color: rgba(56, 118, 29, 0.5); 
+    color: var(--color-text-light);
 }
 
-/* --- Government Schemes Carousel --- */
-#schemes-section {
-    position: relative; /* Positioned naturally in the flow */
+/* ⭐ Government Schemes Card ⭐ */
+.government-scheme-card {
+    position: relative;
     width: 100%;
-    max-width: 800px;
+    max-width: 850px; 
     z-index: 3;
-    padding: 1.5rem;
-
-    /* Yellow Background & Black Text */
-    background-color: rgba(255, 204, 0, 0.75);
-    color: #000000;
-
+    padding: 2rem;
+    
+    background-color: var(--color-secondary-gold); 
+    color: var(--color-text-dark);
     border-radius: 15px;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); 
+    border: 2px solid var(--color-accent-brown); 
+    text-align: center;
 }
 
-#schemes-section h2 {
-    color: #000000;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    /* --- BADLAV YAHAN KIYA GAYA HAI --- */
-    /* text-stroke ko hata kar text-shadow add kiya hai */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6); 
+.government-scheme-card h2 {
+    color: var(--color-accent-brown); 
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    text-shadow: none;
 }
 
+/* ⭐ MODIFIED: Schemes Carousel Container (Flexible Height) ⭐ */
 .schemes-carousel-container {
-    height: 80px;
+    height: auto; /* Allow height to adjust based on content */
+    min-height: 120px; /* Ensure minimum space */
     overflow: hidden;
     position: relative;
+    display: flex; /* Use flexbox for vertical alignment */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
 }
 .scheme-card {
     display: none;
@@ -134,22 +172,52 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100%;
     padding: 0 1rem;
     position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Ensure text wraps gracefully within the card */
+    white-space: normal;
+    word-wrap: break-word; /* For older browsers */
+    overflow-wrap: break-word;
 }
-.scheme-card.active { display: flex; }
+.scheme-card.active { 
+    display: flex; 
+    position: static; /* Active card takes up space */
+}
+
 .scheme-card h3 {
-    color: #000000;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
+    font-weight: 600;
     margin-bottom: 0.5rem;
+    color: var(--color-text-dark);
     text-shadow: none;
 }
 .scheme-card p {
-    color: #333333;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    color: var(--color-text-dark);
+    margin-bottom: 1.2rem;
     text-shadow: none;
 }
+.cta-scheme { 
+    display: inline-block;
+    background-color: var(--color-accent-brown); 
+    color: var(--color-text-light);
+    padding: 10px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    text-transform: uppercase;
+    border: none;
+}
+.cta-scheme:hover {
+    background-color: #794026; 
+}
+
 .carousel-dots {
     display: flex;
     justify-content: center;
@@ -169,29 +237,30 @@ body {
 .hero-content {
     position: relative;
     z-index: 2;
+    margin-bottom: 2rem;
 }
 .hero-content h1 {
-    font-size: 3.2rem;
+    font-size: 4rem; 
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 1);
 }
 .hero-content p {
-    font-size: 1.4rem;
+    font-size: 1.5rem; 
     max-width: 700px;
     margin: 1rem auto;
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.9);
 }
 
-/* --- Search Bar --- */
+/* ⭐ Search Bar with Voice Icon Styling ⭐ */
 .search-bar-container {
     display: flex;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.4); 
     backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.5); 
     border-radius: 50px;
-    padding: 0.5rem 1rem;
+    padding: 0.3rem 1rem; 
     margin-top: 2rem;
-    max-width: 600px;
+    max-width: 700px;
     width: 90%;
 }
 .search-bar-container input {
@@ -201,7 +270,7 @@ body {
     background: transparent;
     outline: none;
     color: white;
-    font-size: 1rem;
+    font-size: 1.1rem; 
 }
 .search-bar-container input::placeholder { color: rgba(255, 255, 255, 0.8); }
 .search-bar-container button {
@@ -209,17 +278,26 @@ body {
     border: none;
     color: white;
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 1.5rem; 
+    padding: 0.5rem;
+    transition: color 0.2s;
+}
+.search-bar-container button:hover {
+    color: var(--color-secondary-gold);
+}
+.voice-search-btn {
+    color: var(--color-secondary-gold) !important; 
+    margin-left: 5px;
 }
 
-/* --- Explore Fertilizers Section --- */
+/* ⭐ Explore Fertilizers Section ⭐ */
 .explore-fertilizers-overlay {
-    background-color: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(6px);
-    padding: 1.5rem 1rem;
-    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.8); 
+    backdrop-filter: blur(4px); 
+    padding: 2rem 1.5rem;
+    border-radius: 18px; 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
-    max-width: 700px;
+    max-width: 850px;
     width: 95%;
     position: relative;
     z-index: 1;
@@ -228,41 +306,79 @@ body {
     align-items: center;
 }
 .explore-fertilizers-overlay h2 {
-    font-size: 2rem;
-    color: white;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
-    margin-bottom: 1.2rem;
+    font-size: 2.5rem;
+    color: var(--color-text-dark); 
+    text-shadow: none;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
 }
 .fertilizer-categories {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 1.2rem;
-    margin-bottom: 1.5rem;
+    gap: 1.5rem; 
+    margin-bottom: 2rem;
     width: 100%;
 }
+
+/* ⭐ MODIFIED: Fertilizer Cards (Flexible Text Handling) ⭐ */
 .category-card {
-    background-color: rgba(255, 255, 255, 0.85);
-    border-radius: 10px;
-    padding: 0.8rem;
-    width: 160px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    background-color: var(--color-background-light); 
+    border-radius: 12px; 
+    padding: 1rem;
+    width: 180px; 
+    min-height: 160px; /* Ensure a minimum height for consistency */
+    display: flex; /* Use flexbox to align content */
+    flex-direction: column;
+    justify-content: space-between; /* Space out content vertically */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
     text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+.category-card:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 .category-card img {
-    max-width: 70px;
+    max-width: 80px; 
     height: auto;
-    margin-bottom: 0.6rem;
+    margin: 0 auto 0.6rem auto; /* Center image */
 }
-.category-card h3 { font-size: 1rem; color: #333; }
+.category-card h3 { 
+    font-size: 1.2rem; 
+    color: var(--color-text-dark); 
+    margin-top: 0.5rem;
+    white-space: normal; /* Allow text to wrap */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.product-tagline { 
+    font-size: 0.9rem;
+    color: var(--color-primary-green); 
+    font-style: italic;
+    margin-top: 5px;
+    font-weight: 500;
+    white-space: normal; /* Allow text to wrap */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Primary Button (General) */
 .btn-primary {
     display: inline-block;
-    background-color: #4CAF50;
+    background-color: var(--color-primary-green); 
     color: white;
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
+    padding: 1rem 2rem; 
+    border-radius: 10px;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: var(--font-size-large); 
+    font-weight: bold;
+    transition: background-color 0.3s;
+    border: none; 
+}
+.btn-primary:hover {
+    background-color: #2e5f18; 
 }
 
 /* --- Login/Signup Page Specific Styles --- */
@@ -271,35 +387,100 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('../images/Home.png');
+    background-image: url('../images/Home1.png'); /* IMPORTANT: Update this with your chosen image path! */
     background-size: cover;
     background-position: center;
     background-blend-mode: multiply;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7); 
+    padding: 2rem 1rem; 
 }
+
+/* ⭐ ENHANCED LOGIN/SIGNUP CONTAINER ⭐ */
 .login-container {
-    background-color: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 15px;
+    background-color: var(--color-background-light); 
+    border: 1px solid rgba(0, 0, 0, 0.1); 
+    border-radius: 18px; 
     padding: 40px;
     text-align: center;
     width: 90%;
-    max-width: 400px;
-    color: white;
+    max-width: 450px; 
+    color: var(--color-text-dark); 
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35); 
+    position: relative; 
+    overflow: hidden; 
 }
-.input-group { margin-bottom: 20px; text-align: left; }
-.input-group label { display: block; margin-bottom: 8px; font-weight: bold; }
-.input-group input {
+
+/* ⭐ LOGIN/SIGNUP HEADING ⭐ */
+.login-container h2 {
+    font-size: 2.2rem; 
+    color: var(--color-primary-green); 
+    margin-bottom: 30px; 
+    font-weight: 700;
+}
+
+/* ⭐ INPUT GROUPS ⭐ */
+.input-group { 
+    margin-bottom: 20px; 
+    text-align: left; 
+}
+.input-group label { 
+    display: block; 
+    margin-bottom: 8px; 
+    font-weight: 600; 
+    color: var(--color-text-dark);
+    font-size: 1.1rem; 
+}
+.input-group input,
+.input-group select { 
     width: 100%;
-    padding: 12px;
-    border: none;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border-radius: 8px;
+    padding: 14px 18px; 
+    border: 1px solid #c9c9c9; 
+    background: #ffffff; 
+    color: var(--color-text-dark);
+    border-radius: 10px; 
+    font-size: var(--font-size-input);
+    box-sizing: border-box; 
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
-.signup-text { margin-top: 20px; font-size: 1rem; }
-.signup-text a { color: #ffc107; text-decoration: none; font-weight: bold; }
+.input-group input:focus,
+.input-group select:focus {
+    outline: none;
+    border-color: var(--color-primary-green); 
+    box-shadow: 0 0 0 3px rgba(56, 118, 29, 0.3); 
+}
+.input-group input::placeholder { 
+    color: var(--color-text-placeholder); 
+}
+
+/* ⭐ LOGIN/SIGNUP BUTTON ⭐ */
+.login-container .btn-primary {
+    width: 100%; 
+    margin-top: 30px; 
+    padding: 16px 20px; 
+    font-size: 1.25rem; 
+    border-radius: 12px; 
+    text-transform: uppercase; 
+    letter-spacing: 0.5px;
+    font-weight: 700;
+}
+
+/* ⭐ SIGNUP/LOGIN TEXT LINK ⭐ */
+.signup-text { 
+    margin-top: 30px; 
+    font-size: 1rem; 
+    color: var(--color-text-dark);
+}
+.signup-text a { 
+    color: var(--color-primary-green); 
+    text-decoration: none; 
+    font-weight: bold; 
+    transition: color 0.3s;
+}
+.signup-text a:hover {
+    color: var(--color-accent-brown); 
+    text-decoration: underline; 
+}
+
 
 /* --- Media Queries for Responsiveness --- */
 @media (max-width: 768px) {
@@ -318,7 +499,7 @@ body {
         height: 100vh;
         box-shadow: -5px 0 15px rgba(0,0,0,0.2);
         transition: right 0.3s ease-in-out;
-        background-color: #4CAF50;
+        background-color: var(--color-primary-green);
         width: max-content;
         z-index: 1000;
         padding: 60px 40px 20px 20px;
@@ -365,10 +546,59 @@ body {
     }
 
     /* Other responsive styles */
-    .hero-section h1 { font-size: 2.2rem; }
-    .hero-section p { font-size: 1.1rem; }
-    #schemes-section { padding: 1rem; }
-    #schemes-section h2 { font-size: 1.3rem; }
-    .scheme-card h3 { font-size: 1rem; }
-    .scheme-card p { font-size: 0.85rem; }
+    .hero-section h1 { font-size: 3rem; }
+    .hero-section p { font-size: 1.2rem; }
+    
+    .government-scheme-card {
+        max-width: 95%;
+        padding: 1.5rem;
+    }
+    .government-scheme-card h2 { font-size: 1.5rem; }
+    /* ⭐ MODIFIED: Scheme card text size for mobile ⭐ */
+    .scheme-card h3 { font-size: 1.2rem; } 
+    .scheme-card p { font-size: 0.95rem; }
+
+    .search-bar-container { max-width: 90%; }
+    .search-bar-container input { font-size: 1rem; }
+
+    .explore-fertilizers-overlay { padding: 1.5rem 0.5rem; }
+    .explore-fertilizers-overlay h2 { font-size: 1.8rem; }
+
+    .fertilizer-categories {
+        gap: 1rem;
+    }
+    /* ⭐ MODIFIED: Fertilizer Card width/height for mobile ⭐ */
+    .category-card {
+        width: 47%; /* Slightly more width for better text fit */
+        min-height: 140px; /* Adjusted min-height for mobile */
+        padding: 0.8rem;
+    }
+    .category-card img { max-width: 50px; } /* Slightly smaller image on mobile */
+    .category-card h3 { font-size: 1rem; }
+    .product-tagline { font-size: 0.8rem; } /* Smaller tagline for mobile */
+    .btn-primary { font-size: 1.1rem; padding: 0.8rem 1.5rem; }
+
+    /* Login/Signup Mobile Adjustments */
+    .login-container {
+        padding: 30px 20px; 
+    }
+    .login-container h2 {
+        font-size: 1.8rem; 
+        margin-bottom: 20px;
+    }
+    .input-group label {
+        font-size: 1rem;
+    }
+    .input-group input,
+    .input-group select {
+        padding: 10px 12px;
+        font-size: 1rem;
+    }
+    .login-container .btn-primary {
+        padding: 14px 15px;
+        font-size: 1.1rem;
+    }
+    .signup-text {
+        margin-top: 20px;
+    }
 }

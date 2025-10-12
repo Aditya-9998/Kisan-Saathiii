@@ -16,11 +16,19 @@
     <main class="content">
         <section id="home" class="hero-section">
 
-            <section id="schemes-section">
+            <section id="schemes-section" class="government-scheme-card">
                 <h2 data-lang-key="schemes.title">Government Schemes for Farmers</h2>
                 
                 <div class="schemes-carousel-container">
-                    <div class="schemes-carousel"></div>
+                    <div class="schemes-carousel">
+                        <div class="scheme-card active">
+                            <h3 data-lang-key="scheme.pmkisan.title">Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)</h3>
+                            <p data-lang-key="scheme.pmkisan.subtitle">
+                                A welfare initiative providing income support to all landholding farmer families.
+                            </p>
+                            <a href="schemes.html" class="cta-scheme" data-lang-key="scheme.pmkisan.cta">Check Eligibility & Apply</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="carousel-dots"></div>
             </section>
@@ -34,6 +42,7 @@
                     <input type="text" data-lang-key="hero.searchPlaceholder"
                         placeholder="Search for crops, fertilizers, and schemes...">
                     <button type="submit"><i class="fas fa-search"></i></button>
+                    <button type="button" class="voice-search-btn" title="Voice Search"><i class="fas fa-microphone"></i></button>
                 </div>
             </div>
 
@@ -43,14 +52,17 @@
                     <div class="category-card">
                         <img src="images/DAP_phospahte-rich.webp" alt="DAP Phosphate">
                         <h3 data-lang-key="fertilizer.dap">DAP Phosphate</h3>
+                        <p class="product-tagline">Essential for new sowings</p> 
                     </div>
                     <div class="category-card">
                         <img src="images/Ge1236.webp" alt="GE-1236">
                         <h3 data-lang-key="fertilizer.ge">GE-1236</h3>
+                        <p class="product-tagline">High in Nitrogen</p>
                     </div>
                     <div class="category-card">
                         <img src="images/Tamoto_Ferti.jpg" alt="Tomato Fertilizer">
                         <h3 data-lang-key="fertilizer.tomato">Tomato Fertilizer</h3>
+                        <p class="product-tagline">For all fruiting plants</p>
                     </div>
                 </div>
                 <a href="advisory.html" class="btn-primary" data-lang-key="fertilizer.viewAllBtn">View All Fertilizers</a>
@@ -67,21 +79,3 @@
     <script src="Js/footer.js"></script>
 </body>
 </html>
-
-
-
-
-
-<!-- Footer placeholder (injected by footer.js)   
-    ye mera abhi ka advisory page hai hu isko thoda aur modifi karu like if user clik in adivsiry section 4 section open ho 1. soil selection 2. related crops 3. fertilizer 4. equipment
-how it working together aftter user rech at adivvisory page 4 section is show ho. iske niche india me corrent kis state me kitna kon crop jayda profitable huaa haua other crop relate new like kisi state baadh yaya to crop ka nuksaan huaa ye sab ho side me ek graph bhi 5 yr ka jisme show ho statewise kis state me kitna kis crops ka production badha ki ghata.(by defaust ye open hi rahega aur news card 7-8 hoge oo rotete krne hi rahege.)
-
-ab next kaam advisory page ka when user clik on soil selection open all type of soil name in horizantaly section use soil name ke niche ek(!) simbol ho jisme clik ya cursour le jane par show ho ye soil kis kis state me paya jata hai ek pop up ke help se. if user clik on select soil type.
-
-than uske relate crop show hone lage jaise abhi hota hai but in 1 row show only 4 crop card than niche show ho simalarly .baaki same rahega usme uska full procced rahega jaise abhi hai 
-
-ek name fertilizer.js banana hoga jisme sare tyes fertilizeer avilavle ho dap jo crop kr detail name oo sab fertilizer ka name card hoga.
-
-similsrly ek new equpmwent.js file sare equpment choti se choti bae se bade jo kissan workme use hoti like sikale kudal se leke tractor , compaonei tak sab kuch
-
--->
