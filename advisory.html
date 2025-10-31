@@ -9,9 +9,13 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/advisory.css">
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/navbar.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- SweetAlert2 (Required for user_status.js alerts/toasts) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -40,9 +44,9 @@
                     <div id="season-tabs" class="season-tabs">
                         <button class="season-tab active" data-season="kharif"
                             data-lang-key="advisory.season.kharif">Kharif (जून-अक्टूबर)</button>
-                        <button class="season-tab" data-season="rabi" data-lang-key="advisory.season.rabi">Rabi
+                        <button class="season-tab" type="button" data-season="rabi" data-lang-key="advisory.season.rabi">Rabi
                             (नवंबर-अप्रैल)</button>
-                        <button class="season-tab" data-season="zaid" data-lang-key="advisory.season.zaid">Zaid
+                        <button class="season-tab" type="button" data-season="zaid" data-lang-key="advisory.season.zaid">Zaid
                             (मार्च-जून)</button>
                     </div>
                 </div>
@@ -85,34 +89,18 @@
 
     <div id="footer"></div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-
-    <script>
-        // 🚨 REPLACE WITH YOUR ACTUAL CONFIGURATION
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY", 
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        // Initialize Firebase and set global variables
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        window.firebaseApp = app;
-        window.firebaseAuth = auth;
-    </script>
-
-    <script src="Js/navbar.js"></script> 
+    <!-- ✅ JS Files (Non-module First) -->
+    <script src="Js/utility.js"></script>  <!-- Add if used on this page -->
+    <script src="Js/navbar.js"></script>
     <script src="Js/language.js"></script>
-    <script src="Js/user_status.js"></script>
-    
-    <script src="Js/advisory.js" type="module"></script>
-    <script src="Js/footer.js"></script>
 
-    </body>
+    <!-- ✅ Firebase + Auth (Modular - No Old Compat Scripts) -->
+    <script type="module" src="Js/user_status.js"></script>
+
+    <!-- ✅ Page-Specific Script (Already Type=Module) -->
+    <script src="Js/advisory.js" type="module"></script>
+
+    <script src="Js/footer.js"></script>
+</body>
 
 </html>

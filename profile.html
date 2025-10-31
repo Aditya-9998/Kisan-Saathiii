@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="profile.title">My Profile - Kisaan Saathii</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    
+    <link rel="stylesheet" href="css/profile.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    </head>
+
+<body>
+    <div id="status-popup" class="status-popup">
+        <span id="popup-message"></span>
+    </div>
+
+    <div id="navbar"></div>
+
+    <main class="content">
+        <section class="profile-page-container">
+            <div class="profile-header">
+                <h1 data-lang-key="profile.header">My Kisan Saathii Profile</h1>
+                <p data-lang-key="profile.subtitle">Manage your account information and preferences.</p>
+            </div>
+
+            <div class="profile-picture-section">
+                <img src="images/default-avatar.png" alt="Profile Picture" id="mainProfilePic"
+                    class="large-profile-pic">
+
+                <div class="profile-pic-controls">
+                    <input type="file" id="profilePicInput" accept="image/*" style="display:none;">
+                    <button id="addProfilePicBtn" data-lang-key="profile.addPicBtn"><i class="fas fa-camera"></i>
+                        Add/Change Picture</button>
+                    <button id="removeProfilePicBtn" data-lang-key="profile.removePicBtn"><i class="fas fa-trash"></i>
+                        Remove Picture</button>
+                </div>
+            </div>
+
+            <div class="user-details-section">
+                <h2 data-lang-key="profile.detailsHeader">Personal Information</h2>
+                <p><strong><span data-lang-key="profile.name">Name:</span></strong> <span
+                        id="profileUserName">Loading...</span></p>
+                <p><strong><span data-lang-key="profile.email">Email:</span></strong> <span
+                        id="profileUserEmail">Loading...</span></p>
+                <p><strong><span data-lang-key="profile.phone">Phone:</span></strong> <span id="profileUserPhone">N/A
+                        (Update in Edit Details)</span></p>
+            </div>
+
+            <div class="action-links">
+                <a href="signup.html" id="editDetailsLink" class="btn-primary" data-lang-key="profile.editDetailsBtn">
+                    <i class="fas fa-edit"></i> Edit All Details
+                </a>
+                <button id="logoutProfileBtn" class="btn-danger" data-lang-key="profile.logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> LOGOUT
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script>
+        // Firebase Initialization (Needed before other scripts run)
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
+            authDomain: "kisan-saathiii.firebaseapp.com",
+            projectId: "kisan-saathiii",
+            storageBucket: "kisan-saathiii.appspot.com",
+            messagingSenderId: "1069746635685",
+            appId: "1:1069746635685:web:b6cade8247e56094011e4c",
+            measurementId: "G-XJ0T10GRND"
+        };
+        const app = firebase.initializeApp(firebaseConfig);
+        window.firebaseApp = app;
+        window.firebaseAuth = firebase.auth();
+        window.firebaseStorage = firebase.storage();
+    </script>
+
+    <script src="Js/utility.js"></script>
+    <script src="Js/navbar.js"></script>
+    <script src="Js/language.js"></script>
+    <script src="Js/footer.js"></script>
+    <script src="Js/profile.js"></script>
+    <script src="Js/user_status.js" type="module"></script>
+</body>
+
+</html>

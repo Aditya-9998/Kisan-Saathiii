@@ -2,106 +2,96 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kisaan Saathi</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kisaan Saathi</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/profile.css">
+  
+  <link rel="stylesheet" href="css/navbar.css?v=10">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
-    <div id="navbar"></div> 
+  <div id="status-popup" class="status-popup">
+    <span id="popup-message"></span>
+  </div>
 
-    <main class="content">
-        <section id="home" class="hero-section">
+  <div id="navbar"></div>
 
-            <section id="schemes-section" class="government-scheme-card">
-                <h2 data-lang-key="schemes.title">Government Schemes for Farmers</h2>
-                
-                <div class="schemes-carousel-container">
-                    <div class="schemes-carousel">
-                        <div class="scheme-card active">
-                            <h3 data-lang-key="scheme.pmkisan.title">Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)</h3>
-                            <p data-lang-key="scheme.pmkisan.subtitle">
-                                A welfare initiative providing income support to all landholding farmer families.
-                            </p>
-                            <a href="schemes.html" class="cta-scheme" data-lang-key="scheme.pmkisan.cta">Check Eligibility & Apply</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-dots"></div>
-            </section>
+  <main class="content">
+    <section id="home" class="hero-section">
 
-            <div class="hero-content">
-                <h1 data-lang-key="hero.title">Your Farming Partner</h1>
-                <p data-lang-key="hero.subtitle">
-                    Empowering farmers with data-driven insights for better yields and profits.
-                </p>
-                <div class="search-bar-container">
-                    <input type="text" data-lang-key="hero.searchPlaceholder"
-                        placeholder="Search for crops, fertilizers, and schemes...">
-                    <button type="submit"><i class="fas fa-search"></i></button>
-                    <button type="button" class="voice-search-btn" title="Voice Search"><i class="fas fa-microphone"></i></button>
-                </div>
+      <section id="schemes-section" class="government-scheme-card">
+        <h2 data-lang-key="schemes.title">Government Schemes for Farmers</h2>
+        <div class="schemes-carousel-container">
+          <div class="schemes-carousel">
+            <div class="scheme-card active">
+              <h3 data-lang-key="scheme.pmkisan.title">Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)</h3>
+              <p data-lang-key="scheme.pmkisan.subtitle">
+                A welfare initiative providing income support to all landholding farmer families.
+              </p>
+              <a href="schemes.html" class="cta-scheme" data-lang-key="scheme.pmkisan.cta">
+                Check Eligibility & Apply
+              </a>
             </div>
+          </div>
+        </div>
+        <div class="carousel-dots"></div>
+      </section>
 
-            <div id="fertilizer-section" class="explore-fertilizers-overlay">
-                <h2 data-lang-key="fertilizer.exploreTitle">Explore Fertilizers</h2>
-                <div class="fertilizer-categories">
-                    <div class="category-card">
-                        <img src="images/DAP_phospahte-rich.webp" alt="DAP Phosphate">
-                        <h3 data-lang-key="fertilizer.dap">DAP Phosphate</h3>
-                        <p class="product-tagline">Essential for new sowings</p> 
-                    </div>
-                    <div class="category-card">
-                        <img src="images/Ge1236.webp" alt="GE-1236">
-                        <h3 data-lang-key="fertilizer.ge">GE-1236</h3>
-                        <p class="product-tagline">High in Nitrogen</p>
-                    </div>
-                    <div class="category-card">
-                        <img src="images/Tamoto_Ferti.jpg" alt="Tomato Fertilizer">
-                        <h3 data-lang-key="fertilizer.tomato">Tomato Fertilizer</h3>
-                        <p class="product-tagline">For all fruiting plants</p>
-                    </div>
-                </div>
-                <a href="advisory.html" class="btn-primary" data-lang-key="fertilizer.viewAllBtn">View All Fertilizers</a>
-            </div>
-            
-        </section>
-    </main>
+      <div class="hero-content">
+        <h1 data-lang-key="hero.title">Your Farming Partner</h1>
+        <p data-lang-key="hero.subtitle">
+          Empowering farmers with data-driven insights for better yields and profits.
+        </p>
 
-    <div id="footer"></div>
+        <div class="search-bar-container">
+          <input type="text" data-lang-key="hero.searchPlaceholder"
+            placeholder="Search for crops, fertilizers, and schemes...">
+          <button type="submit"><i class="fas fa-search"></i></button>
+          <button type="button" class="voice-search-btn" title="Voice Search"><i class="fas fa-microphone"></i></button>
+        </div>
+      </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+      <div id="fertilizer-section" class="explore-fertilizers-overlay">
+        <h2 data-lang-key="fertilizer.exploreTitle">Explore Fertilizers</h2>
+        <div class="fertilizer-categories">
+          <div class="category-card">
+            <img src="images/DAP_phospahte-rich.webp" alt="DAP Phosphate">
+            <h3 data-lang-key="fertilizer.dap">DAP Phosphate</h3>
+            <p class="product-tagline">Essential for new sowings</p>
+          </div>
+          <div class="category-card">
+            <img src="images/Ge1236.webp" alt="GE-1236">
+            <h3 data-lang-key="fertilizer.ge">GE-1236</h3>
+            <p class="product-tagline">High in Nitrogen</p>
+          </div>
+          <div class="category-card">
+            <img src="images/Tamoto_Ferti.jpg" alt="Tomato Fertilizer">
+            <h3 data-lang-key="fertilizer.tomato">Tomato Fertilizer</h3>
+            <p class="product-tagline">For all fruiting plants</p>
+          </div>
+        </div>
+        <a href="advisory.html" class="btn-primary" data-lang-key="fertilizer.viewAllBtn">View All Fertilizers</a>
+      </div>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
-            authDomain: "kisan-saathiii.firebaseapp.com",
-            projectId: "kisan-saathiii",
-            storageBucket: "kisan-saathiii.appspot.com", 
-            messagingSenderId: "1069746635685",
-            appId: "1:1069746635685:web:b6cade8247e56094011e4c",
-            measurementId: "G-XJ0T10GRND"
-        };
+    </section>
+  </main>
 
-        // Initialize Firebase and set global variables
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        
-        window.firebaseApp = app;
-        window.firebaseAuth = auth;
-    </script>
+  <div id="footer"></div>
 
-    <script src="Js/navbar.js"></script> 
-    <script src="Js/language.js"></script>
-    
-    <script src="Js/schemes.js"></script>
-    <script src="Js/footer.js"></script>
-    
-    <script src="Js/user_status.js"></script>
-    
-    </body>
+  <script src="Js/utility.js"></script>
+  
+  <script src="Js/navbar.js?v=10"></script>
+  
+  <script src="Js/schemes.js"></script>
+  <script src="Js/footer.js"></script>
+  <script type="module" src="Js/user_status.js"></script>
+</body>
+
 </html>

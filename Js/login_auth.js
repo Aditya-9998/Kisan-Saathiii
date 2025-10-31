@@ -1,29 +1,30 @@
-// Js/login_auth.js - FINAL CORRECTED VERSION with User-Friendly Errors
+// Js/login_auth.js — FINAL VERIFIED VERSION for Kisaan Saathii Project
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Ensure Firebase Auth is available
-    if (typeof window.firebaseAuth === 'undefined') {
-        console.error("Firebase Auth is not initialized.");
-        return;
-    }
 
-    const loginForm = document.getElementById('login-form');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const googleLoginBtn = document.getElementById('google-login-btn');
-    
-    // Auth-message div ko hum yahaan hide kar denge, kyunki ab hum 'showStatusPopup' use kar rahe hain.
-    const messageDisplay = document.getElementById('auth-message');
-    if (messageDisplay) {
-        messageDisplay.style.display = 'none';
+    // Ensure Firebase Auth is loaded
+    if (typeof window.firebaseAuth === 'undefined') {
+        console.error("❌ Firebase Auth not initialized. Make sure firebase.js is loaded before login_auth.js");
+        return;
     }
 
     const auth = window.firebaseAuth;
 
-    // Helper function for user-friendly error messages (from utility.js)
-    const showStatusPopup = window.showStatusPopup; // Assuming this is defined in Js/utility.js
+    // UI Elements
+    const loginForm = document.getElementById('login-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const googleLoginBtn = document.getElementById('google-login-btn');
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
 
-    // Function to handle error messages professionally
+    // Hide any old static message element
+    const messageDisplay = document.getElementById('auth-message');
+    if (messageDisplay) messageDisplay.style.display = 'none';
+
+    // Use showStatusPopup from utility.js
+    const showStatusPopup = window.showStatusPopup;
+
+    // 🔹 Handle Firebase errors with user-friendly messages
     function handleAuthError(error, isGoogle = false) {
         let errorMessage = 'Login failed. Please try again.';
 
@@ -31,99 +32,102 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'auth/user-not-found':
             case 'auth/wrong-password':
             case 'auth/invalid-login-credentials':
-                errorMessage = 'Credentials don\'t match. Check your email and password.';
+                errorMessage = "Incorrect email or password.";
                 break;
             case 'auth/invalid-email':
-                errorMessage = 'The email address format is invalid. Please correct it.';
+                errorMessage = "Please enter a valid email address.";
                 break;
             case 'auth/too-many-requests':
-                errorMessage = 'Access temporarily blocked due to too many failed attempts. Try again later.';
+                errorMessage = "Too many failed attempts. Try again later.";
                 break;
             case 'auth/network-request-failed':
-                errorMessage = 'Network error. Please check your internet connection.';
+                errorMessage = "Network issue. Please check your internet connection.";
                 break;
             case 'auth/popup-closed-by-user':
-                errorMessage = 'Sign-in cancelled. You closed the Google sign-in window.';
+                errorMessage = "Google Sign-in was cancelled.";
                 break;
             case 'auth/account-exists-with-different-credential':
-                errorMessage = 'This email is already registered with a different method (e.g., email/password).';
+                errorMessage = "Account exists with another sign-in method.";
                 break;
             default:
-                errorMessage = isGoogle ? 'Google Sign-in failed. Try again.' : 'Login failed. Please try again.';
+                errorMessage = isGoogle ? "Google Sign-in failed. Try again." : "Login failed. Please try again.";
                 console.error("Firebase Auth Error:", error.message);
                 break;
         }
+
         showStatusPopup(errorMessage, false);
     }
 
-
-    // 1. Check if user is already logged in (This logic remains the same)
+    // 🔹 Auto-redirect if already logged in
     auth.onAuthStateChanged(user => {
         if (user && window.location.pathname.includes('login.html')) {
-            // User is already signed in, redirect them to the home page
-            showStatusPopup(`Welcome back, ${user.displayName || user.email.split('@')[0]}! Redirecting...`, true);
+            const userName = user.displayName || user.email.split('@')[0];
+            showStatusPopup(`✅ Welcome back, ${userName}! Redirecting...`, true);
             setTimeout(() => {
-                window.location.href = 'index.html'; 
-            }, 1000);
+                window.location.href = 'index.html';
+            }, 1200);
         }
     });
 
-
-    // 2. Email/Password Login Handler
+    // 🔹 Email/Password Login
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = emailInput.value;
-            const password = passwordInput.value;
-            showStatusPopup('Logging in...', true);
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!email || !password) {
+                showStatusPopup("Please enter both email and password.", false);
+                return;
+            }
+
+            showStatusPopup("Logging in...", true);
 
             try {
                 await auth.signInWithEmailAndPassword(email, password);
-                
-                // Login successful, onAuthStateChanged will handle the redirect
-                // No need to show success message here, as redirect is imminent.
-
+                // onAuthStateChanged will redirect automatically
+                showStatusPopup("✅ Login successful! Redirecting...", true);
             } catch (error) {
                 handleAuthError(error, false);
             }
         });
     }
 
-    // 3. Google Sign-In Handler
+    // 🔹 Google Login
     if (googleLoginBtn) {
         googleLoginBtn.addEventListener('click', async () => {
             const provider = new firebase.auth.GoogleAuthProvider();
-            showStatusPopup('Signing in with Google...', true);
-            
+            showStatusPopup("Signing in with Google...", true);
+
             try {
                 await auth.signInWithPopup(provider);
-
-                // Sign-in successful, onAuthStateChanged will handle the redirect
-
+                showStatusPopup("✅ Google Sign-in successful! Redirecting...", true);
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1200);
             } catch (error) {
                 handleAuthError(error, true);
             }
         });
     }
 
-    // 4. Forgot Password Handler (If you add this link to login.html)
-    const forgotPasswordLink = document.getElementById('forgot-password-link');
+    // 🔹 Forgot Password
     if (forgotPasswordLink) {
         forgotPasswordLink.addEventListener('click', async (e) => {
             e.preventDefault();
-            const email = emailInput.value;
+            const email = emailInput.value.trim();
 
             if (!email) {
-                showStatusPopup("Please enter your email address above to receive the reset link.", false);
+                showStatusPopup("Please enter your email address to receive a reset link.", false);
                 return;
             }
 
-            showStatusPopup(`Sending password reset link to ${email}...`, true);
+            showStatusPopup(`Sending reset link to ${email}...`, true);
 
             try {
                 await auth.sendPasswordResetEmail(email);
-                showStatusPopup(`Password reset link sent successfully to ${email}. Check your inbox!`, true, 5000); // 5s duration
-
+                showStatusPopup(`📧 Reset link sent to ${email}. Check your inbox!`, true, 5000);
             } catch (error) {
                 handleAuthError(error, false);
             }

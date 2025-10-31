@@ -1,0 +1,176 @@
+/* File Location: Kissan Saktiii/css/profile.css */
+ /* This file contains ONLY the styles for the full profile page (profile.html). */
+ 
+/* ======================================================= */
+ /* 1. Full Profile Page Styles (profile.html) */
+ /* ======================================================= */
+ 
+.profile-page-container {
+    max-width: 950px; /* WIDER INTERFACE */
+    margin: 50px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+ }
+ 
+.profile-header {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #10b981;
+ }
+ 
+/* Profile Picture Section */
+ .profile-picture-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+ }
+ 
+.large-profile-pic {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 6px solid #22c55e;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ }
+ 
+/* Profile Picture Buttons */
+ .profile-pic-controls button {
+    padding: 10px 20px;
+    margin: 0 8px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.1s;
+ }
+ 
+.profile-pic-controls button:active {
+    transform: translateY(1px);
+ }
+ 
+#addProfilePicBtn {
+    background-color: #22c55e;
+    color: white;
+ }
+ 
+#addProfilePicBtn:hover {
+    background-color: #16a34a;
+ }
+ 
+#removeProfilePicBtn {
+    background-color: #ef4444;
+    color: white;
+ }
+ 
+#removeProfilePicBtn:hover {
+    background-color: #dc2626;
+ }
+ 
+/* Edit Details Link */
+ #editDetailsLink {
+    display: inline-flex;
+    margin: 0 0 15px 0;
+ }
+ 
+/* User Details Section */
+ .user-details-section {
+    border-top: 2px solid #f0fdf4;
+    padding-top: 30px;
+    margin-top: 20px;
+ }
+ 
+.user-details-section h2 {
+    color: #059669;
+    margin-bottom: 20px;
+    border-left: 5px solid #10b981;
+    padding-left: 10px;
+ }
+ 
+.user-details-section p {
+    font-size: 1.1em;
+    margin-bottom: 12px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #eee;
+    display: flex;
+ }
+ 
+.user-details-section strong {
+    min-width: 140px;
+    color: #4b5563;
+    font-weight: 500;
+ }
+ 
+/* Action Links Section */
+ .action-links {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid #f0fdf4;
+ }
+ 
+/* Centered Logout Button */
+ #logoutProfileBtn {
+    display: block;
+    width: 250px;
+    margin: 20px auto 0 auto;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-size: 1.1em;
+ }
+ 
+/* Buttons inside action-links */
+ .action-links .btn-primary,
+ .action-links .btn-danger {
+    padding: 12px 25px;
+    margin: 0 15px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+ }
+ 
+.action-links i {
+    margin-right: 8px;
+}
+ 
+/* ======================================================= */
+ /* 2. Responsive Adjustments */
+ /* ======================================================= */
+ 
+@media (max-width: 600px) {
+    .profile-page-container {
+        max-width: 100%;
+        margin: 20px 10px;
+        padding: 20px;
+    }
+ 
+    .profile-pic-controls {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+ 
+    .profile-pic-controls button {
+        margin: 5px 0;
+    }
+ 
+    .action-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+ 
+    .action-links #logoutProfileBtn,
+    .action-links .btn-primary {
+        margin: 8px 0;
+        width: 100%;
+        justify-content: center;
+    }
+ }

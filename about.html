@@ -2,126 +2,144 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kisaan Saathi - About Us</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/about.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kisaan Saathi - About Us</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/about.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/navbar.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
-    <div id="navbar"></div> 
+  <!-- Navbar -->
+  <div id="navbar"></div>
 
-    <main class="content about-page">
-        <section class="content-section our-story">
-            <h2 data-lang-key="about.ourStoryTitle">Our Story</h2>
-            <div class="story-container">
-                <div class="story-points">
-                    <p data-lang-key="about.storyIntro">
-                        🌿किसान Saathiii🌿 was founded to bridge the technology gap in agriculture by providing
-                        farmers with modern, data-driven tools.
-                        Our journey began with a simple idea: empower every farmer with the right information at the
-                        right time.
-                    </p>
-                    <ul class="story-list">
-                        <li data-lang-key="about.storyPoint1">We started by developing a platform that integrates hyper-local
-                            weather data to assist with planting and harvesting decisions.</li>
-                        <li data-lang-key="about.storyPoint2">Our mission expanded to include providing real-time market
-                            prices, connecting farmers directly with buyers to ensure fair compensation.</li>
-                        <li data-lang-key="about.storyPoint3">Today, we are committed to building a digital ecosystem that
-                            promotes sustainable farming practices and empowers the agricultural community.</li>
-                    </ul>
-                </div>
-                <div class="story-image">
-                    <img src="images/our Aim.png" alt="Kisaan Saathii Vision">
-                </div>
-            </div>
-        </section>
+  <!-- Main Content -->
+  <main class="content about-page">
+    <!-- Our Story -->
+    <section class="content-section our-story">
+      <h2 data-lang-key="about.ourStoryTitle">Our Story</h2>
+      <div class="story-container">
+        <div class="story-points">
+          <p data-lang-key="about.storyIntro">
+            🌿किसान Saathiii🌿 was founded to bridge the technology gap in agriculture by providing
+            farmers with modern, data-driven tools.
+            Our journey began with a simple idea: empower every farmer with the right information at the
+            right time.
+          </p>
+          <ul class="story-list">
+            <li data-lang-key="about.storyPoint1">We started by developing a platform that integrates
+              hyper-local
+              weather data to assist with planting and harvesting decisions.</li>
+            <li data-lang-key="about.storyPoint2">Our mission expanded to include providing real-time market
+              prices, connecting farmers directly with buyers to ensure fair compensation.</li>
+            <li data-lang-key="about.storyPoint3">Today, we are committed to building a digital ecosystem
+              that
+              promotes sustainable farming practices and empowers the agricultural community.</li>
+          </ul>
+        </div>
+        <div class="story-image">
+          <img src="images/our Aim.png" alt="Kisaan Saathii Vision">
+        </div>
+      </div>
+    </section>
 
-        <section class="content-section our-values">
-            <h2 data-lang-key="about.ourValuesTitle">Our Values</h2>
-            <div class="values-container">
-                <div class="value-card">
-                    <i class="fas fa-hand-holding-heart"></i>
-                    <h3 data-lang-key="about.value1Title">Empowerment</h3>
-                    <p data-lang-key="about.value1Text">We provide tools and knowledge to help farmers make informed
-                        decisions and take control of their livelihoods.</p>
-                </div>
-                <div class="value-card">
-                    <i class="fas fa-leaf"></i>
-                    <h3 data-lang-key="about.value2Title">Sustainability</h3>
-                    <p data-lang-key="about.value2Text">We promote eco-friendly practices that benefit both the land and the
-                        farmer, ensuring a healthier future.</p>
-                </div>
-                <div class="value-card">
-                    <i class="fas fa-heart"></i>
-                    <h3 data-lang-key="about.value3Title">Community</h3>
-                    <p data-lang-key="about.value3Text">We believe in a strong, connected network where farmers can share
-                        knowledge and grow together.</p>
-                </div>
-            </div>
-        </section>
+    <!-- Our Values -->
+    <section class="content-section our-values">
+      <h2 data-lang-key="about.ourValuesTitle">Our Values</h2>
+      <div class="values-container">
+        <div class="value-card">
+          <i class="fas fa-hand-holding-heart"></i>
+          <h3 data-lang-key="about.value1Title">Empowerment</h3>
+          <p data-lang-key="about.value1Text">We provide tools and knowledge to help farmers make informed
+            decisions and take control of their livelihoods.</p>
+        </div>
+        <div class="value-card">
+          <i class="fas fa-leaf"></i>
+          <h3 data-lang-key="about.value2Title">Sustainability</h3>
+          <p data-lang-key="about.value2Text">We promote eco-friendly practices that benefit both the land and
+            the
+            farmer, ensuring a healthier future.</p>
+        </div>
+        <div class="value-card">
+          <i class="fas fa-heart"></i>
+          <h3 data-lang-key="about.value3Title">Community</h3>
+          <p data-lang-key="about.value3Text">We believe in a strong, connected network where farmers can
+            share
+            knowledge and grow together.</p>
+        </div>
+      </div>
+    </section>
 
-        <section class="content-section team-section">
-            <h2 data-lang-key="about.teamTitle">Meet Our Team Members</h2>
-            <div class="team-container">
-                <div class="team-member">
-                    <div class="team-img">
-                        <img src="images/Raj.jpg" alt="Raj - Founder & CEO">
-                    </div>
-                    <h3 data-lang-key="about.rajName">Raj</h3>
-                    <p class="role" data-lang-key="about.rajRole">Founder & CEO</p>
-                    <p class="quote" data-lang-key="about.rajQuote">"Leading the way to a digitally empowered harvest."</p>
-                </div>
-                <div class="team-member">
-                    <div class="team-img">
-                        <img src="images/Anup.jpg" alt="Aditya Kr. Singh - Head of Agronomy & Tech Integration">
-                    </div>
-                    <h3 data-lang-key="about.adityaName">Aditya Kr. Singh</h3>
-                    <p class="role" data-lang-key="about.adityaRole">Head of Agronomy & Tech Integration</p>
-                    <p class="quote" data-lang-key="about.adityaQuote">"Bridge traditional wisdom with future technology."</p>
-                </div>
-                <div class="team-member">
-                    <div class="team-img">
-                        <img src="images/Abhi 1.png" alt="Abhishek Sharma - Lead Software Architect">
-                    </div>
-                    <h3 data-lang-key="about.abhishekName">Abhishek Sharma</h3>
-                    <p class="role" data-lang-key="about.abhishekRole">Lead Software Architect</p>
-                    <p class="quote" data-lang-key="about.abhishekQuote">"Crafting intelligent tools for sustainable farming."</p>
-                </div>
-            </div>
-        </section>
-    </main>
+    <!-- Team Members -->
+    <section class="content-section team-section">
+      <h2 data-lang-key="about.teamTitle">Meet Our Team Members</h2>
+      <div class="team-container">
+        <div class="team-member">
+          <div class="team-img">
+            <img src="images/Raj.jpg" alt="Raj - Founder & CEO">
+          </div>
+          <h3 data-lang-key="about.rajName">Raj</h3>
+          <p class="role" data-lang-key="about.rajRole">Founder & CEO</p>
+          <p class="quote" data-lang-key="about.rajQuote">"Leading the way to a digitally empowered harvest."</p>
+        </div>
+        <div class="team-member">
+          <div class="team-img">
+            <img src="images/Anup.jpg" alt="Aditya Kr. Singh - Head of Agronomy & Tech Integration">
+          </div>
+          <h3 data-lang-key="about.adityaName">Aditya Kr. Singh</h3>
+          <p class="role" data-lang-key="about.adityaRole">Head of Agronomy & Tech Integration</p>
+          <p class="quote" data-lang-key="about.adityaQuote">"Bridge traditional wisdom with future technology."</p>
+        </div>
+        <div class="team-member">
+          <div class="team-img">
+            <img src="images/Abhi 1.png" alt="Abhishek Sharma - Lead Software Architect">
+          </div>
+          <h3 data-lang-key="about.abhishekName">Abhishek Sharma</h3>
+          <p class="role" data-lang-key="about.abhishekRole">Lead Software Architect</p>
+          <p class="quote" data-lang-key="about.abhishekQuote">"Crafting intelligent tools for sustainable farming."</p>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    <div id="footer"></div>
-    
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <!-- Footer -->
+  <div id="footer"></div>
 
-    <script>
-        // 🚨 REPLACE WITH YOUR ACTUAL CONFIGURATION
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY", 
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
+      authDomain: "kisan-saathiii.firebaseapp.com",
+      projectId: "kisan-saathiii",
+      storageBucket: "kisan-saathiii.appspot.com",
+      messagingSenderId: "1069746635685",
+      appId: "1:1069746635685:web:b6cade8247e56094011e4c",
+      measurementId: "G-XJ0T10GRND"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    window.firebaseApp = app;
+    window.firebaseAuth = auth;
+  </script>
 
-        // Initialize Firebase and set global variables
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        window.firebaseApp = app;
-        window.firebaseAuth = auth;
-    </script>
+  <!-- JS Scripts -->
+  <script src="Js/navbar.js"></script>
+  <script src="Js/language.js"></script>
+  <script type="module" src="Js/user_status.js"></script>
+  <script src="Js/footer.js"></script>
 
-    <script src="Js/navbar.js"></script> 
-    <script src="Js/language.js"></script>
-    <script src="Js/user_status.js"></script>
-    <script src="Js/footer.js"></script>
-    
-    </body>
+</body>
+
 </html>

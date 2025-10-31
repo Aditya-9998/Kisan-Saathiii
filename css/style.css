@@ -1,13 +1,16 @@
 /* File Location: Kissan Saktiii/css/style.css */
-/* --- FULLY UPDATED & CONSOLIDATED CODE FOR KISAN-USER-FRIENDLY DESIGN (FIXED ALIGNMENT & POPUP) --- */
 
 /* --- Global Design System: Colors, Fonts, & Legibility --- */
 :root {
     /* Earth Tones for Agriculture */
-    --color-primary-green: #38761D; /* Rich, deep green (Soil/Forest) */
-    --color-secondary-gold: #F2C94C; /* Warm mustard/gold (Mustard flowers, Sun) */
-    --color-accent-brown: #A0522D; /* Terracotta/Brown (Soil, Trust) */
-    --color-background-light: #F9F7F1; /* Off-white/Cream (Less strain) */
+    --color-primary-green: #38761D;
+    /* Rich, deep green (Soil/Forest) */
+    --color-secondary-gold: #F2C94C;
+    /* Warm mustard/gold (Mustard flowers, Sun) */
+    --color-accent-brown: #A0522D;
+    /* Terracotta/Brown (Soil, Trust) */
+    --color-background-light: #F9F7F1;
+    /* Off-white/Cream (Less strain) */
 
     /* Text Colors */
     --color-text-dark: #333333;
@@ -38,84 +41,7 @@ h3 {
     line-height: 1.2;
 }
 
-/* --- Navbar Styles (Global) --- */
-.navbar {
-    background-color: var(--color-primary-green);
-    color: var(--color-text-light);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.logo-and-language {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-/* Language Selector */
-.language-switcher select {
-    padding: 8px 15px;
-    border-radius: 8px;
-    border: 2px solid var(--color-secondary-gold);
-    cursor: pointer;
-    background-color: var(--color-background-light);
-    color: var(--color-text-dark);
-    font-size: 1.1rem;
-    font-weight: bold;
-    appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2338761D%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.4L146.2%20209.3%2018.8%2074.8a17.6%2017.6%200%200%200-26.4%2023l130.5%20130.5c6.5%206.5%2014.3%209.4%2022.2%209.4s15.7-2.9%2022.2-9.4l130.5-130.5c11.5-11.4%2011.5-30%200-41.4z%22%2F%3E%3C%2Fsvg%3E');
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px;
-    padding-right: 30px;
-}
-
-
-.nav-links ul {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-links li {
-    margin-left: 15px;
-}
-
-.nav-links a {
-    color: var(--color-text-light);
-    text-decoration: none;
-    font-size: 1rem;
-    padding: 0.5rem 0;
-    transition: color 0.3s ease;
-    white-space: nowrap;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-    color: var(--color-secondary-gold);
-}
-
-/* --- MOBILE NAVIGATION STYLES (Keep as is) --- */
-#menu-toggle {
-    display: none;
-}
-
-.menu-icon {
-    display: none;
-}
-
-/* --- Hero Section (Homepage) --- (Keep as is) */
+/* --- Hero Section (Homepage) --- */
 .hero-section {
     position: relative;
     text-align: center;
@@ -135,14 +61,13 @@ h3 {
     color: var(--color-text-light);
 }
 
-/* ⭐ Government Schemes Card ⭐ */
+/*  Government Schemes Card  */
 .government-scheme-card {
     position: relative;
     width: 100%;
     max-width: 850px;
     z-index: 3;
     padding: 2rem;
-
     background-color: var(--color-secondary-gold);
     color: var(--color-text-dark);
     border-radius: 15px;
@@ -159,7 +84,7 @@ h3 {
     text-shadow: none;
 }
 
-/* ⭐ MODIFIED: Schemes Carousel Container (Flexible Height) ⭐ */
+/*  Schemes Carousel Container (Flexible Height)  */
 .schemes-carousel-container {
     height: auto;
     min-height: 120px;
@@ -263,7 +188,7 @@ h3 {
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.9);
 }
 
-/* ⭐ Search Bar with Voice Icon Styling ⭐ */
+/*  Search Bar with Voice Icon Styling  */
 .search-bar-container {
     display: flex;
     align-items: center;
@@ -310,7 +235,7 @@ h3 {
     margin-left: 5px;
 }
 
-/* ⭐ Explore Fertilizers Section ⭐ */
+/*  Explore Fertilizers Section  */
 .explore-fertilizers-overlay {
     background-color: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(4px);
@@ -343,7 +268,7 @@ h3 {
     width: 100%;
 }
 
-/* ⭐ MODIFIED: Fertilizer Cards (Flexible Text Handling) ⭐ */
+/*  Fertilizer Cards (Flexible Text Handling)  */
 .category-card {
     background-color: var(--color-background-light);
     border-radius: 12px;
@@ -422,7 +347,7 @@ h3 {
     padding: 2rem 1rem;
 }
 
-/* ⭐ ENHANCED LOGIN/SIGNUP CONTAINER ⭐ */
+/*  ENHANCED LOGIN/SIGNUP CONTAINER  */
 .login-container {
     background-color: var(--color-background-light);
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -437,7 +362,7 @@ h3 {
     overflow: hidden;
 }
 
-/* ⭐ LOGIN/SIGNUP HEADING ⭐ */
+/*  LOGIN/SIGNUP HEADING  */
 .login-container h2 {
     font-size: 2.2rem;
     color: var(--color-primary-green);
@@ -445,7 +370,7 @@ h3 {
     font-weight: 700;
 }
 
-/* ⭐ INPUT GROUPS ⭐ */
+/*  INPUT GROUPS  */
 .input-group {
     margin-bottom: 20px;
     text-align: left;
@@ -484,7 +409,7 @@ h3 {
     color: var(--color-text-placeholder);
 }
 
-/* ⭐ LOGIN/SIGNUP BUTTON ⭐ */
+/*  LOGIN/SIGNUP BUTTON  */
 .login-container .btn-primary {
     width: 100%;
     margin-top: 30px;
@@ -496,7 +421,7 @@ h3 {
     font-weight: 700;
 }
 
-/* ⭐ SIGNUP/LOGIN TEXT LINK ⭐ */
+/*  SIGNUP/LOGIN TEXT LINK  */
 .signup-text {
     margin-top: 30px;
     font-size: 1rem;
@@ -515,18 +440,16 @@ h3 {
     text-decoration: underline;
 }
 
-
 /* --- Google Sign-In Button Styling (Final Centering) --- */
 
 .google-btn {
     display: flex;
     align-items: center;
-    /* 🔥 FINAL FIX: Center the entire Icon+Text group within the button 🔥 */
     justify-content: center;
-    padding: 0; 
-    
+    padding: 0;
+
     /* Pill Shape Styling */
-    border-radius: 25px; 
+    border-radius: 25px;
     background-color: white;
     color: #444;
     border: 1px solid #ccc;
@@ -544,7 +467,6 @@ h3 {
 }
 
 .google-icon-wrapper {
-    /* Ensures the logo area is separate */
     height: 100%;
     display: flex;
     align-items: center;
@@ -555,25 +477,23 @@ h3 {
 .google-icon {
     width: 20px;
     height: 20px;
-    border-radius: 50%; /* Circular Logo appearance */
+    border-radius: 50%;
     object-fit: contain;
-    margin-right: 10px; /* Space between logo and text */
+    margin-right: 10px;
 }
 
 .google-btn .btn-text {
-    /* Ensures text does not expand and remains centered with the icon */
     flex-grow: 0;
     text-align: left;
     padding: 0;
 }
 
-
-/* ⭐ FORGOT PASSWORD LINK ⭐ */
+/*  FORGOT PASSWORD LINK  */
 .forgot-password-link {
     display: block;
     text-align: right;
     font-size: 0.9em;
-    margin-top: -1px; /* Moved up to look cleaner */
+    margin-top: -1px;
     color: #007bff;
     text-decoration: none;
 }
@@ -582,7 +502,7 @@ h3 {
     text-decoration: underline;
 }
 
-/* ⭐ OR Separator ⭐ */
+/*  OR Separator  */
 .separator {
     text-align: center;
     margin: 15px 0;
@@ -590,7 +510,7 @@ h3 {
 }
 
 /* ======================================= */
-/* Status Popup Styling (FIXED VISIBILITY) */
+/* Status Popup Styling */
 /* ======================================= */
 
 .status-popup {
@@ -598,26 +518,27 @@ h3 {
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1000;
+    z-index: 9000;
+    /* Set lower than Navbar (9999) */
     padding: 12px 20px;
     border-radius: 8px;
     color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    /* 🔥 CRITICAL: Hiding properties 🔥 */
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.4s ease-in-out, visibility 0.4s;
     font-weight: 500;
     min-width: 300px;
     text-align: center;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease-in-out, visibility 0.4s;
 }
 
-/* 🔥 CRITICAL: Class to make the popup visible 🔥 */
 .status-popup.show {
     opacity: 1;
     visibility: visible;
 }
 
+/* Status colors */
 .status-popup.success {
     background-color: #4CAF50;
 }
@@ -626,82 +547,16 @@ h3 {
     background-color: #F44336;
 }
 
-.status-popup p {
+#popup-message {
     margin: 0;
+    display: block;
 }
 
-/* --- Media Queries for Responsiveness --- */
+/* ======================================= */
+/* MEDIA QUERIES (NON-NAVBAR ELEMENTS ONLY) */
+/* ======================================= */
+
 @media (max-width: 768px) {
-
-    /* Hide desktop links on mobile */
-    .nav-links {
-        display: none;
-    }
-
-    /* --- Slide-in Menu Container --- */
-    #menu-toggle:checked~.nav-links {
-        display: flex;
-        flex-direction: column;
-        position: fixed;
-        top: 0;
-        right: 0;
-        height: 100vh;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
-        transition: right 0.3s ease-in-out;
-        background-color: var(--color-primary-green);
-        width: max-content;
-        z-index: 1000;
-        padding: 60px 40px 20px 20px;
-    }
-
-    .nav-links ul {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .nav-links li {
-        margin: 0;
-        width: 100%;
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .nav-links a {
-        display: block;
-        padding: 1rem;
-        text-align: left;
-        white-space: nowrap;
-    }
-
-    /* --- Hamburger/Close Icon Toggle --- */
-    .menu-icon {
-        display: block;
-        position: relative;
-        font-size: 1.8rem;
-        cursor: pointer;
-        z-index: 1001;
-        color: white;
-        padding: 5px;
-        width: 30px;
-        height: 30px;
-        text-align: center;
-    }
-
-    .menu-icon .hamburger {
-        display: block;
-    }
-
-    .menu-icon .close {
-        display: none;
-        font-size: 1.5rem;
-    }
-
-    #menu-toggle:checked+.menu-icon .hamburger {
-        display: none;
-    }
-
-    #menu-toggle:checked+.menu-icon .close {
-        display: block;
-    }
 
     /* Other responsive styles */
     .hero-section h1 {
@@ -721,7 +576,6 @@ h3 {
         font-size: 1.5rem;
     }
 
-    /* ⭐ MODIFIED: Scheme card text size for mobile ⭐ */
     .scheme-card h3 {
         font-size: 1.2rem;
     }
@@ -750,7 +604,6 @@ h3 {
         gap: 1rem;
     }
 
-    /* ⭐ MODIFIED: Fertilizer Card width/height for mobile ⭐ */
     .category-card {
         width: 47%;
         min-height: 140px;
@@ -802,9 +655,9 @@ h3 {
     .signup-text {
         margin-top: 20px;
     }
-    
+
     .google-btn {
-        height: 44px; /* Slightly smaller touch target for mobile */
+        height: 44px;
         font-size: 15px;
     }
 }

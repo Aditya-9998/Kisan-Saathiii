@@ -2,117 +2,132 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agri-News - Insights & Trends</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/advisory.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agri-News - Insights & Trends</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/advisory.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
 <body>
-    <div id="navbar"></div> <main class="container news-page">
-        <section class="content-section">
-            <h2 data-lang-key="news.newsTitle">Latest Agri-News</h2>
-            <p data-lang-key="news.newsSubtitle">Stay up-to-date with the latest news, market trends, and innovations in
-                the agricultural sector.</p>
+  <div id="navbar"></div>
 
-            <div class="news-container">
-                <article class="news-item">
-                    <h3 data-lang-key="news.news1.title">New Subsidy on Fertilizers Announced</h3>
-                    <p data-lang-key="news.news1.text">The government has increased the subsidy on DAP fertilizers to
-                        support farmers during the Kharif season.</p>
-                    <a href="#" data-lang-key="news.readFullStory">Read Full Story</a>
-                </article>
-                <article class="news-item">
-                    <h3 data-lang-key="news.news2.title">Record-Breaking Wheat Production</h3>
-                    <p data-lang-key="news.news2.text">India is set to achieve a new record in wheat production,
-                        boosting national food security.</p>
-                    <a href="#" data-lang-key="news.readFullStory">Read Full Story</a>
-                </article>
+  <main class="container news-page">
+    <section class="content-section">
+      <h2 data-lang-key="news.newsTitle">Latest Agri-News</h2>
+      <p data-lang-key="news.newsSubtitle">
+        Stay up-to-date with the latest news, market trends, and innovations in the agricultural sector.
+      </p>
+
+      <div class="news-container">
+        <article class="news-item">
+          <h3 data-lang-key="news.news1.title">New Subsidy on Fertilizers Announced</h3>
+          <p data-lang-key="news.news1.text">
+            The government has increased the subsidy on DAP fertilizers to support farmers during the Kharif season.
+          </p>
+          <a href="#" data-lang-key="news.readFullStory">Read Full Story</a>
+        </article>
+
+        <article class="news-item">
+          <h3 data-lang-key="news.news2.title">Record-Breaking Wheat Production</h3>
+          <p data-lang-key="news.news2.text">
+            India is set to achieve a new record in wheat production, boosting national food security.
+          </p>
+          <a href="#" data-lang-key="news.readFullStory">Read Full Story</a>
+        </article>
+      </div>
+    </section>
+
+    <div id="analytics-dashboard" class="advisory-section dashboard-section" style="margin-top: 3rem;">
+      <h2>📊 Indian Agriculture Insights / भारतीय कृषि विश्लेषण</h2>
+      <div class="dashboard-content">
+        <div class="news-carousel">
+          <h3>Current News & Profitability 📰</h3>
+          <div id="news-cards-container" class="carousel-track">
+            <div class="news-card">
+              <h4>Wheat Profit 📈</h4>
+              <p>Punjab sees 15% YoY rise due to export demand.</p>
             </div>
-        </section>
-
-        <div id="analytics-dashboard" class="advisory-section dashboard-section" style="margin-top: 3rem;">
-            <h2>📊 Indian Agriculture Insights / भारतीय कृषि विश्लेषण</h2>
-            <div class="dashboard-content">
-                <div class="news-carousel">
-                    <h3>Current News & Profitability 📰</h3>
-                    <div id="news-cards-container" class="carousel-track">
-                        <div class="news-card">
-                            <h4>Wheat Profit 📈</h4>
-                            <p>Punjab sees 15% YoY rise due to export demand.</p>
-                        </div>
-                        <div class="news-card">
-                            <h4>Jute Crop Alert ⛈️</h4>
-                            <p>Flood damage reported in West Bengal; prices expected to climb.</p>
-                        </div>
-                        <div class="news-card">
-                            <h4>DAP Subsidy Update</h4>
-                            <p>New subsidy announced for Rabi sowing season.</p>
-                        </div>
-                        <div class="news-card">
-                            <h4>Soybean Record</h4>
-                            <p>MP set to achieve a record soybean harvest this year.</p>
-                        </div>
-                    </div>
-                </div>
-                <div id="graph-controls" style="display: flex; gap: 10px; margin-bottom: 10px;">
-                    <select id="graph-state-select">
-                        <option value="">Select State</option>
-                        <option value="AP">Andhra Pradesh</option>
-                        <option value="AS">Assam</option>
-                        <option value="UP">Uttar Pradesh</option>
-                        <option value="WB">West Bengal</option>
-                    </select>
-
-                    <select id="graph-crop-select">
-                        <option value="">Select Crop</option>
-                        <option value="Rice">Rice (Dhan)</option>
-                        <option value="Potato">Potato (Aalu)</option>
-                        <option value="Tea">Tea</option>
-                    </select>
-                </div>
-
-                <canvas id="production-chart" style="max-height: 250px;"></canvas>
-                <p id="graph-message" style="text-align:center; margin-top:10px;">Graph integration coming soon.</p>
+            <div class="news-card">
+              <h4>Jute Crop Alert ⛈️</h4>
+              <p>Flood damage reported in West Bengal; prices expected to climb.</p>
             </div>
+            <div class="news-card">
+              <h4>DAP Subsidy Update</h4>
+              <p>New subsidy announced for Rabi sowing season.</p>
+            </div>
+            <div class="news-card">
+              <h4>Soybean Record</h4>
+              <p>MP set to achieve a record soybean harvest this year.</p>
+            </div>
+          </div>
         </div>
+
+        <div id="graph-controls" style="display: flex; gap: 10px; margin-bottom: 10px;">
+          <select id="graph-state-select">
+            <option value="">Select State</option>
+            <option value="AP">Andhra Pradesh</option>
+            <option value="AS">Assam</option>
+            <option value="UP">Uttar Pradesh</option>
+            <option value="WB">West Bengal</option>
+          </select>
+
+          <select id="graph-crop-select">
+            <option value="">Select Crop</option>
+            <option value="Rice">Rice (Dhan)</option>
+            <option value="Potato">Potato (Aalu)</option>
+            <option value="Tea">Tea</option>
+          </select>
         </div>
-    </main>
 
-    <div id="footer"></div>
+        <canvas id="production-chart" style="max-height: 250px;"></canvas>
+        <p id="graph-message" style="text-align:center; margin-top:10px;">Graph integration coming soon.</p>
+      </div>
+    </div>
+  </main>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <div id="footer"></div>
 
-    <script>
-        // 🚨 REPLACE WITH YOUR ACTUAL CONFIGURATION (login.html se copy karein)
-        const firebaseConfig = {
-            apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
-            authDomain: "kisan-saathiii.firebaseapp.com",
-            projectId: "kisan-saathiii",
-            storageBucket: "kisan-saathiii.appspot.com", 
-            messagingSenderId: "1069746635685",
-            appId: "1:1069746635685:web:b6cade8247e56094011e4c",
-            measurementId: "G-XJ0T10GRND"
-        };
+  <!-- ✅ Firebase Modular v10 Initialization (module) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-        // Initialize Firebase and set global variables
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        window.firebaseApp = app;
-        window.firebaseAuth = auth;
-    </script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
+      authDomain: "kisan-saathiii.firebaseapp.com",
+      projectId: "kisan-saathiii",
+      storageBucket: "kisan-saathiii.appspot.com",
+      messagingSenderId: "1069746635685",
+      appId: "1:1069746635685:web:b6cade8247e56094011e4c",
+      measurementId: "G-XJ0T10GRND"
+    };
 
-    <script src="Js/navbar.js"></script> 
-    <script src="Js/language.js"></script>
-    <script src="Js/user_status.js"></script>
-    
-    <script src="Js/news_dashboard.js" defer></script>
-    <script src="Js/footer.js"></script>
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
 
-    </body>
+    // Expose globally for non-module scripts
+    window.firebaseApp = app;
+    window.firebaseAuth = auth;
+    window.firebaseDb = db;
+    window.firebaseStorage = storage;
+  </script>
 
+  <!-- ✅ Non-module scripts -->
+  <script src="Js/navbar.js"></script>
+  <script src="Js/language.js"></script>
+  <script src="Js/user_status.js?v=3"></script> <!-- cache-busting to avoid old import -->
+  <script src="Js/news_dashboard.js" defer></script>
+  <script src="Js/footer.js"></script>
+
+</body>
 </html>

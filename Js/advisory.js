@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
         soils.forEach(s => {
             if (s.id === "alluvial") selectedSoilId = s.id; // Default select Alluvial
             const isActive = s.id === selectedSoilId ? "active" : "";
-            const soilName = `${s.emoji} ${s.hindi} (${s.name})`;
+            const soilName = ` ${s.hindi} (${s.name})`;
             const regions = getSoilRegions(s.id);
             const soilCard = document.createElement("div");
             soilCard.className = `soil-card-horizontal ${isActive}`;
