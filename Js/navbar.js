@@ -1,37 +1,35 @@
+// === Navbar Script ===
 document.addEventListener("DOMContentLoaded", function () {
   const navbarContainer = document.getElementById("navbar");
   if (!navbarContainer) return console.error("Navbar container not found.");
 
+  // ✅ Inject Navbar HTML
   navbarContainer.innerHTML = `
     <header class="navbar">
       <div class="container">
-        <!-- Left Section -->
         <div class="nav-left">
-          <div class="logo">🌿Kisaan Saathiii🌿</div>
+          <div class="logo" data-lang-key="navbar.logo">🌿Kisaan Saathiii🌿</div>
         </div>
 
-        <!-- Right Section -->
         <div class="nav-right" id="navRightGroup">
           <ul>
-            <li><a href="index.html" data-key="home">होम</a></li>
-            <li><a href="weather.html" data-key="weather">मौसम</a></li>
-            <li><a href="advisory.html" data-key="advisory">सलाह</a></li>
-            <li><a href="news.html" data-key="news">समाचार</a></li>
-            <li><a href="insurance.html" data-key="insurance">फसल बीमा</a></li>
-            <li><a href="mrp.html" data-key="mrpRate">एमआरपी दर</a></li>
-            <li><a href="about.html" data-key="about">परिचय</a></li>
-            <li><a href="login.html" class="login-btn" data-key="loginSignup">लॉगिन / साइन अप</a></li>
+            <li><a href="index.html" data-lang-key="navbar.home">Home</a></li>
+            <li><a href="weather.html" data-lang-key="navbar.weather">Weather</a></li>
+            <li><a href="advisory.html" data-lang-key="navbar.advisory">Advisory</a></li>
+            <li><a href="news.html" data-lang-key="navbar.news">News</a></li>
+            <li><a href="insurance.html" data-lang-key="navbar.insurance">Crop Insurance</a></li>
+            <li><a href="mrp.html" data-lang-key="navbar.mrpRate">MRP Rates</a></li>
+            <li><a href="about.html" data-lang-key="navbar.about">About</a></li>
+            <li><a href="login.html" class="login-btn" data-lang-key="navbar.loginSignup">Login / Signup</a></li>
           </ul>
-          <!-- Language moved inside nav-right for mobile -->
-          <div class="language-switcher mobile-lang">
-            <select id="languageSelect">
-              <option value="en">English</option>
-              <option value="hi">हिन्दी</option>
-            </select>
+
+          <!-- ✅ Language Switcher -->
+          <div class="language-switcher">
+            <button id="lang-en" class="lang-btn">English</button>
+            <button id="lang-hi" class="lang-btn">हिन्दी</button>
           </div>
         </div>
 
-        <!-- Menu Icon -->
         <div class="menu-icon" id="menuIcon">
           <span class="hamburger">☰</span>
           <span class="close" style="display:none;">✕</span>
@@ -40,55 +38,64 @@ document.addEventListener("DOMContentLoaded", function () {
     </header>
   `;
 
-  // === Language Switching ===
-  const langSelect = document.getElementById("languageSelect");
-  async function fetchTranslations(lang) {
-    try {
-      const res = await fetch(`data/${lang}.json`);
-      const json = await res.json();
-      return json.navbar;
-    } catch {
-      return null;
+  // === Utility: Highlight Active Language Button ===
+  function updateActiveLangBtn(lang) {
+    document.querySelectorAll(".language-switcher .lang-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.id === `lang-${lang}`);
+    });
+  }
+
+  // === Utility: Apply Language Safely ===
+  function applyLanguage(lang) {
+    // Ensure language.js is ready
+    if (typeof window.changeLanguage === "function") {
+      window.changeLanguage(lang);
+      updateActiveLangBtn(lang);
+      localStorage.setItem("language", lang);
+    } else {
+      // Retry after short delay if not yet loaded
+      setTimeout(() => applyLanguage(lang), 100);
     }
   }
 
-  async function loadLang(lang) {
-    const data = await fetchTranslations(lang);
-    if (data) {
-      document.querySelectorAll("[data-key]").forEach(el => {
-        const key = el.getAttribute("data-key");
-        if (data[key]) el.innerHTML = data[key];
-      });
-    }
+  // === Attach Button Events ===
+  const enBtn = document.getElementById("lang-en");
+  const hiBtn = document.getElementById("lang-hi");
+  if (enBtn && hiBtn) {
+    enBtn.addEventListener("click", () => applyLanguage("en"));
+    hiBtn.addEventListener("click", () => applyLanguage("hi"));
   }
 
-  const savedLang = localStorage.getItem("preferredLang") || "en";
-  langSelect.value = savedLang;
-  loadLang(savedLang);
-  langSelect.addEventListener("change", () => {
-    const lang = langSelect.value;
-    localStorage.setItem("preferredLang", lang);
-    loadLang(lang);
-  });
+  // === Initialize Saved Language ===
+  const savedLang = localStorage.getItem("language") || "en";
+  updateActiveLangBtn(savedLang);
 
-  // === Active Link Highlight ===
-  const currentPath = window.location.pathname.split("/").pop();
-  document.querySelectorAll(".nav-right a").forEach(a => {
-    if (a.getAttribute("href") === currentPath || (currentPath === "" && a.getAttribute("href") === "index.html")) {
-      a.classList.add("active");
-    }
-  });
+  // ✅ Delay applyLanguage slightly to ensure DOM fully ready
+  setTimeout(() => applyLanguage(savedLang), 150);
 
-  // === Mobile Toggle ===
+  // === Mobile Menu Toggle ===
   const navRight = document.getElementById("navRightGroup");
   const menuIcon = document.getElementById("menuIcon");
-  const hamburger = menuIcon.querySelector(".hamburger");
-  const closeIcon = menuIcon.querySelector(".close");
+  if (menuIcon && navRight) {
+    const hamburger = menuIcon.querySelector(".hamburger");
+    const closeIcon = menuIcon.querySelector(".close");
 
-  menuIcon.addEventListener("click", () => {
-    navRight.classList.toggle("is-open");
-    const isOpen = navRight.classList.contains("is-open");
-    hamburger.style.display = isOpen ? "none" : "inline-block";
-    closeIcon.style.display = isOpen ? "inline-block" : "none";
+    menuIcon.addEventListener("click", () => {
+      navRight.classList.toggle("is-open");
+      const isOpen = navRight.classList.contains("is-open");
+      hamburger.style.display = isOpen ? "none" : "inline-block";
+      closeIcon.style.display = isOpen ? "inline-block" : "none";
+    });
+  }
+
+  // === Highlight Active Nav Link ===
+  const currentPath = window.location.pathname.split("/").pop();
+  document.querySelectorAll(".nav-right a").forEach((a) => {
+    if (
+      a.getAttribute("href") === currentPath ||
+      (currentPath === "" && a.getAttribute("href") === "index.html")
+    ) {
+      a.classList.add("active");
+    }
   });
 });

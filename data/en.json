@@ -12,13 +12,13 @@
     "logoutFailed": "Logout failed. Please try again.",
     "myProfile": "My Profile",
     "editDetails": "Edit Details",
-    "logout": "LOGOUT",
-    "welcomePrefix": "Welcome",
-    "logoutSuccessTitle": "🌿 Logout Successful!",
+    "logout": "Logout",
+    "welcomePrefix": "Hello",
+    "logoutSuccessTitle": "🌿 Logged Out Successfully!",
     "logoutSuccessText": "You have successfully logged out.",
     "loginSuccessTitle": "Login Successful!",
     "loginSuccessText": "You have successfully logged in.",
-    "loggedOutTitle": "✅ You have been successfully logged out."
+    "loggedOutTitle": "✅ You have successfully logged out."
   },
   "profile": {
     "title": "My Profile - Kisan Saathii",

@@ -72,9 +72,100 @@ git status
 git add .
 git commit -m "Your message"  :- e.g >> git commit -m "Updated project files and structure - Navbar and UI fixes"
 
-git remote remove origin
-git remote add origin https://github.com/Aditya-9998/-Saathiii-.git
 git push origin main
 
 
+
+
+dir:_
+
+
+PS C:\Users\Aditya Kumar\Acadimic\Program> cd 'C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii'
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii> dir
+
+
+    Directory: C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        10/13/2025   7:37 PM                css
+d-----         9/27/2025  12:33 PM                data
+d-----        10/12/2025   7:37 PM                images
+d-----        10/12/2025   5:42 PM                Js
+-a----         11/1/2025   8:01 PM           6148 about.html
+-a----         11/2/2025  12:04 AM           4886 advisory.html
+-a----         11/1/2025   8:01 PM           3746 index.html
+-a----         11/1/2025   8:02 PM           3146 insurance.html
+-a----         11/1/2025   8:04 PM           4208 login.html
+-a----         11/1/2025   8:03 PM           3467 mrp.html
+-a----         11/1/2025   8:03 PM           5368 news.html
+-a----         11/2/2025  12:19 AM           2787 note.py
+-a----         11/1/2025   8:03 PM           4320 profile.html
+-a----        10/11/2025   9:50 PM             38 README.md
+-a----         11/1/2025   8:04 PM           6098 signup.html
+-a----         10/3/2025  10:26 PM            122 vercel.json
+-a----         11/1/2025   8:04 PM           1717 weather.html
+
+
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii> cd data
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\data> dir
+
+
+    Directory: C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\data
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----         9/27/2025  12:41 PM          49230 crops.js
+-a----         11/2/2025  12:13 AM          10850 en.json
+-a----        10/11/2025   9:31 PM           5447 equipment.js
+-a----         10/3/2025  10:24 AM           3205 fertilizers.js
+-a----         11/2/2025  12:14 AM          18353 hi.json
+-a----        10/15/2025   9:25 PM           4503 soils.js
+
+
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\data> cd..
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii> cd js
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\js> dir
+
+
+    Directory: C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\js
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----        10/15/2025   9:23 PM          26078 advisory.js
+-a----        10/12/2025   3:53 PM           1494 firebase_init.js
+-a----        10/12/2025   4:14 PM           2712 footer.js
+-a----         11/2/2025  12:16 AM           1962 language.js
+-a----        10/12/2025   9:46 PM           5239 login_auth.js
+-a----         11/2/2025  12:20 AM           3813 navbar.js
+-a----         9/27/2025   3:01 PM           4055 news_dashboard.js
+-a----        10/13/2025   9:51 AM           6166 profile.js
+-a----        10/11/2025   5:34 PM           5098 schemes.js
+-a----        10/12/2025   4:25 PM           5048 signup_auth.js
+-a----        10/16/2025  12:03 PM           6239 user_status.js
+-a----         11/1/2025   5:12 PM           1263 utility.js
+
+
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\js> cd..
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii> cd css
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\css> dir
+
+
+    Directory: C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\css
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----         11/1/2025  10:55 AM           5538 about.css
+-a----        10/11/2025   9:25 PM          11971 advisory.css
+-a----         9/18/2025   7:07 PM           1488 footer.css
+-a----         11/1/2025   8:10 PM           4973 navbar.css
+-a----        10/13/2025   7:55 PM           3833 profile.css
+-a----        10/13/2025   8:07 PM          14204 style.css
+
+
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\css> 
 '''

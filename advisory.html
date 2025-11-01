@@ -2,105 +2,114 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kisan Saathii - Smart Crop Advisory</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kisan Saathii - Smart Crop Advisory</title>
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/advisory.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/navbar.css">
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/advisory.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/navbar.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-    <!-- SweetAlert2 (Required for user_status.js alerts/toasts) -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- SweetAlert2 (Required for user_status.js alerts/toasts) -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
-    <div id="navbar"></div>
+  <div id="navbar"></div>
 
-    <main class="container">
-        <h1 class="page-title" data-lang-key="advisory.pageTitle">Smart Crop Advisory</h1>
-        <p class="page-subtitle" data-lang-key="advisory.pageSubtitle">
-            Choose soil → crop → fertilizers → equipment. Get profit & production-focused, sequential recommendations
-            for better farming.
-        </p>
+  <main class="container">
+    <h1 class="page-title" data-lang-key="advisory.pageTitle">Smart Crop Advisory</h1>
+    <p class="page-subtitle" data-lang-key="advisory.pageSubtitle">
+      Choose soil → crop → fertilizers → equipment. Get profit & production-focused, sequential recommendations
+      for better farming.
+    </p>
 
-        <div id="advisory-main-content" class="advisory-flow-container">
+    <div id="advisory-main-content" class="advisory-flow-container">
 
-            <div id="section-soil" class="advisory-section active">
-                <h2 data-lang-key="advisory.selectSoil">1. Soil Selection / मिट्टी का चयन</h2>
-                <div id="soil-horizontal-list" class="horizontal-scroll-list">
-                    <div class="empty-message">Loading Soil data...</div>
-                </div>
-                <div id="soil-region-popup" class="region-popup"></div>
-            </div>
-
-            <div id="section-crops" class="advisory-section disabled">
-                <h2 data-lang-key="advisory.recommendedCrops">2. Related Crops / संबंधित फसलें</h2>
-                <div class="crop-filter-area">
-                    <div id="season-tabs" class="season-tabs">
-                        <button class="season-tab active" data-season="kharif"
-                            data-lang-key="advisory.season.kharif">Kharif (जून-अक्टूबर)</button>
-                        <button class="season-tab" type="button" data-season="rabi" data-lang-key="advisory.season.rabi">Rabi
-                            (नवंबर-अप्रैल)</button>
-                        <button class="season-tab" type="button" data-season="zaid" data-lang-key="advisory.season.zaid">Zaid
-                            (मार्च-जून)</button>
-                    </div>
-                </div>
-                <div id="crop-recommendation-grid" class="crop-grid">
-                    <div class="empty-message">Please select a soil type first.</div>
-                </div>
-            </div>
-
-            <div id="section-fertilizer" class="advisory-section disabled">
-                <h2 data-lang-key="advisory.fertilizerCalc">3. Fertilizer Advisory / उर्वरक सलाह</h2>
-                <div id="fertilizer-calculator-ui" class="calc-box">
-                    <p>Select a crop in Step 2 to view calculator and detailed guide.</p>
-                </div>
-                <div id="selected-crop-fert-details">
-                </div>
-            </div>
-
-            <div id="section-fertilizer-display" class="advisory-section disabled">
-                <h2 data-lang-key="advisory.fertilizerDisplay">4. Recommended Fertilizers / अनुशंसित उर्वरक</h2>
-                <div id="fertilizer-display-grid" class="fertilizer-grid">
-                    <p>Select a crop in Step 2 to see recommended fertilizers.</p>
-                </div>
-            </div>
-            <div id="section-equipment" class="advisory-section disabled">
-                <h2 data-lang-key="advisory.equipmentAdvisory">5. Equipment Advisory / उपकरण सलाह</h2>
-                <div id="equipment-recommendations" class="equipment-display">
-                    <p>Select a crop in Step 2 to see suitable farm equipment.</p>
-                </div>
-            </div>
-
+      <!-- Step 1: Soil Selection -->
+      <div id="section-soil" class="advisory-section active">
+        <h2 data-lang-key="advisory.selectSoil">1. Soil Selection / मिट्टी का चयन</h2>
+        <div id="soil-horizontal-list" class="horizontal-scroll-list">
+          <div class="empty-message">Loading Soil data...</div>
         </div>
-    </main>
+        <div id="soil-region-popup" class="region-popup"></div>
+      </div>
 
-    <div id="process-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <div id="modal-body"></div>
+      <!-- Step 2: Crop Selection -->
+      <div id="section-crops" class="advisory-section disabled">
+        <h2 data-lang-key="advisory.recommendedCrops">2. Related Crops / संबंधित फसलें</h2>
+        <div class="crop-filter-area">
+          <div id="season-tabs" class="season-tabs">
+            <button class="season-tab active" data-season="kharif" data-lang-key="advisory.season.kharif">
+              Kharif (जून-अक्टूबर)
+            </button>
+            <button class="season-tab" type="button" data-season="rabi" data-lang-key="advisory.season.rabi">
+              Rabi (नवंबर-अप्रैल)
+            </button>
+            <button class="season-tab" type="button" data-season="zaid" data-lang-key="advisory.season.zaid">
+              Zaid (मार्च-जून)
+            </button>
+          </div>
         </div>
+        <div id="crop-recommendation-grid" class="crop-grid">
+          <div class="empty-message">Please select a soil type first.</div>
+        </div>
+      </div>
+
+      <!-- Step 3: Fertilizer Advisory -->
+      <div id="section-fertilizer" class="advisory-section disabled">
+        <h2 data-lang-key="advisory.fertilizerCalc">3. Fertilizer Advisory / उर्वरक सलाह</h2>
+        <div id="fertilizer-calculator-ui" class="calc-box">
+          <p>Select a crop in Step 2 to view calculator and detailed guide.</p>
+        </div>
+        <div id="selected-crop-fert-details"></div>
+      </div>
+
+      <!-- Step 4: Fertilizer Display -->
+      <div id="section-fertilizer-display" class="advisory-section disabled">
+        <h2 data-lang-key="advisory.fertilizerDisplay">4. Recommended Fertilizers / अनुशंसित उर्वरक</h2>
+        <div id="fertilizer-display-grid" class="fertilizer-grid">
+          <p>Select a crop in Step 2 to see recommended fertilizers.</p>
+        </div>
+      </div>
+
+      <!-- Step 5: Equipment Advisory -->
+      <div id="section-equipment" class="advisory-section disabled">
+        <h2 data-lang-key="advisory.equipmentAdvisory">5. Equipment Advisory / उपकरण सलाह</h2>
+        <div id="equipment-recommendations" class="equipment-display">
+          <p>Select a crop in Step 2 to see suitable farm equipment.</p>
+        </div>
+      </div>
+
     </div>
+  </main>
 
-    <div id="footer"></div>
+  <!-- Modal -->
+  <div id="process-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <div id="modal-body"></div>
+    </div>
+  </div>
 
-    <!-- ✅ JS Files (Non-module First) -->
-    <script src="Js/utility.js"></script>  <!-- Add if used on this page -->
-    <script src="Js/navbar.js"></script>
-    <script src="Js/language.js"></script>
+  <div id="footer"></div>
 
-    <!-- ✅ Firebase + Auth (Modular - No Old Compat Scripts) -->
-    <script type="module" src="Js/user_status.js"></script>
+  <!-- ✅ JS Files (All paths corrected to lowercase 'js/') -->
+  <script src="js/utility.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/schemes.js"></script>
+  <script src="js/footer.js"></script>
+  <script src="js/language.js"></script>
+  <script type="module" src="js/user_status.js"></script>
 
-    <!-- ✅ Page-Specific Script (Already Type=Module) -->
-    <script src="Js/advisory.js" type="module"></script>
+  <!-- ✅ Main Advisory Script (must be module for imports to work) -->
+  <script type="module" src="js/advisory.js"></script>
 
-    <script src="Js/footer.js"></script>
 </body>
-
 </html>
