@@ -1,35 +1,17 @@
-/* File: /js/navbar.js (updated & rectified) */
 document.addEventListener("DOMContentLoaded", function () {
   const navbarContainer = document.getElementById("navbar");
-  if (!navbarContainer) {
-    console.error("Navbar container '#navbar' not found.");
-    return;
-  }
+  if (!navbarContainer) return console.error("Navbar container not found.");
 
-  // create header
-  const header = document.createElement("header");
-  header.className = "navbar";
-
-  header.innerHTML = `
-    <div class="container">
-      
-      <!-- Left Section: Logo + Language -->
-      <div class="nav-left">
-        <div class="logo" style="display:flex; align-items:center; gap:8px; font-weight:bold; font-size:1.4rem; color:#1e7d3b;">
-          <span>🌿Kisaan Saathiii🌿</span>
+  navbarContainer.innerHTML = `
+    <header class="navbar">
+      <div class="container">
+        <!-- Left Section -->
+        <div class="nav-left">
+          <div class="logo">🌿Kisaan Saathiii🌿</div>
         </div>
 
-        <div class="language-switcher" style="margin-left:12px;">
-          <select id="languageSelect" aria-label="Language" style="padding:4px 8px; border-radius:6px; border:1px solid #1e7d3b;">
-            <option value="en">English</option>
-            <option value="hi">हिन्दी</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Right Section: Navigation -->
-      <div class="nav-right" id="navRightGroup">
-        <nav class="nav-links" role="navigation" aria-label="Main Navigation">
+        <!-- Right Section -->
+        <div class="nav-right" id="navRightGroup">
           <ul>
             <li><a href="index.html" data-key="home">होम</a></li>
             <li><a href="weather.html" data-key="weather">मौसम</a></li>
@@ -40,83 +22,73 @@ document.addEventListener("DOMContentLoaded", function () {
             <li><a href="about.html" data-key="about">परिचय</a></li>
             <li><a href="login.html" class="login-btn" data-key="loginSignup">लॉगिन / साइन अप</a></li>
           </ul>
-        </nav>
-      </div>
+          <!-- Language moved inside nav-right for mobile -->
+          <div class="language-switcher mobile-lang">
+            <select id="languageSelect">
+              <option value="en">English</option>
+              <option value="hi">हिन्दी</option>
+            </select>
+          </div>
+        </div>
 
-      <!-- Mobile Menu Icon -->
-      <label for="menu-toggle" class="menu-icon" id="menuIcon" title="Toggle menu">
-        <span class="hamburger">☰</span><span class="close" style="display:none">✕</span>
-      </label>
-      <input type="checkbox" id="menu-toggle" style="display:none" />
-    </div>
+        <!-- Menu Icon -->
+        <div class="menu-icon" id="menuIcon">
+          <span class="hamburger">☰</span>
+          <span class="close" style="display:none;">✕</span>
+        </div>
+      </div>
+    </header>
   `;
 
-  navbarContainer.appendChild(header);
-
-  // === Language translation logic ===
+  // === Language Switching ===
   const langSelect = document.getElementById("languageSelect");
   async function fetchTranslations(lang) {
     try {
-      const r = await fetch(`data/${lang}.json`);
-      if (!r.ok) throw new Error("No lang file");
-      const j = await r.json();
-      return j.navbar || null;
-    } catch (err) {
+      const res = await fetch(`data/${lang}.json`);
+      const json = await res.json();
+      return json.navbar;
+    } catch {
       return null;
     }
   }
-  function applyTranslations(navData) {
-    if (!navData) return;
-    header.querySelectorAll("[data-key]").forEach(el => {
-      const key = el.getAttribute("data-key");
-      if (navData[key]) el.innerHTML = navData[key];
-    });
-  }
-  async function loadAndTranslate(lang) {
+
+  async function loadLang(lang) {
     const data = await fetchTranslations(lang);
-    applyTranslations(data);
-  }
-  const savedLang = localStorage.getItem("preferredLang") || "en";
-  if (langSelect) {
-    langSelect.value = savedLang;
-    loadAndTranslate(savedLang);
-    langSelect.addEventListener("change", () => {
-      const v = langSelect.value;
-      localStorage.setItem("preferredLang", v);
-      loadAndTranslate(v);
-    });
+    if (data) {
+      document.querySelectorAll("[data-key]").forEach(el => {
+        const key = el.getAttribute("data-key");
+        if (data[key]) el.innerHTML = data[key];
+      });
+    }
   }
 
-  // === Active link highlight ===
+  const savedLang = localStorage.getItem("preferredLang") || "en";
+  langSelect.value = savedLang;
+  loadLang(savedLang);
+  langSelect.addEventListener("change", () => {
+    const lang = langSelect.value;
+    localStorage.setItem("preferredLang", lang);
+    loadLang(lang);
+  });
+
+  // === Active Link Highlight ===
   const currentPath = window.location.pathname.split("/").pop();
-  header.querySelectorAll(".nav-links a").forEach(a => {
-    const href = a.getAttribute("href") || "";
-    if (href === currentPath || (currentPath === "" && href === "index.html")) {
+  document.querySelectorAll(".nav-right a").forEach(a => {
+    if (a.getAttribute("href") === currentPath || (currentPath === "" && a.getAttribute("href") === "index.html")) {
       a.classList.add("active");
     }
   });
 
-  // === Mobile toggle ===
-  const menuToggle = document.getElementById("menu-toggle");
-  const navRightGroup = document.getElementById("navRightGroup");
+  // === Mobile Toggle ===
+  const navRight = document.getElementById("navRightGroup");
   const menuIcon = document.getElementById("menuIcon");
-  if (menuToggle && navRightGroup && menuIcon) {
-    menuToggle.addEventListener("change", () => {
-      if (menuToggle.checked) {
-        document.body.classList.add("menu-open");
-        navRightGroup.classList.add("is-open");
-        menuIcon.querySelector(".hamburger").style.display = "none";
-        menuIcon.querySelector(".close").style.display = "inline-block";
-      } else {
-        document.body.classList.remove("menu-open");
-        navRightGroup.classList.remove("is-open");
-        menuIcon.querySelector(".hamburger").style.display = "inline-block";
-        menuIcon.querySelector(".close").style.display = "none";
-      }
-    });
-    menuIcon.addEventListener("click", () => {
-      menuToggle.checked = !menuToggle.checked;
-      menuToggle.dispatchEvent(new Event("change"));
-    });
-  }
+  const hamburger = menuIcon.querySelector(".hamburger");
+  const closeIcon = menuIcon.querySelector(".close");
+
+  menuIcon.addEventListener("click", () => {
+    navRight.classList.toggle("is-open");
+    const isOpen = navRight.classList.contains("is-open");
+    hamburger.style.display = isOpen ? "none" : "inline-block";
+    closeIcon.style.display = isOpen ? "inline-block" : "none";
+  });
 });

@@ -1,5 +1,5 @@
 /* ===============================
-   Navbar - Kisaan Saathii Project (Final Alignment Improved)
+   Navbar - Kisaan Saathii Project (Final Polished Version)
    =============================== */
 
 .navbar {
@@ -18,7 +18,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 50px; /* increased left & right padding for balanced layout */
+  padding: 14px 50px;
   max-width: 1500px;
   margin: 0 auto;
 }
@@ -28,7 +28,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-left: -25px; /* pushes logo closer to left edge */
+  margin-left: -25px;
 }
 
 /* Logo Section */
@@ -42,7 +42,7 @@
   white-space: nowrap;
 }
 
-/* Language Switcher */
+/* Language Switcher (Desktop) */
 .language-switcher select {
   padding: 6px 12px;
   border: 1px solid #1e7d3b;
@@ -60,18 +60,18 @@
   box-shadow: 0 0 5px rgba(30, 125, 59, 0.4);
 }
 
-/* --- Right Section (Links + Login) --- */
+/* --- Right Section (Desktop Links + Login) --- */
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 32px; /* extra spacing between items */
-  margin-right: -20px; /* pushes everything slightly right */
+  gap: 32px;
+  margin-right: -20px;
 }
 
 .nav-right ul {
   display: flex;
   align-items: center;
-  gap: 28px; /* wider link spacing */
+  gap: 28px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -110,112 +110,122 @@
   background-color: #145a29;
 }
 
-/* --- Mobile Menu Icon --- */
+/* --- Menu Icon (Mobile) --- */
 .menu-icon {
   display: none;
   cursor: pointer;
   font-size: 1.9rem;
-  color: #1e7d3b;
+  color: #d5e617; /* yellow icon */
   font-weight: bold;
+  position: relative;
+  z-index: 2000;
 }
 
-.menu-icon span {
-  font-weight: 700;
-}
-
-/* --- Mobile Menu Behaviour --- */
-#menu-toggle {
-  display: none;
-}
-
-.nav-right.is-open {
-  display: flex !important;
-  flex-direction: column;
-  position: absolute;
-  top: 70px;
-  right: 20px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ========================
-   Responsive Design
-   ======================== */
+/* ===============================
+   Mobile Slide-In Menu
+   =============================== */
 
 @media (max-width: 900px) {
-  .nav-right ul {
-    display: none;
-  }
-
   .menu-icon {
     display: block;
   }
 
-  .nav-right.is-open ul {
+  .nav-right {
+    position: fixed;
+    top: 70px;
+    right: -100%;
+    width: 60%; /* ✅ slim width for cleaner look */
+    max-height: 85vh;
+    background-color: #ffffff;
+    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    padding: 25px;
     display: flex;
     flex-direction: column;
+    gap: 18px;
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+    overflow-y: auto;
+  }
+
+  .nav-right.is-open {
+    right: 0;
+  }
+
+  .nav-right ul {
+    flex-direction: column;
+    align-items: center;
     gap: 12px;
   }
 
-  .nav-right.is-open a {
-    font-size: 1.1rem;
-    color: #079130;
+  .nav-right ul li a {
+    font-size: 1.2rem;
+    color: #1e7d3b;
     font-weight: 600;
   }
 
+  .nav-right .login-btn {
+    margin-top: 10px;
+    background-color: #1e7d3b;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .nav-right .login-btn:hover {
+    background-color: #145c26;
+  }
+
+  /* Mobile Language Switcher (inside menu) */
+  .mobile-lang {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .mobile-lang select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #1e7d3b;
+    background-color: white;
+    color: #1e7d3b;
+    font-weight: 600;
+  }
+
+  /* Hide desktop language switcher */
+  .nav-left .language-switcher {
+    display: none;
+  }
+
+  /* Adjust logo for small screens */
   .nav-left .logo {
     font-size: 1.3rem;
   }
 
-  .language-switcher select {
-    font-size: 0.9rem;
-    padding: 5px 10px;
-  }
-
-  .nav-left {
-    margin-left: 0;
-  }
-
-  .nav-right {
-    margin-right: 0;
+  .navbar .container {
+    padding: 12px 20px;
   }
 }
 
-/* --- Small Devices --- */
+/* --- Smaller Devices (<=500px) --- */
 @media (max-width: 500px) {
-  .navbar .container {
-    padding: 12px 18px;
+  .nav-right {
+    width: 70%; /* a bit wider on very small phones */
   }
 
-  .nav-left {
-    gap: 8px;
+  .nav-right ul li a {
+    font-size: 1.1rem;
   }
 
   .logo {
     font-size: 1.2rem;
   }
 
-  .nav-right.is-open {
-    right: 10px;
-    width: 80%;
-    text-align: center;
-  }
-
-  .nav-right.is-open ul {
-    align-items: center;
+  .nav-left {
+    gap: 8px;
   }
 }

@@ -63,8 +63,14 @@ check first -
 
 git remote -v
 
+if changes need :-(
+git remote remove origin
+git remote add origin https://github.com/Aditya-9998/Kisan-Saathiii.git )
+
+git status
+
 git add .
-git commit -m "Your message"
+git commit -m "Your message"  :- e.g >> git commit -m "Updated project files and structure - Navbar and UI fixes"
 
 git remote remove origin
 git remote add origin https://github.com/Aditya-9998/-Saathiii-.git
