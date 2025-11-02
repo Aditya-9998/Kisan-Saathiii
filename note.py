@@ -167,5 +167,5 @@ Mode                 LastWriteTime         Length Name
 -a----        10/13/2025   8:07 PM          14204 style.css
 
 
-PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\css> 
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\css>  
 '''
