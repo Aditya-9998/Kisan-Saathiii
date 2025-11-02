@@ -185,7 +185,7 @@ export const crops = {
         highYield: false,
         profitAreaHa: 0.6,
         avgYield_t_per_ha: 2.2,
-        picture: "images/groundnut.jpg",
+        picture: "images/Groundnut.jpg",
         economics: { costPerAcre: 10000, expectedYield: "8-10 q/acre", marketPrice: "₹6000/q", roi: "2.5x to 3.0x" },
         fertilizersPerAcre: { urea: 80, dap: 40, mop: 20 },
         fertilizersList: [
