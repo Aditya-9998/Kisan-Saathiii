@@ -63,12 +63,15 @@
         window.firebaseAuth = auth;
     </script>
 
-    <script src="Js/utility.js"></script>
-    <script src="Js/navbar.js"></script>
-    <script src="Js/schemes.js"></script>
-    <script src="Js/footer.js"></script>
-    <script src="Js/language.js"></script>
-    <script type="module" src="Js/user_status.js"></script>
+
+  <!-- ✅ Correct JS load order -->
+  <script src="Js/utility.js"></script>
+  <script src="Js/schemes.js"></script>
+  <script src="Js/footer.js"></script>
+
+  <script src="Js/navbar.js"></script>
+  <script type="module" src="Js/user_status.js"></script>
+  <script type="module" src="./Js/language.js"></script>
 
 </body>
 

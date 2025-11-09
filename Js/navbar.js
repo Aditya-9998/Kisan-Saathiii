@@ -1,4 +1,5 @@
-// === Navbar Script ===
+// ✅ Js/navbar.js
+
 document.addEventListener("DOMContentLoaded", function () {
   const navbarContainer = document.getElementById("navbar");
   if (!navbarContainer) return console.error("Navbar container not found.");
@@ -8,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <header class="navbar">
       <div class="container">
         <div class="nav-left">
-          <div class="logo" data-lang-key="navbar.logo">🌿Kisaan Saathiii🌿</div>
+          <div class="logo" data-lang-key="navbar.logo" data-no-translate>🌿Kisaan Saathiii🌿</div>
         </div>
 
         <div class="nav-right" id="navRightGroup">
@@ -25,8 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
           <!-- ✅ Language Switcher -->
           <div class="language-switcher">
-            <button id="lang-en" class="lang-btn">English</button>
-            <button id="lang-hi" class="lang-btn">हिन्दी</button>
+            <button id="lang-en" class="lang-btn" data-lang="en" data-lang-btn="en">English</button>
+            <button id="lang-hi" class="lang-btn" data-lang="hi" data-lang-btn="hi">हिन्दी</button>
           </div>
         </div>
 
@@ -41,37 +42,39 @@ document.addEventListener("DOMContentLoaded", function () {
   // === Utility: Highlight Active Language Button ===
   function updateActiveLangBtn(lang) {
     document.querySelectorAll(".language-switcher .lang-btn").forEach((btn) => {
-      btn.classList.toggle("active", btn.id === `lang-${lang}`);
+      const isActive =
+        btn.getAttribute("data-lang") === lang ||
+        btn.getAttribute("data-lang-btn") === lang;
+      btn.classList.toggle("active", isActive);
     });
   }
 
   // === Utility: Apply Language Safely ===
   function applyLanguage(lang) {
-    // Ensure language.js is ready
     if (typeof window.changeLanguage === "function") {
       window.changeLanguage(lang);
       updateActiveLangBtn(lang);
       localStorage.setItem("language", lang);
     } else {
-      // Retry after short delay if not yet loaded
-      setTimeout(() => applyLanguage(lang), 100);
+      // Retry if language.js not yet ready
+      setTimeout(() => applyLanguage(lang), 150);
     }
   }
 
-  // === Attach Button Events ===
-  const enBtn = document.getElementById("lang-en");
-  const hiBtn = document.getElementById("lang-hi");
-  if (enBtn && hiBtn) {
-    enBtn.addEventListener("click", () => applyLanguage("en"));
-    hiBtn.addEventListener("click", () => applyLanguage("hi"));
-  }
+  // === Button Events ===
+  const btnEn = document.getElementById("lang-en");
+  const btnHi = document.getElementById("lang-hi");
 
-  // === Initialize Saved Language ===
+  if (btnEn) btnEn.addEventListener("click", () => applyLanguage("en"));
+  if (btnHi) btnHi.addEventListener("click", () => applyLanguage("hi"));
+
+  // === Initialize Language ===
   const savedLang = localStorage.getItem("language") || "en";
   updateActiveLangBtn(savedLang);
+  setTimeout(() => applyLanguage(savedLang), 300);
 
-  // ✅ Delay applyLanguage slightly to ensure DOM fully ready
-  setTimeout(() => applyLanguage(savedLang), 150);
+  // === Dispatch event so language.js knows navbar is loaded ===
+  document.dispatchEvent(new Event("navbarLoaded"));
 
   // === Mobile Menu Toggle ===
   const navRight = document.getElementById("navRightGroup");

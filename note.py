@@ -79,7 +79,6 @@ git push origin main
 
 dir:_
 
-
 PS C:\Users\Aditya Kumar\Acadimic\Program> cd 'C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii'
 PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii> dir
 
@@ -92,23 +91,27 @@ Mode                 LastWriteTime         Length Name
 d-----        10/13/2025   7:37 PM                css
 d-----         9/27/2025  12:33 PM                data
 d-----        10/12/2025   7:37 PM                images
-d-----        10/12/2025   5:42 PM                Js
--a----         11/1/2025   8:01 PM           6148 about.html
--a----         11/2/2025  12:04 AM           4886 advisory.html
--a----         11/1/2025   8:01 PM           3746 index.html
--a----         11/1/2025   8:02 PM           3146 insurance.html
--a----         11/1/2025   8:04 PM           4208 login.html
--a----         11/1/2025   8:03 PM           3467 mrp.html
--a----         11/1/2025   8:03 PM           5368 news.html
--a----         11/2/2025  12:19 AM           2787 note.py
--a----         11/1/2025   8:03 PM           4320 profile.html
+d-----         11/4/2025   4:46 PM                Js
+d-----         11/4/2025   5:29 PM                KisaanSathiiiTranslate
+d-----         11/4/2025   4:26 PM                node_modules
+-a----         11/4/2025  10:05 AM           6139 about.html
+-a----         11/4/2025   5:11 PM           4938 advisory.html
+-a----         11/4/2025   9:10 AM           3164 insurance.html
+-a----         11/4/2025  10:05 AM           3772 login.html
+-a----         11/4/2025   9:10 AM           3487 mrp.html
+-a----         11/4/2025   9:10 AM           5382 news.html
+-a----         11/4/2025   4:35 PM           7941 note.py
+-a----         11/4/2025   4:26 PM          55578 package-lock.json
+-a----         11/4/2025   4:26 PM             68 package.json
+-a----         11/4/2025   9:11 AM           4338 profile.html
 -a----        10/11/2025   9:50 PM             38 README.md
--a----         11/1/2025   8:04 PM           6098 signup.html
+-a----         11/4/2025   9:11 AM           6116 signup.html
 -a----         10/3/2025  10:26 PM            122 vercel.json
--a----         11/1/2025   8:04 PM           1717 weather.html
+-a----         11/4/2025   9:11 AM           1735 weather.html
 
 
-PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii> cd data
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii> cd 'C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\data'
+
 PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\data> dir
 
 
@@ -117,20 +120,19 @@ PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\data
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
--a----         9/27/2025  12:41 PM          49230 crops.js
--a----         11/2/2025  12:13 AM          10850 en.json
+-a----         11/2/2025  11:44 AM          49230 crops.js
+-a----         11/3/2025  10:51 PM           9981 en.json
 -a----        10/11/2025   9:31 PM           5447 equipment.js
 -a----         10/3/2025  10:24 AM           3205 fertilizers.js
--a----         11/2/2025  12:14 AM          18353 hi.json
--a----        10/15/2025   9:25 PM           4503 soils.js
+-a----         11/3/2025  10:51 PM          18029 hi.json
+-a----         11/2/2025   1:25 AM           4503 soils.js
 
 
-PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\data> cd..
-PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii> cd js
-PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\js> dir
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\data> cd 'C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\Js'
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\Js> dir
 
 
-    Directory: C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\js
+    Directory: C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\Js
 
 
 Mode                 LastWriteTime         Length Name
@@ -138,34 +140,48 @@ Mode                 LastWriteTime         Length Name
 -a----        10/15/2025   9:23 PM          26078 advisory.js
 -a----        10/12/2025   3:53 PM           1494 firebase_init.js
 -a----        10/12/2025   4:14 PM           2712 footer.js
--a----         11/2/2025  12:16 AM           1962 language.js
+-a----         11/4/2025   9:35 AM           2345 language.js
 -a----        10/12/2025   9:46 PM           5239 login_auth.js
--a----         11/2/2025  12:20 AM           3813 navbar.js
+-a----         11/4/2025   9:35 AM           3767 navbar.js
 -a----         9/27/2025   3:01 PM           4055 news_dashboard.js
 -a----        10/13/2025   9:51 AM           6166 profile.js
 -a----        10/11/2025   5:34 PM           5098 schemes.js
 -a----        10/12/2025   4:25 PM           5048 signup_auth.js
+-a----         11/4/2025  10:13 AM           5751 translations.js
 -a----        10/16/2025  12:03 PM           6239 user_status.js
 -a----         11/1/2025   5:12 PM           1263 utility.js
 
 
-PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\js> cd..
-PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii> cd css
-PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\css> dir
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\Js> cd 'C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\KisaanSathiiiTranslate'
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\KisaanSathiiiTranslate> dir
 
 
-    Directory: C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\css
+    Directory: C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\KisaanSathiiiTranslate
 
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
--a----         11/1/2025  10:55 AM           5538 about.css
--a----        10/11/2025   9:25 PM          11971 advisory.css
--a----         9/18/2025   7:07 PM           1488 footer.css
--a----         11/1/2025   8:10 PM           4973 navbar.css
--a----        10/13/2025   7:55 PM           3833 profile.css
--a----        10/13/2025   8:07 PM          14204 style.css
+d-----         11/4/2025   5:54 PM                node_modules
+d-----         11/4/2025   4:56 PM                Public
+-a----         11/4/2025   4:12 PM           4802 index.html
+-a----         11/4/2025   6:07 PM           1058 index.js
+-a----         11/4/2025   5:54 PM         111467 package-lock.json
+-a----         11/4/2025   5:54 PM            316 package.json
+-a----         11/4/2025   4:18 PM           2399 service-account-key.json
 
 
-PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\css>  
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\KisaanSathiiiTranslate> cd 'C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\KisaanSathiiiTranslate\Public'
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\KisaanSathiiiTranslate\Public> dir
+
+
+    Directory: C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\KisaanSathiiiTranslate\Public
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----         11/4/2025   4:46 PM            755 translate.js
+
+
+PS C:\Users\Aditya Kumar\Acadimic\Program\Projects\Completed\Kissan Saktiii\KisaanSathiiiTranslate\Public> 
+
 '''

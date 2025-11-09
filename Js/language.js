@@ -1,62 +1,107 @@
-// language.js — Multi-language system for Kisan Saathii
-// ----------------------------------------------------
-// Works with: data/en.json, data/hi.json
-// Depends on: navbar.js (for language toggle buttons)
+// ✅ Js/language.js
+import { fetchFromGoogleTranslate } from "./translate.js";
+import { translations } from "./translations.js";
 
-let translations = {};
-let currentLang = localStorage.getItem("language") || "en";
+let currentLang = "en";
 
-// 🔹 Fetch and apply the selected language
-async function loadLanguage(lang) {
-  try {
-    // ✅ Correct path (matches your folder structure)
-    const res = await fetch(`data/${lang}.json`);
-    if (!res.ok) throw new Error(`Language file not found: ${lang}`);
+// 🔹 Translate all elements using dictionary + fallback to Google Translate
+async function translatePage(targetLang) {
+  currentLang = targetLang;
+  console.log(`🌐 Translating page to: ${targetLang}`);
 
-    translations = await res.json();
-    applyTranslations();
+  const allElements = document.querySelectorAll("[data-lang-key]");
+  for (const el of allElements) {
+    const keyPath = el.getAttribute("data-lang-key");
+    const originalText = el.getAttribute("data-original") || el.innerText.trim();
+    let translatedText = "";
 
-    // ✅ Store selected language
-    localStorage.setItem("language", lang);
-    currentLang = lang;
-
-    // ✅ Sync navbar language buttons (IDs must match navbar.js)
-    const enBtn = document.getElementById("lang-en");
-    const hiBtn = document.getElementById("lang-hi");
-    if (enBtn && hiBtn) {
-      enBtn.classList.toggle("active", lang === "en");
-      hiBtn.classList.toggle("active", lang === "hi");
+    // ✅ Support nested translation keys like navbar.home, hero.title
+    const parts = keyPath.split(".");
+    let value = translations[targetLang];
+    for (const p of parts) {
+      if (value && typeof value === "object") {
+        value = value[p];
+      } else {
+        value = null;
+        break;
+      }
     }
 
-  } catch (err) {
-    console.error("Language load error:", err);
+    if (value) {
+      translatedText = value; // Use manual translation
+    } else {
+      // Fallback: Use Google Translate for new text
+      try {
+        translatedText = await fetchFromGoogleTranslate(originalText, targetLang);
+      } catch (err) {
+        console.warn("⚠️ Auto-translate failed for:", originalText);
+        translatedText = originalText;
+      }
+    }
+
+    // ✅ Apply translation
+    if (translatedText && translatedText !== el.innerText.trim()) {
+      el.setAttribute("data-original", originalText);
+      el.innerText = translatedText;
+    }
   }
 }
 
-// 🔹 Apply all translations to elements with data-lang-key
-function applyTranslations() {
-  document.querySelectorAll("[data-lang-key]").forEach((el) => {
-    const key = el.getAttribute("data-lang-key");
-    const text = getTranslation(key);
-    if (text !== undefined && text !== null) {
-      // Use textContent for safe text replacement
-      el.textContent = text;
+// 🔹 Listen for newly added elements (like dynamic sections)
+function setupAutoDetection() {
+  const observer = new MutationObserver(async (mutations) => {
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          node.querySelectorAll("[data-lang-key]").forEach(async (child) => {
+            const key = child.getAttribute("data-lang-key");
+            if (key) {
+              const parts = key.split(".");
+              let value = translations[currentLang];
+              for (const p of parts) {
+                if (value && typeof value === "object") value = value[p];
+                else {
+                  value = null;
+                  break;
+                }
+              }
+
+              if (value) child.innerText = value;
+              else
+                child.innerText = await fetchFromGoogleTranslate(
+                  child.innerText.trim(),
+                  currentLang
+                );
+            }
+          });
+        }
+      }
     }
   });
+
+  observer.observe(document.body, { childList: true, subtree: true });
 }
 
-// 🔹 Recursive key parser (e.g., "navbar.home" → translations.navbar.home)
-function getTranslation(key) {
-  return key.split(".").reduce((obj, i) => (obj ? obj[i] : null), translations);
-}
-
-// 🔹 Expose changeLanguage globally (used by navbar.js)
-window.changeLanguage = function (lang) {
-  if (lang === currentLang) return;
-  loadLanguage(lang);
+// 🔹 Global function (used by navbar buttons)
+window.changeLanguage = async function (lang) {
+  if (!lang || lang === currentLang) return;
+  localStorage.setItem("language", lang);
+  await translatePage(lang);
 };
 
-// 🔹 Initial load on DOM ready
-document.addEventListener("DOMContentLoaded", () => {
-  loadLanguage(currentLang);
+// 🔹 Initialization
+document.addEventListener("DOMContentLoaded", async () => {
+  const savedLang = localStorage.getItem("language") || "en";
+  currentLang = savedLang;
+  await translatePage(savedLang);
+  setupAutoDetection();
+
+  // Attach to navbar buttons
+  const buttons = document.querySelectorAll(".lang-btn");
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const lang = btn.getAttribute("data-lang") || btn.id.replace("lang-", "");
+      await window.changeLanguage(lang);
+    });
+  });
 });

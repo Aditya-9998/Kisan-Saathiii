@@ -38,13 +38,11 @@
           </p>
           <ul class="story-list">
             <li data-lang-key="about.storyPoint1">We started by developing a platform that integrates
-              hyper-local
-              weather data to assist with planting and harvesting decisions.</li>
+              hyper-local weather data to assist with planting and harvesting decisions.</li>
             <li data-lang-key="about.storyPoint2">Our mission expanded to include providing real-time market
               prices, connecting farmers directly with buyers to ensure fair compensation.</li>
             <li data-lang-key="about.storyPoint3">Today, we are committed to building a digital ecosystem
-              that
-              promotes sustainable farming practices and empowers the agricultural community.</li>
+              that promotes sustainable farming practices and empowers the agricultural community.</li>
           </ul>
         </div>
         <div class="story-image">
@@ -67,15 +65,13 @@
           <i class="fas fa-leaf"></i>
           <h3 data-lang-key="about.value2Title">Sustainability</h3>
           <p data-lang-key="about.value2Text">We promote eco-friendly practices that benefit both the land and
-            the
-            farmer, ensuring a healthier future.</p>
+            the farmer, ensuring a healthier future.</p>
         </div>
         <div class="value-card">
           <i class="fas fa-heart"></i>
           <h3 data-lang-key="about.value3Title">Community</h3>
           <p data-lang-key="about.value3Text">We believe in a strong, connected network where farmers can
-            share
-            knowledge and grow together.</p>
+            share knowledge and grow together.</p>
         </div>
       </div>
     </section>
@@ -92,14 +88,16 @@
           <p class="role" data-lang-key="about.rajRole">Founder & CEO</p>
           <p class="quote" data-lang-key="about.rajQuote">"Leading the way to a digitally empowered harvest."</p>
         </div>
+
         <div class="team-member">
           <div class="team-img">
             <img src="images/Anup.jpg" alt="Aditya Kr. Singh - Head of Agronomy & Tech Integration">
           </div>
-          <h3 data-lang-key="about.adityaName">Aditya Kr. Singh</h3>
-          <p class="role" data-lang-key="about.adityaRole">Head of Agronomy & Tech Integration</p>
-          <p class="quote" data-lang-key="about.adityaQuote">"Bridge traditional wisdom with future technology."</p>
+          <h3 data-lang-key="member_name_1">Aditya Kr. Singh</h3>
+          <p class="role" data-lang-key="member_role_1">Head of Agricultural Science & Technology Integration</p>
+          <p class="quote" data-lang-key="member_quote_1">"Connecting traditional knowledge with the technology of the future!"</p>
         </div>
+
         <div class="team-member">
           <div class="team-img">
             <img src="images/Abhi 1.png" alt="Abhishek Sharma - Lead Software Architect">
@@ -134,13 +132,14 @@
     window.firebaseAuth = auth;
   </script>
 
-  <!-- JS Scripts -->
+  <!-- ✅ Correct JS load order -->
   <script src="Js/utility.js"></script>
-  <script src="Js/navbar.js"></script>
   <script src="Js/schemes.js"></script>
   <script src="Js/footer.js"></script>
-  <script src="Js/language.js"></script>
+
+  <script src="Js/navbar.js"></script>
   <script type="module" src="Js/user_status.js"></script>
+  <script type="module" src="./Js/language.js"></script>
 
 </body>
 
