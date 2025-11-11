@@ -1,3 +1,5 @@
+
+//translate.js
 export async function fetchFromGoogleTranslate(text, targetLang) {
   const baseURL =
     window.location.hostname === "localhost"
