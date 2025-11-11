@@ -1,4 +1,4 @@
-// ✅ server.js (Final Fixed)
+// ✅ server.js (Final Render-Ready Version)
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -16,6 +16,7 @@ const translate = new Translate({
   keyFilename: "./service-account.json",
 });
 
+// ✅ Translation Endpoint
 app.get("/translate", async (req, res) => {
   try {
     const { text, target } = req.query;
@@ -31,9 +32,13 @@ app.get("/translate", async (req, res) => {
   }
 });
 
+// ✅ Root route for quick testing
 app.get("/", (req, res) => {
-  res.send("✅ Translation API is running!");
+  res.send("🌾 Kisan Saathiii Translation API is Live!");
 });
 
-const PORT = 5000;
-app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
+// ✅ Correct Port Binding for Render
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`✅ Server running on port ${PORT}`);
+});
