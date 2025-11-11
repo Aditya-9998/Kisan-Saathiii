@@ -1,8 +1,8 @@
-// ✅ server.js (Final Render-Ready Version)
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import pkg from "@google-cloud/translate";
+import fs from "fs";
 
 const { v2 } = pkg;
 const { Translate } = v2;
@@ -11,9 +11,14 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// ✅ Detect environment and choose correct credentials file
+const keyPath = fs.existsSync("/etc/secrets/service-account.json")
+  ? "/etc/secrets/service-account.json" // For Render (Secret File)
+  : "./service-account.json";           // For Local development
+
 // ✅ Initialize Google Translate API
 const translate = new Translate({
-  keyFilename: "./service-account.json",
+  keyFilename: keyPath,
 });
 
 // ✅ Translation Endpoint
