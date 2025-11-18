@@ -490,6 +490,10 @@ body {
     color: #333;
 }
 
+body.modal-open {
+    overflow: hidden;
+}
+
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 992px) {
