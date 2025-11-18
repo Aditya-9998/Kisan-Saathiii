@@ -6,9 +6,12 @@
 
 /* --- Root Variables & Base Styles --- */
 :root {
-    --primary-color: #4CAF50;    /* Green for growth/Select */
-    --secondary-color: #2196F3;   /* Blue for titles/Water */
-    --accent-color: #FF9800;      /* Orange for alerts/Details button */
+    --primary-color: #4CAF50;
+    /* Green for growth/Select */
+    --secondary-color: #2196F3;
+    /* Blue for titles/Water */
+    --accent-color: #FF9800;
+    /* Orange for alerts/Details button */
     --text-color: #333;
     --light-text-color: #777;
     --background-color: #f0f4f8;
@@ -16,7 +19,8 @@
     --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
     --border-radius-card: 15px;
     --button-border-radius: 8px;
-    --fert-card-bg: #e1f5fe;      /* Light Blue for Fertilizer cards */
+    --fert-card-bg: #e1f5fe;
+    /* Light Blue for Fertilizer cards */
     --fert-card-border: #b3e5fc;
 }
 
@@ -85,7 +89,8 @@ body {
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     position: relative;
-    border: 3px solid transparent; /* Border mota kiya for better visibility */
+    border: 3px solid transparent;
+    /* Border mota kiya for better visibility */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -100,12 +105,14 @@ body {
 }
 
 .soil-card-horizontal:hover {
-    transform: scale(1.03); /* Changed from translateY for better effect with images */
+    transform: scale(1.03);
+    /* Changed from translateY for better effect with images */
     border-color: rgba(255, 255, 255, 0.5);
 }
 
 .soil-card-horizontal.active {
-    border-color: var(--accent-color); /* Changed to accent color for better contrast */
+    border-color: var(--accent-color);
+    /* Changed to accent color for better contrast */
     box-shadow: 0 0 15px rgba(255, 152, 0, 0.6);
     transform: scale(1.05);
 }
@@ -115,7 +122,8 @@ body {
     top: 8px;
     right: 8px;
     cursor: help;
-    color: white; /* Changed to white to be visible on images */
+    color: white;
+    /* Changed to white to be visible on images */
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 50%;
     padding: 4px;
@@ -459,8 +467,10 @@ body {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     overflow: auto;
-    align-items: center; /* Vertically center */
-    justify-content: center; /* Horizontally center */
+    align-items: center;
+    /* Vertically center */
+    justify-content: center;
+    /* Horizontally center */
 }
 
 .modal-content {
@@ -472,7 +482,8 @@ body {
     position: relative;
     max-height: 90vh;
     overflow-y: auto;
-    margin: 20px; /* Add some margin for safety */
+    margin: 20px;
+    /* Add some margin for safety */
 }
 
 .close-btn {
@@ -484,7 +495,8 @@ body {
     font-weight: bold;
     cursor: pointer;
     padding: 5px 10px;
-    line-height: 0.5; /* Align cross better */
+    line-height: 0.5;
+    /* Align cross better */
     border-radius: 4px;
     transition: color 0.3s, background-color 0.3s;
     z-index: 1001;
@@ -514,5 +526,30 @@ body {
     .crop-card>div:last-child {
         flex-direction: column;
         gap: 0.5rem;
+    }
+}
+
+/* --- 🔥 NEW: Auto-Position Responsive Popup Box --- */
+.popup-box {
+    position: absolute;
+    display: none;
+    background: #fffaf0;
+    border: 1px solid #e0c48c;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 12px;
+    z-index: 3000;
+    max-width: 220px;
+    width: max-content;
+    font-size: 0.90rem;
+    line-height: 1.4;
+    overflow-wrap: break-word;
+}
+
+/* Mobile safety */
+@media (max-width: 600px) {
+    .popup-box {
+        max-width: 180px;
+        padding: 10px;
     }
 }

@@ -1,21 +1,53 @@
-// FINAL VERSION: Logic for 5-section flow (Soil -> Crop -> Calc -> Fert -> Equip)
-
-// --- Import Data Modules ---
-import { soils, seasonsInfo, getSoilRegions } from '../data/soils.js';
+import { soils, getSoilRegions } from '../data/soils.js';
 import { crops } from '../data/crops.js';
 import { getEquipmentForCrop } from '../data/equipment.js';
 import { fertilizers } from '../data/fertilizers.js';
 
+function showSmartPopup(target, html) {
+    const popup = document.getElementById("info-popup");
+    if (!popup) return;
+
+    popup.innerHTML = html;
+    popup.style.display = "block";
+
+    const iconRect = target.getBoundingClientRect();
+    const popupRect = popup.getBoundingClientRect();
+
+    let left = iconRect.right + 8;
+    let top = iconRect.top + window.scrollY - 5;
+
+    if (left + popupRect.width > window.innerWidth - 10) {
+        left = iconRect.left - popupRect.width - 8;
+    }
+
+    if (left < 8) left = 8;
+
+    if (top + popupRect.height > window.innerHeight + window.scrollY - 12) {
+        top = iconRect.top + window.scrollY - popupRect.height - 8;
+    }
+
+    popup.style.left = `${left}px`;
+    popup.style.top = `${top}px`;
+}
+
+document.addEventListener("mouseover", (e) => {
+    if (!(
+        e.target.classList.contains("info-icon") ||
+        e.target.classList.contains("info-icon-fert") ||
+        e.target.classList.contains("info-icon-equip")
+    )) {
+        document.getElementById("info-popup").style.display = "none";
+    }
+});
+
 document.addEventListener("DOMContentLoaded", () => {
-    // --- Global State Variables ---
     let selectedSoilId = "alluvial";
     let selectedSeason = "kharif";
     let selectedCropKey = null;
 
-    // --- FINAL CORRECTED Unit conversion factors (Based on 1 Acre = 1.613 Bigha) ---
-    const ACER_PER_BIGHA = 1 / 1.613;   // ~0.620 acres per bigha
-    const ACER_PER_KATHA = ACER_PER_BIGHA / 20; // 1 Katha = 1/20 Bigha
-    const ACER_PER_DHUR = ACER_PER_KATHA / 20;  // 1 Dhur = 1/20 Katha
+    const ACER_PER_BIGHA = 1 / 1.613;
+    const ACER_PER_KATHA = ACER_PER_BIGHA / 20;
+    const ACER_PER_DHUR = ACER_PER_KATHA / 20;
 
     const unitToAcre = {
         acre: 1,
@@ -24,185 +56,205 @@ document.addEventListener("DOMContentLoaded", () => {
         katha: ACER_PER_KATHA,
         dhur: ACER_PER_DHUR
     };
-    // ------------------------------------------
 
     const roundKg = v => Math.round(v * 10) / 10;
-    const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
+
     const getL = (obj, prop) => {
         const value = obj[prop];
-        return (typeof value === 'object' && value !== null) ? (value.en || value.hi || "") : (value || '');
+        return (typeof value === "object" && value !== null)
+            ? (value.en || value.hi || "")
+            : (value || "");
     };
+
     const getArrayL = (obj, prop) => {
         const value = obj[prop];
-        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+        if (typeof value === "object" && value !== null && !Array.isArray(value)) {
             return value.en || value.hi || [];
         }
         return Array.isArray(value) ? value : [];
     };
 
-    // --- DOM References ---
     const soilListEl = document.getElementById("soil-horizontal-list");
     const cropGridEl = document.getElementById("crop-recommendation-grid");
     const fertSectionEl = document.getElementById("section-fertilizer");
     const fertDisplaySectionEl = document.getElementById("section-fertilizer-display");
     const equipSectionEl = document.getElementById("section-equipment");
-    const soilRegionPopup = document.getElementById("soil-region-popup");
-    const mainAdvisoryContainer = document.getElementById("advisory-main-content");
 
-    const modal = document.getElementById("process-modal");
-    const modalBody = document.getElementById("modal-body");
-    const closeModalBtn = document.querySelector(".close-btn");
-
-    // --- RENDER FUNCTIONS ---
-
-    // 1. Render Horizontal Soil List (Section 1) - UPDATED FUNCTION
     function renderSoils() {
         if (!soilListEl) return;
         soilListEl.innerHTML = "";
+
         soils.forEach(s => {
-            if (s.id === "alluvial") selectedSoilId = s.id; // Default select Alluvial
-            const isActive = s.id === selectedSoilId ? "active" : "";
-            const soilName = ` ${s.hindi} (${s.name})`;
-            const regions = getSoilRegions(s.id);
+            if (s.id === "alluvial") selectedSoilId = s.id;
+
             const soilCard = document.createElement("div");
-            soilCard.className = `soil-card-horizontal ${isActive}`;
+            soilCard.className = `soil-card-horizontal ${s.id === selectedSoilId ? "active" : ""}`;
             soilCard.dataset.soil = s.id;
 
-            // Apply background image from soils.js data
             if (s.bgImage) {
-                // IMPORTANT: Ensure the path is correct relative to the HTML file (index.html)
-                // If soils.js is in 'js/data' and images are in 'images', the path should be '../../images/filename.jpg'
-                // Or, if using a web server and images are at root /images, just '/images/filename.jpg'
-                // Based on your provided paths, it looks like you're loading them from 'images' folder
-                // So, adjust 'bgImage' to be relative to the index.html file where this JS is loaded.
-                // Example: If your index.html is in root and images in /images, then bgImage should be like `images/Alluvial Soil.jpg`
-                // If advisory.js is in /js, and images in /images, then it should be `../images/Alluvial Soil.jpg`
-                
-                // For your provided paths (e.g., C:\Users\...\Kissan Saktiii\images\Laterite Soil.jpg),
-                // the bgImage property in soils.js should look like this:
-                // bgImage: "images/Laterite Soil.jpg"
-                // Assuming your HTML file is in the 'Kissan Saktiii' folder.
-
+                const img = s.bgImage.split("\\").pop().split("/").pop();
                 soilCard.style.backgroundImage = `
-                    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-                    url('${s.bgImage.replace('C:\\Users\\Aditya Kumar\\Acadimic\\Program\\Projects\\Completed\\Kissan Saktiii\\', '').replace(/\\/g, '/')}')
+                    linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),
+                    url('../images/${img}')
                 `;
-                // The above line attempts to convert your absolute local path to a relative web path.
-                // If the path in soils.js is already relative (e.g., "images/Alluvial Soil.jpg"),
-                // then you just need: url('${s.bgImage}')
             }
 
-            soilCard.innerHTML = `<div class="soil-name">${soilName}</div><i class="fas fa-info-circle info-icon" title="View Regions"></i>`;
-            
-            soilCard.addEventListener('click', (e) => {
-                if (e.target.classList.contains('info-icon')) return;
+            const soilName = `${s.hindi} (${s.name})`;
+            const regions = getSoilRegions(s.id);
+
+            soilCard.innerHTML = `
+                <div class="soil-name">${soilName}</div>
+                <i class="fas fa-info-circle info-icon"></i>
+            `;
+
+            soilCard.addEventListener("click", (e) => {
+                if (e.target.classList.contains("info-icon")) return;
                 selectSoil(s.id);
             });
 
-            const infoIcon = soilCard.querySelector('.info-icon');
-            infoIcon.addEventListener('mouseenter', (e) => showRegionPopup(e.currentTarget, regions));
-            infoIcon.addEventListener('mouseleave', hideRegionPopup);
-            
+            soilCard.querySelector(".info-icon")
+                .addEventListener("mouseenter", (ev) => {
+                    showSmartPopup(ev.currentTarget, `
+                        <strong>${soilName}</strong><br>
+                        ${regions.split(";").join("<br>")}
+                    `);
+                });
+
             soilListEl.appendChild(soilCard);
         });
     }
 
-
     function selectSoil(id) {
-        selectedCropKey = null;
         selectedSoilId = id;
-        document.querySelectorAll(".soil-card-horizontal").forEach(i => i.classList.remove("active"));
-        const el = [...document.querySelectorAll(".soil-card-horizontal")].find(x => x.dataset.soil === id);
-        if (el) el.classList.add("active");
+        selectedCropKey = null;
+
+        document.querySelectorAll(".soil-card-horizontal")
+            .forEach(el => el.classList.remove("active"));
+
+        document.querySelector(`.soil-card-horizontal[data-soil="${id}"]`)
+            ?.classList.add("active");
+
         document.getElementById("section-crops")?.classList.remove("disabled");
-        fertSectionEl?.classList.add("disabled");
-        fertDisplaySectionEl?.classList.add("disabled");
-        equipSectionEl?.classList.add("disabled");
+        fertSectionEl.classList.add("disabled");
+        fertDisplaySectionEl.classList.add("disabled");
+        equipSectionEl.classList.add("disabled");
+
         updateCropList();
         updateFertilizerSection();
         updateFertilizerDisplaySection();
         updateEquipmentSection();
     }
 
-    function showRegionPopup(target, regions) {
-        if (!soilRegionPopup || !mainAdvisoryContainer) return;
-        const soilName = target.closest('.soil-card-horizontal').querySelector('.soil-name').textContent;
-        soilRegionPopup.innerHTML = `<strong>${soilName}:</strong><br>${regions.split(';').map(r => `<span>${r.trim()}</span>`).join('<br>')}`;
-        const targetRect = target.getBoundingClientRect();
-        const containerRect = mainAdvisoryContainer.getBoundingClientRect();
-        soilRegionPopup.style.top = `${targetRect.bottom - containerRect.top + window.scrollY + 5}px`;
-        soilRegionPopup.style.left = `${targetRect.left + window.scrollX}px`;
-        soilRegionPopup.style.display = "block";
-    }
+    function attachSeasonListeners() {
+        document.querySelectorAll("#season-tabs .season-tab")
+            .forEach(tab => {
+                tab.addEventListener("click", () => {
+                    document.querySelectorAll("#season-tabs .season-tab")
+                        .forEach(t => t.classList.remove("active"));
 
-    function hideRegionPopup() {
-        if (soilRegionPopup) soilRegionPopup.style.display = "none";
-    }
+                    tab.classList.add("active");
+                    selectedSeason = tab.dataset.season;
+                    selectedCropKey = null;
 
-    // 2. Render Crop List (Section 2)
+                    fertSectionEl.classList.add("disabled");
+                    fertDisplaySectionEl.classList.add("disabled");
+                    equipSectionEl.classList.add("disabled");
+
+                    updateCropList();
+                    updateFertilizerSection();
+                    updateFertilizerDisplaySection();
+                    updateEquipmentSection();
+                });
+            });
+    }
     function updateCropList() {
         if (!cropGridEl) return;
         cropGridEl.innerHTML = "";
-        const filteredEntries = Object.entries(crops).filter(([key, c]) => 
-            Array.isArray(c.seasons) && c.seasons.includes(selectedSeason) && 
-            Array.isArray(c.soils) && c.soils.includes(selectedSoilId)
+
+        const list = Object.entries(crops).filter(([key, c]) =>
+            Array.isArray(c.seasons) &&
+            c.seasons.includes(selectedSeason) &&
+            Array.isArray(c.soils) &&
+            c.soils.includes(selectedSoilId)
         );
-        if (!filteredEntries.length) {
-            cropGridEl.innerHTML = `<div class="empty-message" style="padding:20px; text-align:center;">❌ No crops found.</div>`;
+
+        if (!list.length) {
+            cropGridEl.innerHTML = `
+                <div class="empty-message" style="padding:20px;text-align:center;">
+                    ❌ No crops found.
+                </div>`;
             return;
         }
-        filteredEntries.forEach(([key, crop]) => {
+
+        list.forEach(([key, crop]) => {
+            const img = crop.picture?.split("\\").pop().split("/").pop() || "placeholder.png";
+
             const card = document.createElement("div");
-            card.className = "crop-card four-per-row"; 
+            card.className = "crop-card four-per-row";
             card.dataset.key = key;
-            const isSelected = key === selectedCropKey;
-            
-            // Adjusted image path for crops as well, assuming they are in the 'images' folder
-            const cropImagePath = `./images/${crop.picture ? crop.picture.split('/').pop() : 'placeholder.png'}`;
 
             card.innerHTML = `
-                <div class="crop-image-container"><img src="${cropImagePath}" alt="${crop.name}" class="crop-image"></div>
-                <div class="crop-details-content">
-                    <div class="crop-header"><h4>${crop.hindiName || crop.name} (${crop.name})</h4></div>
-                    <div class="crop-tags"><span class='tag profitable'>${crop.profitable ? "Profitable" : "Varies"}</span></div>
+                <div class="crop-image-container">
+                    <img src="../images/${img}" class="crop-image">
                 </div>
-                <div style="display:flex;gap:0.5rem;padding:0.75rem; border-top: 1px solid #eee;">
-                    <button class="details-btn" data-key="${key}" style="flex-grow:1;">Details</button>
-                    <button class="select-btn-crop" data-key="${key}" style="flex-grow:1; background:${isSelected ? '#00bcd4' : '#4CAF50'};">Select</button>
-                </div>`;
+
+                <div class="crop-details-content">
+                    <h4>${crop.hindiName} (${crop.name})</h4>
+                    <span class="tag profitable">${crop.profitable ? "Profitable" : "Varies"}</span>
+                </div>
+
+                <div class="card-actions">
+                    <button class="details-btn">Details</button>
+                    <button class="select-btn-crop" data-key="${key}"
+                        style="background:${key === selectedCropKey ? "#00bcd4" : "#4CAF50"};">
+                        Select
+                    </button>
+                </div>
+            `;
+
             card.querySelector(".details-btn").addEventListener("click", () => openModal(key));
+
             card.querySelector(".select-btn-crop").addEventListener("click", (e) => {
                 selectedCropKey = key;
-                document.querySelectorAll(".select-btn-crop").forEach(btn => btn.style.background = "#4CAF50");
-                e.currentTarget.style.background = "#00bcd4"; 
-                fertSectionEl?.classList.remove("disabled");
-                fertDisplaySectionEl?.classList.remove("disabled");
-                equipSectionEl?.classList.remove("disabled");
+
+                document.querySelectorAll(".select-btn-crop")
+                    .forEach(btn => btn.style.background = "#4CAF50");
+
+                e.target.style.background = "#00bcd4";
+
+                fertSectionEl.classList.remove("disabled");
+                fertDisplaySectionEl.classList.remove("disabled");
+                equipSectionEl.classList.remove("disabled");
+
                 updateFertilizerSection();
                 updateFertilizerDisplaySection();
                 updateEquipmentSection();
             });
+
             cropGridEl.appendChild(card);
         });
     }
 
-    // 3. Render Fertilizer Calculator & Guide (Section 3)
     function updateFertilizerSection() {
-        const fertDetailsEl = document.getElementById('selected-crop-fert-details');
-        const calcUI = document.getElementById('fertilizer-calculator-ui');
+        const calcUI = document.getElementById("fertilizer-calculator-ui");
+        const fertDetailsEl = document.getElementById("selected-crop-fert-details");
 
-        if (!selectedCropKey || !fertDetailsEl || !calcUI) {
-            calcUI.innerHTML = `<p style="color:#555;padding:10px;">फसल का चयन करें (Step 2).</p>`;
-            fertDetailsEl.innerHTML = '';
+        if (!selectedCropKey) {
+            calcUI.innerHTML = "<p>Select crop.</p>";
+            fertDetailsEl.innerHTML = "";
             return;
         }
 
         const crop = crops[selectedCropKey];
-        
+
         calcUI.innerHTML = `
-            <h3><i class="fas fa-calculator"></i> Fertilizer Calculator / गणना</h3>
+            <h3><i class="fas fa-calculator"></i> Fertilizer Calculator</h3>
+
             <div class="fertilizer-calc">
-                <label>Area/क्षेत्रफल:<input type="number" id="field-size" value="1" min="0.1" step="0.1" style="width:80px"></label>
+                <label>Area:
+                    <input type="number" id="field-size" value="1" min="0.1">
+                </label>
+
                 <select id="field-unit">
                     <option value="acre">Acre</option>
                     <option value="hectare">Hectare</option>
@@ -211,237 +263,189 @@ document.addEventListener("DOMContentLoaded", () => {
                     <option value="dhur">Dhur</option>
                 </select>
             </div>
-            <div id="fert-result" style="margin-top:1rem; padding: 10px; border: 1px solid #ccc; border-radius: 5px;"></div>
+
+            <div id="fert-result" class="fert-box"></div>
         `;
-        
-        const fieldSizeInput = document.getElementById('field-size');
-        const fieldUnitSelect = document.getElementById('field-unit');
-        
-        const createCalcFertListItem = (name, rate, areaInAcre) => {
-            if (!rate) return '';
-            return `<li><i class="fas fa-flask" style="color:var(--primary-color);"></i> ${name}: <strong>${roundKg(rate * areaInAcre)} kg</strong></li>`;
-        };
-        
-        const updateCalcResult = () => {
-            const fertResult = document.getElementById('fert-result');
-            if (!fieldSizeInput || !fieldUnitSelect) return; 
 
-            const fieldSize = parseFloat(fieldSizeInput.value || "1");
-            const unit = fieldUnitSelect.value || "acre";
-            
-            const areaInAcre = fieldSize * (unitToAcre[unit] || 1);
-            const { urea, dap, mop } = crop.fertilizersPerAcre || {};
-            const areaInBigha = areaInAcre / unitToAcre['bigha'];
+        const fieldSize = document.getElementById("field-size");
+        const fieldUnit = document.getElementById("field-unit");
 
-            fertResult.innerHTML = `
-                <p>Selected Crop: <strong>${crop.hindiName}</strong></p>
-                <p>Estimate for <strong>${fieldSize} ${cap(unit)} (~${areaInBigha.toFixed(2)} bigha)</strong>:</p>
-                <ul class="fert-calculator-list">
-                    ${createCalcFertListItem('Urea', urea, areaInAcre)}
-                    ${createCalcFertListItem('DAP', dap, areaInAcre)}
-                    ${createCalcFertListItem('MOP', mop, areaInAcre)} 
-                    ${!urea && !dap && !mop ? '<li>No specific NPK per acre recommendation found. See guide below.</li>' : ''}
+        function calc() {
+            const fert = crop.fertilizersPerAcre || {};
+            const area = (parseFloat(fieldSize.value) || 1) * (unitToAcre[fieldUnit.value] || 1);
+
+            document.getElementById("fert-result").innerHTML = `
+                <p><strong>${crop.hindiName}</strong></p>
+                <ul>
+                    ${fert.urea ? `<li>Urea: <b>${roundKg(fert.urea * area)} kg</b></li>` : ""}
+                    ${fert.dap ? `<li>DAP: <b>${roundKg(fert.dap * area)} kg</b></li>` : ""}
+                    ${fert.mop ? `<li>MOP: <b>${roundKg(fert.mop * area)} kg</b></li>` : ""}
                 </ul>
             `;
-        };
-        
-        fieldSizeInput.addEventListener('input', updateCalcResult);
-        fieldUnitSelect.addEventListener('change', updateCalcResult);
+        }
 
-        const npkRecommendation = getL(crop.fertilizersList.find(f => f.type && f.type.includes("NPK")) || {}, 'recommendation') || 'General guidance: Apply N, P, and K based on soil test results.';
-        
+        fieldSize.addEventListener("input", calc);
+        fieldUnit.addEventListener("change", calc);
+        calc();
+
         fertDetailsEl.innerHTML = `
-            <h3><i class="fas fa-info-circle"></i> Application Guide (General) / उपयोग निर्देश (सामान्य)</h3>
+            <h3>General Guide</h3>
             <div class="fert-grid-view">
-                <div class="fert-detail-card"><b>NPK Recommendation:</b><br>${npkRecommendation}</div>
-            </div>
-            <p style="margin-top:1rem; font-size:0.9em; color:red;">⚠️ Note: Prefer local extension & soil test before applying chemicals.</p>
-        `;
-        
-        updateCalcResult(); 
-    }
-
-    // 4. Render Recommended Fertilizers Display (Section 4)
-    function updateFertilizerDisplaySection() {
-        const fertDisplayGridEl = document.getElementById('fertilizer-display-grid');
-        if (!selectedCropKey || !fertDisplayGridEl) {
-            if (fertDisplayGridEl) fertDisplayGridEl.innerHTML = `<p style="color:#555;padding:10px;">फसल का चयन करें (Step 2).</p>`;
-            return;
-        }
-
-        const crop = crops[selectedCropKey];
-        const fertNames = new Set();
-        
-        // Method 1: Get from fertilizersList by name
-        (crop.fertilizersList || []).forEach(f => {
-            if (f.name) fertNames.add(f.name);
-        });
-
-        // Method 2: Get from fertilizersPerAcre (Urea, DAP, MOP)
-        if (crop.fertilizersPerAcre) {
-            if (crop.fertilizersPerAcre.urea) fertNames.add("Urea");
-            if (crop.fertilizersPerAcre.dap) fertNames.add("Di-Ammonium Phosphate (DAP)");
-            if (crop.fertilizersPerAcre.mop) fertNames.add("Muriate of Potash (MOP)");
-        }
-        
-        const recommendedFertilizers = fertilizers.filter(f => fertNames.has(f.name));
-
-        const fertCardsHTML = recommendedFertilizers.map(f => {
-            const usage = getL(f, 'application') || 'See dosage below.';
-            const safety = getL(f, 'safetyNotes') || 'Handle with gloves. Avoid inhalation.';
-            const dosage = getL(f, 'dosageNotes') || 'As per soil test.';
-
-            // Adjusted image path for fertilizers
-            const fertImagePath = `./images/${f.image || 'placeholder.png'}`;
-
-            return `
-                <div class="fertilizer-card" data-fert-id="${f.id}">
-                    <div class="card-top-bar">
-                        <img src="${fertImagePath}" alt="${f.name}" class="fert-product-image">
-                        <i class="fas fa-info-circle info-icon-fert" 
-                           title="Usage & Safety"
-                           data-usage="${usage}" 
-                           data-safety="${safety}"
-                           data-dosage="${dosage}">
-                        </i>
-                    </div>
-                    <h4 class="fert-card-title">${f.hindi || f.name}</h4> 
-                    <p class="fert-card-desc">${getL(f, 'primaryUse') || 'N/A'}</p>
-                    <span class="fert-tag">${f.type}</span>
+                <div class="fert-detail-card">
+                    Apply NPK as per soil test.
                 </div>
-            `;
-        }).join("");
-
-        fertDisplayGridEl.innerHTML = `
-            <h3>Recommended Fertilizers for ${crop.hindiName} (${crop.name})</h3>
-            <div class="fertilizer-cards-grid">
-                ${fertCardsHTML.length > 0 ? fertCardsHTML : '<p>No specific fertilizer product recommendations available. See calculator guide above for general NPK.</p>'}
             </div>
-            <div id="fertilizer-tooltip-popup" class="equip-popup-tooltip"></div> `;
-
-        const popupEl = document.getElementById('fertilizer-tooltip-popup');
-        document.querySelectorAll('.info-icon-fert').forEach(icon => {
-            icon.addEventListener('mouseenter', (e) => showFertilizerPopup(e.currentTarget, popupEl));
-            icon.addEventListener('mouseleave', () => { if (popupEl) popupEl.style.display = 'none'; });
-        });
+        `;
     }
 
-    // 5. Render Equipment Section (Section 5)
-    function updateEquipmentSection() {
-        const equipRecEl = document.getElementById('equipment-recommendations');
-        if (!selectedCropKey || !equipRecEl) {
-            if (equipRecEl) equipRecEl.innerHTML = `<p style="color:#555;padding:10px;">फसल का चयन करें (Step 2).</p>`;
+    function updateFertilizerDisplaySection() {
+        const gridBox = document.getElementById("fertilizer-display-grid");
+        if (!selectedCropKey) {
+            gridBox.innerHTML = "<p>Select crop</p>";
             return;
         }
+
         const crop = crops[selectedCropKey];
-        const recommendedEquipment = getEquipmentForCrop(crop.name);
-        const equipHTML = recommendedEquipment.map(e => {
-            const usageNote = e.uses; 
-            const safetyNote = (e.category === "Heavy Machinery" || e.category === "Plant Protection") ? "⚠️ सुरक्षा: उपयोग से पहले ऑपरेटर मैनुअल पढ़ें, सुरक्षा गियर पहनें, और बच्चों को दूर रखें।" : "⚠️ सुरक्षा: उपयोग के बाद उपकरण को साफ करें और सूखी जगह पर रखें। नियमित रूप से निरीक्षण करें।";
-            
-            // Adjusted image path for equipment
-            const equipImagePath = `./images/${e.image || 'placeholder.png'}`;
+        const names = new Set();
 
-            return `
-                <div class="equipment-card" data-equip-id="${e.id}">
-                    <div class="card-top-bar">
-                        <img src="${equipImagePath}" alt="${e.name}" class="equip-image">
-                        <i class="fas fa-info-circle info-icon-equip" title="How to Use" data-usage="${usageNote}" data-safety="${safetyNote}"></i>
-                    </div>
-                    <h4>${e.hindi} (${e.name})</h4>
-                    <p style="font-size:0.8em; color:#777; margin-bottom:5px;">${usageNote}</p>
-                    <span class="equip-tag">${e.category}</span>
-                </div>`;
-        }).join("");
-        equipRecEl.innerHTML = `
-            <h3>Recommended Equipment for ${crop.hindiName} (${crop.name})</h3>
-            <div class="equipment-grid">${equipHTML || '<p>No specific equipment recommendations available.</p>'}</div>
-            <div id="equipment-tooltip-popup" class="equip-popup-tooltip"></div>`;
-        const popupEl = document.getElementById('equipment-tooltip-popup');
-        document.querySelectorAll('.info-icon-equip').forEach(icon => {
-            icon.addEventListener('mouseenter', (e) => showEquipmentPopup(e.currentTarget, popupEl));
-            icon.addEventListener('mouseleave', () => { if (popupEl) popupEl.style.display = 'none'; });
-        });
-    }
-    
-    // --- All helper functions for popups, modals, and initialization remain the same ---
-    
-    function showEquipmentPopup(target, popupEl) {
-        if (!popupEl) return;
-        const usage = target.dataset.usage;
-        const safety = target.dataset.safety;
-        const equipName = target.closest('.equipment-card').querySelector('h4').textContent;
-        popupEl.innerHTML = `<strong>${equipName}</strong><hr style="margin: 5px 0;"><p><strong>उपयोग:</strong> ${usage}</p><p style="color: darkred; margin-top: 5px;"><strong>सुरक्षा:</strong> ${safety}</p><p style="margin-top: 5px; font-size: 0.8em; color: #555;">*यह सुझाव शैक्षिक हैं।</p>`;
-        const rect = target.getBoundingClientRect();
-        popupEl.style.top = `${rect.bottom + window.scrollY + 10}px`;
-        popupEl.style.left = `${rect.left + window.scrollX}px`;
-        popupEl.style.display = 'block';
-    }
+        (crop.fertilizersList || []).forEach(f => names.add(f.name));
 
-    function showFertilizerPopup(target, popupEl) {
-        if (!popupEl) return;
-        const usage = target.dataset.usage;
-        const dosage = target.dataset.dosage;
-        const safety = target.dataset.safety;
-        const fertName = target.closest('.fertilizer-card').querySelector('h4').textContent;
-        popupEl.innerHTML = `<strong>${fertName}</strong><hr style="margin: 5px 0;"><p><strong>उपयोग:</strong> ${usage}</p><p><strong>खुराक (Dosage):</strong> ${dosage}</p><p style="color: darkred; margin-top: 5px;"><strong>सुरक्षा:</strong> ${safety}</p><p style="margin-top: 5px; font-size: 0.8em; color: #555;">*लागू करने से पहले मिट्टी की जांच अवश्य कराएं।</p>`;
-        const rect = target.getBoundingClientRect();
-        popupEl.style.top = `${rect.bottom + window.scrollY + 10}px`;
-        popupEl.style.left = `${rect.left + window.scrollX}px`;
-        popupEl.style.display = 'block';
-    }
+        const per = crop.fertilizersPerAcre || {};
+        if (per.urea) names.add("Urea");
+        if (per.dap) names.add("Di-Ammonium Phosphate (DAP)");
+        if (per.mop) names.add("Muriate of Potash (MOP)");
 
-    function attachSeasonListeners() {
-        document.querySelectorAll("#season-tabs .season-tab").forEach(t => {
-            t.addEventListener("click", () => {
-                document.querySelectorAll("#season-tabs .season-tab").forEach(x => x.classList.remove("active"));
-                t.classList.add("active");
-                selectedSeason = t.dataset.season;
-                selectedCropKey = null;
-                fertSectionEl?.classList.add("disabled");
-                fertDisplaySectionEl?.classList.add("disabled");
-                equipSectionEl?.classList.add("disabled");
-                updateCropList();
-                updateFertilizerSection();
-                updateFertilizerDisplaySection();
-                updateEquipmentSection();
+        const list = fertilizers.filter(f => names.has(f.name));
+
+        gridBox.innerHTML = `
+            <h3>Recommended Fertilizers</h3>
+            <div class="fertilizer-cards-grid"></div>
+        `;
+
+        const grid = gridBox.querySelector(".fertilizer-cards-grid");
+
+        list.forEach(f => {
+            const img = f.image?.split("\\").pop().split("/").pop();
+
+            const div = document.createElement("div");
+            div.className = "fertilizer-card";
+
+            div.innerHTML = `
+                <div class="card-top-bar">
+                    <img src="../images/${img}">
+                    <i class="fas fa-info-circle info-icon-fert"
+                       data-usage="${getL(f, 'application')}"
+                       data-dosage="${getL(f, 'dosageNotes')}"
+                       data-safety="${getL(f, 'safetyNotes')}">
+                    </i>
+                </div>
+
+                <h4>${f.hindi} (${f.name})</h4>
+                <p>${getL(f, 'primaryUse')}</p>
+            `;
+
+            div.querySelector(".info-icon-fert").addEventListener("mouseenter", (ev) => {
+                showSmartPopup(ev.currentTarget, `
+                    <strong>${f.hindi}</strong><hr>
+                    <b>Use:</b> ${getL(f, 'application')}<br>
+                    <b>Dosage:</b> ${getL(f, 'dosageNotes')}<br>
+                    <b>Safety:</b> ${getL(f, 'safetyNotes')}
+                `);
             });
+
+            grid.appendChild(div);
         });
     }
 
-    function openModal(cropKey) {
-        const crop = crops[cropKey];
-        if (!crop || !modal) return;
-        modalBody.innerHTML = "";
-        const html = document.createElement("div");
-        html.className = "crop-process-details";
-        const getFertilizersList = (fertilizersList) => (fertilizersList || []).map(f => `<li><b>${getL(f, 'name') || getL(f, 'type')}:</b><br>${['recommendation', 'dosage', 'timing', 'method'].map(p => getL(f, p) ? `${cap(p)}: ${getL(f, p)}` : '').filter(Boolean).join('<br>')}</li>`).join("");
-        const getPesticidesList = (pesticidesList) => (pesticidesList || []).map(p => `<li><b>${p.active}:</b><br>${['use', 'dosage', 'timing', 'method'].map(prop => getL(p, prop) ? `${cap(prop)}: ${getL(p, prop)}` : '').filter(Boolean).join('<br>')}</li>`).join("");
-        const equipmentList = getArrayL(crop, 'equipment').join(", ");
-        html.innerHTML = `
-            <div class="modal-header"><h2>${crop.hindiName || crop.name} (${crop.name})</h2><p class="modal-subtitle"><strong>Seasons:</strong> ${crop.seasons.map(cap).join(", ")} • <strong>Soils:</strong> ${crop.soils.map(cap).join(", ")}</p></div>
-            <section class="process-section"><h3><i class="fas fa-tools"></i> Full Process / पूरी प्रक्रिया</h3><ol>${(crop.process || []).map(s => `<li><b>${getL(s, 'step')}:</b><br>${getL(s, 'detail')}</li>`).join("")}</ol></section>
-            <section class="process-section"><h3><i class="fas fa-flask"></i> Fertilizers / उर्वरक</h3><ul>${getFertilizersList(crop.fertilizersList)}</ul></section>
-            <section class="process-section"><h3><i class="fas fa-bug"></i> Pests / कीट</h3><ul>${getPesticidesList(crop.pesticides)}</ul></section>
-            <section class="process-section"><h3><i class="fas fa-tractor"></i> Equipment / उपकरण</h3><p>${equipmentList}</p></section>
-            <section class="process-section"><h3><i class="fas fa-chart-line"></i> Economics / अर्थशास्त्र</h3><ul><li><strong>Cost:</strong> ₹${crop.economics?.costPerAcre?.toLocaleString() || 'Varies'}/acre</li><li><strong>Yield:</strong> ${crop.economics?.expectedYield || 'Varies'}</li><li><strong>Price:</strong> ${crop.economics?.marketPrice || 'Varies'}</li><li><strong>ROI:</strong> ${crop.economics?.roi || 'Varies'}</li></ul></section>
-            <p class="note">⚠️ Note: Prefer local extension & soil test before applying chemicals.</p>`;
-        modalBody.appendChild(html);
+    function updateEquipmentSection() {
+        const wrap = document.getElementById("equipment-recommendations");
+        if (!selectedCropKey) {
+            wrap.innerHTML = "<p>Select crop</p>";
+            return;
+        }
+
+        const crop = crops[selectedCropKey];
+        const list = getEquipmentForCrop(crop.name);
+
+        wrap.innerHTML = `
+            <h3>Recommended Equipment</h3>
+            <div class="equipment-grid"></div>
+        `;
+
+        const grid = wrap.querySelector(".equipment-grid");
+
+        list.forEach(e => {
+            const img = e.image?.split("\\").pop().split("/").pop();
+
+            const div = document.createElement("div");
+            div.className = "equipment-card";
+
+            div.innerHTML = `
+                <div class="card-top-bar">
+                    <img src="../images/${img}" class="equip-image">
+                    <i class="fas fa-info-circle info-icon-equip"
+                       data-usage="${e.uses}"
+                       data-safety="${e.safety}">
+                    </i>
+                </div>
+
+                <h4>${e.hindi} (${e.name})</h4>
+            `;
+
+            div.querySelector(".info-icon-equip").addEventListener("mouseenter", (ev) => {
+                showSmartPopup(ev.currentTarget, `
+                    <strong>${e.hindi}</strong><hr>
+                    <b>Use:</b> ${e.uses}<br>
+                    <b>Safety:</b> ${e.safety}
+                `);
+            });
+
+            grid.appendChild(div);
+        });
+    }
+
+    function openModal(key) {
+        const crop = crops[key];
+        const modal = document.getElementById("process-modal");
+        const modalBody = document.getElementById("modal-body");
+
+        modalBody.innerHTML = `
+            <h2>${crop.hindiName} (${crop.name})</h2>
+            <hr>
+            <ul>
+                ${crop.process.map(p =>
+            `<li><b>${getL(p, "step")}:</b> ${getL(p, "detail")}</li>`
+        ).join("")}
+            </ul>
+        `;
+
         modal.style.display = "flex";
     }
-    closeModalBtn?.addEventListener("click", () => modal.style.display = "none");
-    modal?.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
-    document.addEventListener("keydown", e => { if (e.key === "Escape") modal.style.display = "none"; });
+
+    document.querySelector(".close-btn")
+        ?.addEventListener("click", () => {
+            document.getElementById("process-modal").style.display = "none";
+        });
+
+    document.getElementById("process-modal")
+        ?.addEventListener("click", (e) => {
+            if (e.target.id === "process-modal") {
+                e.target.style.display = "none";
+            }
+        });
 
     function init() {
         renderSoils();
         attachSeasonListeners();
         updateCropList();
-        if (fertSectionEl) fertSectionEl.classList.add("disabled");
-        if (fertDisplaySectionEl) fertDisplaySectionEl.classList.add("disabled");
-        if (equipSectionEl) equipSectionEl.classList.add("disabled");
-        console.log("Advisory components initialized.");
+
+        fertSectionEl.classList.add("disabled");
+        fertDisplaySectionEl.classList.add("disabled");
+        equipSectionEl.classList.add("disabled");
+
+        console.log("Advisory system ready.");
     }
 
     init();
 });
+
