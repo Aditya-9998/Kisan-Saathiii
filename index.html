@@ -10,26 +10,13 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/footer.css" />
   <link rel="stylesheet" href="css/profile.css" />
+  <link rel="stylesheet" href="css/index.css" />
   <link rel="stylesheet" href="css/navbar.css?v=10" />
 
   <!-- Font Awesome & SweetAlert -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <style>
-    /* Ensure navigation is clickable */
-    nav,
-    #navbar,
-    a {
-      pointer-events: auto !important;
-    }
-
-    /* Avoid overlay blocking main content */
-    #status-popup {
-      z-index: 999;
-      pointer-events: none;
-    }
-  </style>
 </head>
 
 <body>
@@ -42,7 +29,8 @@
 
   <main class="content">
     <section id="home" class="hero-section">
-      <!-- Government Schemes -->
+
+      <!-- Government Scheme Slider -->
       <section id="schemes-section" class="government-scheme-card">
         <h2 data-lang-key="schemes.title">Government Schemes for Farmers</h2>
         <div class="schemes-carousel-container">
@@ -52,85 +40,119 @@
                 Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)
               </h3>
               <p data-lang-key="scheme.pmkisan.subtitle">
-                A welfare initiative providing income support to all
-                landholding farmer families.
+                A welfare initiative providing income support to landholding farmer families.
               </p>
               <a href="schemes.html" class="cta-scheme" data-lang-key="scheme.pmkisan.cta">
                 Check Eligibility & Apply
               </a>
-            </div>z
+            </div>
           </div>
         </div>
         <div class="carousel-dots"></div>
       </section>
 
-      <!-- Hero Section -->
+      <!-- HERO TEXT -->
       <div class="hero-content">
         <h1 data-lang-key="hero.title">Your Farming Partner</h1>
         <p data-lang-key="hero.subtitle">
-          Empowering farmers with data-driven insights for better yields and
-          profits.
+          Empowering farmers with data-driven insights for better yields and profits.
         </p>
-
-
-
-
-        <!-- Search Bar -->
-        <div class="search-bar-container">
-          <input type="text" data-lang-key="hero.searchPlaceholder"
-            placeholder="Search for crops, fertilizers, and schemes..." />
-          <button type="submit"><i class="fas fa-search"></i></button>
-          <button type="button" class="voice-search-btn" title="Voice Search">
-            <i class="fas fa-microphone"></i>
-          </button>
-        </div>
       </div>
 
+      <!-- ############################################################## -->
+      <!-- ⭐ NEW PROFESSIONAL 3-CATEGORY AUTO-SLIDER SECTION  -->
+      <!-- ############################################################## -->
 
-      <!-- Fertilizer Section -->
-      <div id="fertilizer-section" class="explore-fertilizers-overlay">
-        <h2 data-lang-key="fertilizer.exploreTitle">Explore Fertilizers</h2>
-        <div class="fertilizer-categories">
-          <div class="category-card">
-            <img src="images/DAP_phospahte-rich.webp" alt="DAP Phosphate" />
-            <h3 data-lang-key="fertilizer.dap">DAP Phosphate</h3>
-            <p class="product-tagline" data-lang-key="fertilizer.dap.desc">
-              Essential for new sowings
-            </p>
+      <section class="new-category-section">
+        <h2 class="new-category-title">Explore Farming Essentials</h2>
+
+        <div class="category-row">
+
+          <!-- 1️⃣ PESTICIDES -->
+          <div class="category-card-box">
+            <h3>Pesticides</h3>
+
+            <div class="slider-container" id="slider-pesticide">
+              <img src="images/Imidacloprid.webp" class="active" data-name="Imidacloprid">
+              <img src="images/chlorpyrifos 20 EC.webp" data-name="chlorpyrifos 20 EC">
+              <img src="images/Lambda-Cyhalothrin.webp" data-name="Lambda-Cyhalothrin">
+              <img src="images/Thiamethoxam.avif" data-name="Thiamethoxam">
+            </div>
+
+            <p class="item-name" id="name-pesticide">Pesticide A</p>
           </div>
-          <div class="category-card">
-            <img src="images/Ge1236.webp" alt="GE-1236" />
-            <h3 data-lang-key="fertilizer.ge">GE-1236</h3>
-            <p class="product-tagline" data-lang-key="fertilizer.ge.desc">
-              High in Nitrogen
-            </p>
+
+          <!-- 2️⃣ SEEDS -->
+          <div class="category-card-box">
+            <h3>Seeds</h3>
+
+            <div class="slider-container" id="slider-seeds">
+              <img src="images/seed1.webp" class="active" data-name="Wheat Seeds">
+              <img src="images/seed4.webp" data-name="Rice Seeds">
+              <img src="images/seed3.webp" data-name="Maize Seeds">
+              <img src="images/seed2.webp" data-name="Mustard Seeds">
+              <img src="images/seed5.webp" data-name="Arhar(Dal) Seeds">
+
+            </div>
+
+            <p class="item-name" id="name-seeds">Wheat Seeds</p>
           </div>
-          <div class="category-card">
-            <img src="images/Tamoto_Ferti.jpg" alt="Tomato Fertilizer" />
-            <h3 data-lang-key="fertilizer.tomato">Tomato Fertilizer</h3>
-            <p class="product-tagline" data-lang-key="fertilizer.tomato.desc">
-              For all fruiting plants
-            </p>
+
+          <!-- 3️⃣ FERTILIZERS -->
+          <div class="category-card-box">
+            <h3>Fertilizers / Manure</h3>
+
+            <div class="slider-container" id="slider-fert">
+              <img src="images/fert1.jpg" class="active" data-name="DAP Fertilizer">
+              <img src="images/fert2.jpg" data-name="Urea">
+              <img src="images/fert3.jpg" data-name="Organic Compost">
+              <img src="images/fert4.webp" data-name="Liquid Fertilizer">
+            </div>
+
+            <p class="item-name" id="name-fert">DAP Fertilizer</p>
           </div>
+
         </div>
-        <a href="advisory.html" class="btn-primary" data-lang-key="fertilizer.viewAllBtn">
-          View All Fertilizers
-        </a>
-      </div>
+      </section>
+
     </section>
   </main>
 
   <!-- Footer -->
   <div id="footer"></div>
 
-  <!-- ✅ Correct JS load order -->
+  <!-- JS LOAD ORDER -->
   <script src="Js/utility.js"></script>
   <script src="Js/schemes.js"></script>
   <script src="Js/footer.js"></script>
-
   <script src="Js/navbar.js"></script>
   <script type="module" src="Js/user_status.js"></script>
   <script type="module" src="./Js/language.js"></script>
+
+  <!-- ============================= -->
+  <!-- AUTO SLIDER SCRIPT -->
+  <!-- ============================= -->
+  <script>
+    function autoSlider(sliderId, nameId) {
+      const slider = document.getElementById(sliderId);
+      const images = slider.querySelectorAll("img");
+      const nameBox = document.getElementById(nameId);
+
+      let index = 0;
+
+      setInterval(() => {
+        images[index].classList.remove("active");
+        index = (index + 1) % images.length;
+        images[index].classList.add("active");
+        nameBox.innerText = images[index].dataset.name;
+      }, 2000);
+    }
+
+    autoSlider("slider-pesticide", "name-pesticide");
+    autoSlider("slider-seeds", "name-seeds");
+    autoSlider("slider-fert", "name-fert");
+  </script>
+
 </body>
 
 </html>
