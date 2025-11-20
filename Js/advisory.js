@@ -539,7 +539,7 @@ modal?.addEventListener("click", (e) => {
     if (e.target.id === "process-modal") {
         modal.style.display = "none";
 
-        // 🔥 SCROLL LOCK DISABLE
+        //  SCROLL LOCK DISABLE
         document.body.classList.remove("modal-open");
     }
 });

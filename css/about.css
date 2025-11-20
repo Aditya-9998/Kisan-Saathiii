@@ -130,7 +130,7 @@
 }
 
 /* ================================
-   🌱 OUR VISION
+  OUR VISION
 ================================ */
 .vision-section {
     background: linear-gradient(135deg, #e8f5e9, #ffffff);
@@ -151,7 +151,7 @@
 }
 
 /* ================================
-   🎯 OUR MISSION
+   OUR MISSION
 ================================ */
 .mission-grid {
     display: grid;
@@ -182,7 +182,7 @@
 }
 
 /* ================================
-   👥 TEAM SECTION (Already good but enhancing)
+    TEAM SECTION (Already good but enhancing)
 ================================ */
 .team-section {
     margin-top: 60px;
@@ -212,3 +212,78 @@
     margin-bottom: 12px;
     border: 4px solid #2e7d32;
 }
+
+
+/* OUTER SCROLL WRAPPER */
+.scroll-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 10px;
+  margin-top: 20px;
+  scrollbar-width: thin;
+  scrollbar-color: #7aa874 #e6e6e6;
+}
+
+/* SCROLLBAR STYLE (Chrome) */
+.scroll-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+.scroll-wrapper::-webkit-scrollbar-track {
+  background: #eaeaea;
+  border-radius: 10px;
+}
+.scroll-wrapper::-webkit-scrollbar-thumb {
+  background: #7aa874;
+  border-radius: 10px;
+}
+
+/* HORIZONTAL ROW */
+.scroll-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: nowrap;
+}
+
+/* Card Width for Desktops */
+.challenge-card,
+.why-card,
+.provide-card,
+.mission-card {
+  flex: 0 0 300px;
+  max-width: 300px;
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0px 4px 14px rgba(0,0,0,0.06);
+  transition: transform .2s;
+}
+
+/* Hover for desktop */
+.challenge-card:hover,
+.why-card:hover,
+.provide-card:hover,
+.mission-card:hover {
+  transform: translateY(-5px);
+}
+
+/* MOBILE → Normal Grid */
+@media (max-width: 768px) {
+  .scroll-wrapper {
+    overflow-x: visible;
+  }
+
+  .scroll-row {
+    flex-wrap: wrap;
+  }
+
+  .challenge-card,
+  .why-card,
+  .provide-card,
+  .mission-card {
+    flex: 1 1 calc(50% - 10px);
+    max-width: none;
+  }
+}
+
+

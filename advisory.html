@@ -101,6 +101,8 @@
 
   <div id="footer"></div>
 
+
+
   <!-- Correct JS load order -->
   <script src="Js/utility.js"></script>
   <script src="Js/schemes.js"></script>
@@ -112,7 +114,20 @@
   <script type="module" src="../KisaanSathiiiTranslate/public/translate.js"></script>
 
   <script type="module" src="Js/user_status.js"></script>
-  <script type="module" src="./Js/language.js"></script>
+
+  <!-- ⭐ GOOGLE TRANSLATE SCRIPT ⭐ -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,bn,mr,pa',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_element');
+    }
+  </script>
+
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 
 </html>

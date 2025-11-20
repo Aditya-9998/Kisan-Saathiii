@@ -35,8 +35,7 @@
     <!-- ✅ Footer -->
     <div id="footer"></div>
 
-
-
+    
     <!-- ✅ JS Files (Non-module First) -->
     <script src="Js/utility.js"></script>
     <script src="Js/navbar.js"></script>
@@ -44,6 +43,20 @@
     <script src="Js/footer.js"></script>
     <script type="module" src="Js/language.js"></script>
     <script type="module" src="Js/user_status.js"></script>
+
+    <script>
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi,bn,mr,pa',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_element');
+        }
+    </script>
+
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
 </body>
 
 </html>
