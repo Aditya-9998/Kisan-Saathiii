@@ -28,8 +28,8 @@ const footerHTML = `
         <div class="footer-section">
             <h4 data-lang-key="footer.customerServicesTitle">Customer Services</h4>
             <ul>
-                <li><a href="#" data-lang-key="footer.contactUs">Contact Us</a></li>
-                <li><a href="#" data-lang-key="footer.faq">FAQ</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="faq.html">FAQ</a></li>
             </ul>
         </div>
 

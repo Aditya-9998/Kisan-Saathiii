@@ -1,0 +1,110 @@
+<!DOCTYPE html>   <!--//contact.html-->
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Kisaan Saathiii</title>
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+
+    <!-- Contact Page CSS -->
+    <link rel="stylesheet" href="css/contact.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <main>
+        <div class="contact-container">
+            <h2>Contact Us</h2>
+
+            <!-- CONTACT FORM -->
+            <form id="contactForm">
+
+                <!-- Row 1: Name + Email -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" id="name" placeholder="Enter your name">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Your Email</label>
+                        <input type="email" id="email" placeholder="Enter your email">
+                    </div>
+                </div>
+
+                <!-- Row 2: Kisan Saathiii ID -->
+                <div class="form-row">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Kisaan Saathiii ID</label>
+                        <input type="text" id="ksid" placeholder="Enter your Kisaan Saathiii ID">
+                    </div>
+                </div>
+
+                <!-- Row 3: Feedback + Problem -->
+                <div class="form-row-big">
+                    <div class="form-group-big">
+                        <label class="label-inline">Feedback (10 words minimum)</label>
+                        <textarea id="feedback" placeholder="Write your feedback..." maxlength="3000"></textarea>
+                    </div>
+
+                    <div class="form-group-big">
+                        <label class="label-inline">Describe Your Problem</label>
+                        <textarea id="problem" placeholder="Explain your issue in detail..." maxlength="3000"></textarea>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">Submit</button>
+
+            </form>
+
+            <hr class="divider">
+
+            <!-- CONTACT INFORMATION -->
+            <div class="contact-info">
+                <h3>Official Contact Details</h3>
+
+                <p><strong>Email 1:</strong> onlygaminid98@gmail.com</p>
+                <p><strong>Email 2:</strong> aditya.1994si@gmail.com</p>
+
+                <p><strong>Toll-Free Number:</strong> 1800-547-2211</p>
+                <p><strong>Customer Support:</strong> +91 98765-43210</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- JS Files -->
+    <script src="Js/navbar.js"></script>
+    <script src="Js/footer.js"></script>
+    <script src="Js/contact.js"></script>
+
+    <!-- Google Translate -->
+    <script>
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi,bn,mr,pa',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_element');
+        }
+    </script>
+
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+
+</html>

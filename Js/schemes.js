@@ -87,7 +87,7 @@
         carouselInterval = setInterval(() => {
             currentSchemeIndex = (currentSchemeIndex + 1) % schemesData.length;
             renderScheme(translations);
-        }, 5000); // Change slide every 5 seconds
+        }, 2000); // Change slide every 5 seconds
     }
 
     // This event listener will re-start the carousel with the new language
