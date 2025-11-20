@@ -1,290 +1,214 @@
-/* =========================
-   About Page Custom Styles
-   ========================= */
+/* ================================
+   GLOBAL ABOUT PAGE STYLES
+================================ */
+.about-page {
+    padding: 40px 5%;
+    font-family: "Poppins", sans-serif;
+}
 
-/* =========================
-   Our Story Section
-   ========================= */
-.our-story {
-    padding: 70px 20px;
-    background: #f9fdf8;
+.section-title {
     text-align: center;
-}
-
-.our-story h2 {
-    font-size: 2rem;
-    margin-bottom: 15px;
-    color: #2e5339;
+    font-size: 2.4rem;
     font-weight: 700;
-    position: relative;
-    display: inline-block;
+    margin-bottom: 30px;
+    color: #2b4c2b;
 }
 
-/* Decorative underline */
-.our-story h2::after {
-    content: "";
-    display: block;
-    width: 80px;
-    height: 4px;
-    background: #4caf50;
-    margin: 8px auto 0;
-    border-radius: 2px;
-}
-
-.story-container {
+/* ================================
+   🌾 PURPOSE SECTION
+================================ */
+.purpose-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-    max-width: 1100px;
-    margin: 0 auto;
-    text-align: left;
-}
-
-/* Attractive box for story text */
-.story-points {
-    flex: 1 1 55%;
-    background: #ffffff;
-    padding: 25px 30px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease;
-}
-
-.story-points:hover {
-    transform: translateY(-5px);
-}
-
-.story-points p {
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    line-height: 1.7;
-    color: #333;
-}
-
-/* Custom bullet list with icons */
-.story-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.story-list li {
-    margin-bottom: 12px;
-    font-size: 1rem;
-    color: #444;
-    line-height: 1.6;
-    padding-left: 28px;
-    position: relative;
-}
-
-.story-list li::before {
-    content: "✔";
-    position: absolute;
-    left: 0;
-    color: #4caf50;
-    font-weight: bold;
-}
-
-.story-image {
-    flex: 1 1 35%;
-    display: flex;
-    justify-content: center;
-}
-
-.story-image img {
-    max-width: 85%;
-    height: auto;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.story-image img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 14px 28px rgba(0,0,0,0.18);
-}
-
-/* =========================
-   Our Values Section
-   ========================= */
-.our-values {
-    background: #fcfefb;
-    padding: 70px 20px;
-    text-align: center;
-}
-
-.our-values h2 {
-    font-size: 2rem;
-    color: #2e5339;
-    font-weight: 700;
-    margin-bottom: 50px;
-    position: relative;
-    display: inline-block;
-}
-
-/* Decorative underline */
-.our-values h2::after {
-    content: "";
-    display: block;
-    width: 80px;
-    height: 4px;
-    background: #4caf50;
-    margin: 8px auto 0;
-    border-radius: 2px;
-}
-
-.values-container {
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
     flex-wrap: wrap;
     gap: 30px;
-    max-width: 1100px;
-    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
 }
 
-.value-card {
-    background: #fff;
+.purpose-text {
+    flex: 1;
+    min-width: 300px;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.purpose-image img {
+    width: 340px;
+    max-width: 100%;
     border-radius: 15px;
-    padding: 30px 25px;
-    width: 300px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.15);
+}
+
+/* ================================
+   🚜 CHALLENGES SECTION
+================================ */
+.challenges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.challenge-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 14px;
     text-align: center;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.08);
+    transition: 0.3s ease-in-out;
 }
 
-.value-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
-}
-
-.value-card i {
-    font-size: 2.5rem;
-    color: #4caf50;
-    margin-bottom: 15px;
-}
-
-.value-card h3 {
-    font-size: 1.3rem;
-    color: #2e5339;
-    font-weight: 600;
-    margin-bottom: 12px;
-}
-
-.value-card p {
-    font-size: 1rem;
-    color: #444;
-    line-height: 1.6;
-    margin: 0 auto;
-    max-width: 260px;
-}
-
-/* =========================
-   Team Section
-   ========================= */
-.team-section {
-    text-align: center;
-    padding: 60px 20px;
-    background: #f8fdf6;
-}
-
-.team-section h2 {
+.challenge-card i {
     font-size: 2rem;
-    margin-bottom: 40px;
-    color: #2e5339;
-    font-weight: 600;
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+
+.challenge-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.15);
+}
+
+/* ================================
+   ⭐ WHY YOU NEED KISAAN SAATHIII
+================================ */
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.why-card {
+    background: #f7fff7;
+    padding: 25px;
+    border-radius: 14px;
+    border-left: 6px solid #2e7d32;
+    box-shadow: 0px 6px 18px rgba(0,0,0,0.07);
+    transition: 0.3s;
+}
+
+.why-card i {
+    font-size: 2rem;
+    color: #1b5e20;
+    margin-bottom: 10px;
+}
+
+.why-card:hover {
+    background: #e8ffe8;
+    transform: translateY(-6px);
+}
+
+/* ================================
+   🛠️ WHAT WE PROVIDE SECTION
+================================ */
+.provide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.provide-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0px 6px 18px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.provide-card i {
+    color: #2e7d32;
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+}
+
+.provide-card:hover {
+    background: #f0fff0;
+    transform: translateY(-6px);
+}
+
+/* ================================
+   🌱 OUR VISION
+================================ */
+.vision-section {
+    background: linear-gradient(135deg, #e8f5e9, #ffffff);
+    padding: 40px 20px;
+    border-radius: 20px;
+    margin-top: 40px;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.1);
+}
+
+.vision-text {
+    max-width: 750px;
+    margin: auto;
+    text-align: center;
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: #1b3c1b;
+    font-weight: 500;
+}
+
+/* ================================
+   🎯 OUR MISSION
+================================ */
+.mission-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    margin-top: 25px;
+}
+
+.mission-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 16px;
+    text-align: center;
+    border-top: 6px solid #2e7d32;
+    box-shadow: 0px 6px 20px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.mission-card i {
+    font-size: 2rem;
+    color: #1b5e20;
+    margin-bottom: 10px;
+}
+
+.mission-card:hover {
+    transform: translateY(-8px);
+    background: #f5fff5;
+}
+
+/* ================================
+   👥 TEAM SECTION (Already good but enhancing)
+================================ */
+.team-section {
+    margin-top: 60px;
 }
 
 .team-container {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 40px;
     flex-wrap: wrap;
 }
 
 .team-member {
-    background: #fff;
-    border-radius: 15px;
+    background: #ffffff;
     padding: 20px;
-    width: 280px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 14px;
+    text-align: center;
+    width: 260px;
+    box-shadow: 0px 6px 20px rgba(0,0,0,0.1);
 }
 
-.team-member:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
-}
-
-.team-img {
-    width: 150px;
-    height: 150px;
-    margin: 0 auto 15px;
+.team-member img {
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
-    overflow: hidden;
-    border: 5px solid #eaf5eb;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.team-img img {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
-}
-
-.team-member h3 {
-    font-size: 1.2rem;
-    margin: 10px 0 5px;
-    color: #2e5339;
-    font-weight: 600;
-}
-
-.team-member .role {
-    font-size: 0.95rem;
-    color: #666;
     margin-bottom: 12px;
-    font-style: italic;
-}
-
-.team-member .quote {
-    font-size: 0.9rem;
-    color: #444;
-    line-height: 1.4;
-    font-style: italic;
-}
-
-/* =========================
-   Responsive Design
-   ========================= */
-@media (max-width: 992px) {
-    .story-container {
-        flex-direction: column;
-        text-align: center;
-    }
-    .story-points {
-        flex: 1 1 100%;
-        text-align: left;
-    }
-    .story-image img {
-        max-width: 90%;
-    }
-}
-
-@media (max-width: 768px) {
-    .values-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .value-card {
-        width: 90%;
-        max-width: 350px;
-    }
-
-    .team-container {
-        flex-direction: column;
-        align-items: center;
-    }
+    border: 4px solid #2e7d32;
 }

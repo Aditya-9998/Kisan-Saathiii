@@ -1,3 +1,6 @@
+
+//translations.js
+
 export const translations = {
   en: {
     // Navbar
