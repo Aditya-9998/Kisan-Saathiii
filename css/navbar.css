@@ -1,16 +1,15 @@
 /* ===============================
-   Navbar - Kisaan Saathii Project (Final Polished Version)
+   Navbar - Kisaan Saathii (Optimized)
    =============================== */
 
 .navbar {
   width: 100%;
-  background-color: #f0f3f0ff; /* light green background */
+  background-color: #f0f3f0ff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 1000;
   font-family: 'Poppins', sans-serif;
-  transition: all 0.3s ease;
 }
 
 /* --- Container Layout --- */
@@ -18,75 +17,56 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 50px;
-  max-width: 1500px;
+  padding: 14px 40px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
-/* --- Left Section (Logo + Language) --- */
+/* ===============================
+   LEFT SIDE — ONLY LOGO
+=============================== */
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-left: -25px;
 }
 
-/* Logo Section */
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   font-size: 1.6rem;
   font-weight: 800;
   color: #1e7d3b;
   white-space: nowrap;
 }
 
-/* Language Switcher (Desktop) */
-.language-switcher select {
-  padding: 6px 12px;
-  border: 1px solid #1e7d3b;
-  border-radius: 8px;
-  background-color: #ffffff;
-  color: #1e7d3b;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.95rem;
-  min-width: 90px;
-}
-
-.language-switcher select:focus {
-  outline: none;
-  box-shadow: 0 0 5px rgba(30, 125, 59, 0.4);
-}
-
-/* --- Right Section (Desktop Links + Login) --- */
+/* ===============================
+   RIGHT SIDE — TRANSLATE → LOGIN → MENU
+=============================== */
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 32px;
-  margin-right: -20px;
+  gap: 12px !important;
 }
 
+/* Right side menu container */
 .nav-right ul {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 18px !important;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+/* Menu links */
 .nav-right a {
   text-decoration: none;
   color: #333;
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   transition: color 0.3s ease, transform 0.2s ease;
 }
 
 .nav-right a:hover {
-  color: #f5f109;
+  color: #1e7d3b;
   transform: translateY(-1px);
 }
 
@@ -96,34 +76,76 @@
   padding-bottom: 2px;
 }
 
-/* --- Login Button --- */
+/* ===============================
+   Login Button
+=============================== */
 .login-btn {
   background-color: #34b860;
   color: white !important;
-  padding: 8px 16px;
+  padding: 7px 14px;
   border-radius: 8px;
   font-weight: 600;
-  transition: background-color 0.3s ease;
+  font-size: 0.95rem !important;
 }
 
 .login-btn:hover {
   background-color: #145a29;
 }
 
-/* --- Menu Icon (Mobile) --- */
+/* ===============================
+   Google Translate – Desktop Only
+=============================== */
+#google_translate_wrapper {
+  display: block;
+}
+
+#google_element {
+  transform: scale(0.72);
+  transform-origin: right center;
+  margin-right: -6px !important;
+}
+
+/* Hide Google label text */
+.goog-te-gadget {
+  font-size: 0 !important;
+}
+
+/* Style dropdown */
+.goog-te-gadget select {
+  font-size: 12px !important;
+  padding: 2px 6px !important;
+  border-radius: 6px !important;
+  border: 1px solid #ccc !important;
+}
+
+/* Remove Google blue bar */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
+
+/* ----------------------------
+   Mobile Google Translate
+-----------------------------*/
+#mobile_translate_box {
+  display: none; /* hidden until JS clones widget */
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* ===============================
+   MOBILE NAVIGATION
+=============================== */
 .menu-icon {
   display: none;
   cursor: pointer;
   font-size: 1.9rem;
-  color: #d5e617; /* yellow icon */
-  font-weight: bold;
-  position: relative;
+  color: #2c7a2f;
+  font-weight: 700;
   z-index: 2000;
 }
-
-/* ===============================
-   Mobile Slide-In Menu
-   =============================== */
 
 @media (max-width: 900px) {
   .menu-icon {
@@ -134,18 +156,14 @@
     position: fixed;
     top: 70px;
     right: -100%;
-    width: 60%; /* ✅ slim width for cleaner look */
-    max-height: 85vh;
+    width: 60%;
     background-color: #ffffff;
     box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    flex-direction: column;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
     transition: right 0.3s ease-in-out;
-    z-index: 1000;
     overflow-y: auto;
   }
 
@@ -155,55 +173,31 @@
 
   .nav-right ul {
     flex-direction: column;
-    align-items: center;
-    gap: 12px;
+    gap: 14px !important;
   }
 
   .nav-right ul li a {
     font-size: 1.2rem;
     color: #1e7d3b;
-    font-weight: 600;
   }
 
   .nav-right .login-btn {
-    margin-top: 10px;
     background-color: #1e7d3b;
-    color: white;
-    padding: 10px;
-    border-radius: 8px;
-    text-align: center;
-    font-weight: 600;
-    text-decoration: none;
+    padding: 10px 18px;
   }
 
-  .nav-right .login-btn:hover {
-    background-color: #145c26;
-  }
-
-  /* Mobile Language Switcher (inside menu) */
-  .mobile-lang {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
-
-  .mobile-lang select {
-    padding: 6px 10px;
-    border-radius: 6px;
-    border: 1px solid #1e7d3b;
-    background-color: white;
-    color: #1e7d3b;
-    font-weight: 600;
-  }
-
-  /* Hide desktop language switcher */
-  .nav-left .language-switcher {
+  /* Hide desktop translate */
+  #google_translate_wrapper {
     display: none;
   }
 
-  /* Adjust logo for small screens */
-  .nav-left .logo {
-    font-size: 1.3rem;
+  /* Show mobile translate */
+  #mobile_translate_box {
+    display: block;
+  }
+
+  .logo {
+    font-size: 1.35rem;
   }
 
   .navbar .container {
@@ -211,49 +205,9 @@
   }
 }
 
-/* --- Smaller Devices (<=500px) --- */
+/* Smaller phones */
 @media (max-width: 500px) {
   .nav-right {
-    width: 70%; /* a bit wider on very small phones */
+    width: 70%;
   }
-
-  .nav-right ul li a {
-    font-size: 1.1rem;
-  }
-
-  .logo {
-    font-size: 1.2rem;
-  }
-
-  .nav-left {
-    gap: 8px;
-  }
-}
-
-.language-switcher {
-  display: inline-flex;
-  background: white;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  overflow: hidden;
-  margin-left: 10px;
-}
-
-.language-switcher button {
-  border: none;
-  background: transparent;
-  padding: 6px 12px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-.language-switcher button:hover {
-  background: #e8f5e9;
-}
-
-.language-switcher button.active {
-  background: #2e7d32;
-  color: white;
-  font-weight: 600;
 }

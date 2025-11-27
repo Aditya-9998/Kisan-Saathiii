@@ -1,136 +1,124 @@
-// Js/login_auth.js — FINAL VERIFIED VERSION for Kisaan Saathii Project
+// =======================
+// login_auth.js (FINAL MODULAR VERSION)
+// =======================
 
-document.addEventListener('DOMContentLoaded', () => {
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  sendPasswordResetEmail,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    // Ensure Firebase Auth is loaded
-    if (typeof window.firebaseAuth === 'undefined') {
-        console.error("❌ Firebase Auth not initialized. Make sure firebase.js is loaded before login_auth.js");
+const firebaseConfig = {
+  apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
+  authDomain: "kisan-saathiii.firebaseapp.com",
+  projectId: "kisan-saathiii",
+  storageBucket: "kisan-saathiii.appspot.com",
+  messagingSenderId: "1069746635685",
+  appId: "1:1069746635685:web:b6cade8247e56094011e4c",
+  measurementId: "G-XJ0T10GRND"
+};
+
+let app;
+try {
+  app = initializeApp(firebaseConfig);
+} catch (e) {
+  console.warn("Firebase already initialized:", e?.message || e);
+}
+
+const auth = getAuth(app);
+
+document.addEventListener("DOMContentLoaded", () => {
+  const loginForm = document.getElementById("login-form");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const googleLoginBtn = document.getElementById("google-login-btn");
+  const forgotPasswordLink = document.getElementById("forgot-password-link");
+
+  const showStatus = window.showStatusPopup || (() => {});
+
+  // Auto redirect if already authenticated on login page
+  onAuthStateChanged(auth, (user) => {
+    if (user && window.location.pathname.includes("login.html")) {
+      sessionStorage.setItem("loginSuccess", "true");
+      showStatus("Redirecting...", true);
+      setTimeout(() => (window.location.href = "index.html"), 800);
+    }
+  });
+
+  // Email/password login
+  if (loginForm) {
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!email || !password) {
+        showStatus("Please enter both email and password.", false);
         return;
-    }
+      }
 
-    const auth = window.firebaseAuth;
+      showStatus("Checking credentials...", true);
 
-    // UI Elements
-    const loginForm = document.getElementById('login-form');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const googleLoginBtn = document.getElementById('google-login-btn');
-    const forgotPasswordLink = document.getElementById('forgot-password-link');
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
 
-    // Hide any old static message element
-    const messageDisplay = document.getElementById('auth-message');
-    if (messageDisplay) messageDisplay.style.display = 'none';
+        const name = email.split("@")[0];
+        sessionStorage.setItem("loginSuccess", "true");
 
-    // Use showStatusPopup from utility.js
-    const showStatusPopup = window.showStatusPopup;
+        showStatus(`Welcome back, ${name}!`, true);
+        setTimeout(() => (window.location.href = "index.html"), 900);
 
-    // 🔹 Handle Firebase errors with user-friendly messages
-    function handleAuthError(error, isGoogle = false) {
-        let errorMessage = 'Login failed. Please try again.';
-
-        switch (error.code) {
-            case 'auth/user-not-found':
-            case 'auth/wrong-password':
-            case 'auth/invalid-login-credentials':
-                errorMessage = "Incorrect email or password.";
-                break;
-            case 'auth/invalid-email':
-                errorMessage = "Please enter a valid email address.";
-                break;
-            case 'auth/too-many-requests':
-                errorMessage = "Too many failed attempts. Try again later.";
-                break;
-            case 'auth/network-request-failed':
-                errorMessage = "Network issue. Please check your internet connection.";
-                break;
-            case 'auth/popup-closed-by-user':
-                errorMessage = "Google Sign-in was cancelled.";
-                break;
-            case 'auth/account-exists-with-different-credential':
-                errorMessage = "Account exists with another sign-in method.";
-                break;
-            default:
-                errorMessage = isGoogle ? "Google Sign-in failed. Try again." : "Login failed. Please try again.";
-                console.error("Firebase Auth Error:", error.message);
-                break;
-        }
-
-        showStatusPopup(errorMessage, false);
-    }
-
-    // 🔹 Auto-redirect if already logged in
-    auth.onAuthStateChanged(user => {
-        if (user && window.location.pathname.includes('login.html')) {
-            const userName = user.displayName || user.email.split('@')[0];
-            showStatusPopup(`✅ Welcome back, ${userName}! Redirecting...`, true);
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1200);
-        }
+      } catch (err) {
+        console.error(err);
+        const msg =
+          err.code === "auth/wrong-password" || err.code === "auth/user-not-found"
+            ? "Incorrect email or password."
+            : "Login failed. Try again.";
+        showStatus(msg, false);
+      }
     });
+  }
 
-    // 🔹 Email/Password Login
-    if (loginForm) {
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+  // Google login
+  if (googleLoginBtn) {
+    googleLoginBtn.addEventListener("click", async () => {
+      const provider = new GoogleAuthProvider();
+      showStatus("Signing in with Google...", true);
 
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
+      try {
+        await signInWithPopup(auth, provider);
 
-            if (!email || !password) {
-                showStatusPopup("Please enter both email and password.", false);
-                return;
-            }
+        sessionStorage.setItem("loginSuccess", "true");
+        showStatus("Google login successful", true);
 
-            showStatusPopup("Logging in...", true);
+        setTimeout(() => (window.location.href = "index.html"), 800);
+      } catch (err) {
+        console.error(err);
+        showStatus("Google sign-in failed.", false);
+      }
+    });
+  }
 
-            try {
-                await auth.signInWithEmailAndPassword(email, password);
-                // onAuthStateChanged will redirect automatically
-                showStatusPopup("✅ Login successful! Redirecting...", true);
-            } catch (error) {
-                handleAuthError(error, false);
-            }
-        });
-    }
+  // Forgot password
+  if (forgotPasswordLink) {
+    forgotPasswordLink.addEventListener("click", async (e) => {
+      e.preventDefault();
 
-    // 🔹 Google Login
-    if (googleLoginBtn) {
-        googleLoginBtn.addEventListener('click', async () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            showStatusPopup("Signing in with Google...", true);
+      const email = emailInput.value.trim();
+      if (!email) return showStatus("Enter your email first.", false);
 
-            try {
-                await auth.signInWithPopup(provider);
-                showStatusPopup("✅ Google Sign-in successful! Redirecting...", true);
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1200);
-            } catch (error) {
-                handleAuthError(error, true);
-            }
-        });
-    }
-
-    // 🔹 Forgot Password
-    if (forgotPasswordLink) {
-        forgotPasswordLink.addEventListener('click', async (e) => {
-            e.preventDefault();
-            const email = emailInput.value.trim();
-
-            if (!email) {
-                showStatusPopup("Please enter your email address to receive a reset link.", false);
-                return;
-            }
-
-            showStatusPopup(`Sending reset link to ${email}...`, true);
-
-            try {
-                await auth.sendPasswordResetEmail(email);
-                showStatusPopup(`📧 Reset link sent to ${email}. Check your inbox!`, true, 5000);
-            } catch (error) {
-                handleAuthError(error, false);
-            }
-        });
-    }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showStatus("Password reset email sent!", true, 5000);
+      } catch (err) {
+        console.error(err);
+        showStatus("Unable to send reset email.", false);
+      }
+    });
+  }
 });

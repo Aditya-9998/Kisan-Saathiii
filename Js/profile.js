@@ -1,148 +1,160 @@
-// Js/profile.js
-document.addEventListener('DOMContentLoaded', () => {
-    const auth = window.firebaseAuth;
-    const storage = window.firebaseStorage;
-    const popup = window.showStatusPopup || console.log;
+// Js/profile.js — module
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  deleteUser
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    if (!auth || !storage) {
-        console.error("Firebase Auth or Storage not initialized.");
-        return;
+const firebaseConfig = {
+  apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
+  authDomain: "kisan-saathiii.firebaseapp.com",
+  projectId: "kisan-saathiii",
+  storageBucket: "kisan-saathiii.appspot.com",
+  messagingSenderId: "1069746635685",
+  appId: "1:1069746635685:web:b6cade8247e56094011e4c",
+  measurementId: "G-XJ0T10GRND"
+};
+
+let app;
+try {
+  app = initializeApp(firebaseConfig);
+} catch (err) {
+  console.warn("Firebase init (profile):", err?.message || err);
+}
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const el = id => document.getElementById(id);
+const showToast = window.showStatusPopup || (() => {});
+
+function clearForm() {
+  if (el('displayName')) el('displayName').value = '';
+  if (el('phone')) el('phone').value = '';
+  if (el('pincode')) el('pincode').value = '';
+  if (el('state')) el('state').value = '';
+  if (el('profileImageURL')) el('profileImageURL').value = '';
+  if (el('avatar-img')) el('avatar-img').src = 'images/default-avatar.png';
+  if (el('email-value')) el('email-value').textContent = '—';
+}
+
+/* require elements exist before binding — guard for pages without profile UI */
+document.addEventListener("DOMContentLoaded", () => {
+  if (!document.getElementById('logoutBtnLocal')) {
+    // not profile page — nothing to do
+    return;
+  }
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      // not logged-in -> go to login
+      window.location.href = 'login.html';
+      return;
     }
+    const uid = user.uid;
+    const usersRef = doc(db, 'users', uid);
 
-    // Redirect if not logged in
-    auth.onAuthStateChanged(user => {
-        if (!user) {
-            window.location.href = 'login.html';
-        } else {
-            loadUserProfile(user);
-        }
-    });
+    try {
+      const snap = await getDoc(usersRef);
+      if (snap.exists()) {
+        const data = snap.data();
+        if (el('displayName')) el('displayName').value = data.name || user.displayName || '';
+        if (el('phone')) el('phone').value = data.phone || '';
+        if (el('pincode')) el('pincode').value = data.pincode || '';
+        if (el('state')) el('state').value = data.state || '';
+        if (el('profileImageURL')) el('profileImageURL').value = data.profileImageUrl || '';
+        if (el('email-value')) el('email-value').textContent = data.email || user.email || '';
+        if (el('avatar-img')) el('avatar-img').src = data.profileImageUrl || user.photoURL || 'images/default-avatar.png';
+      } else {
+        await setDoc(usersRef, {
+          email: user.email || '',
+          name: user.displayName || '',
+          createdAt: serverTimestamp()
+        }, { merge: true });
 
-    const userNameSpan = document.getElementById('profileUserName');
-    const userEmailSpan = document.getElementById('profileUserEmail');
-    const mainProfilePic = document.getElementById('mainProfilePic');
-    const logoutBtn = document.getElementById('logoutProfileBtn');
-    const addPicBtn = document.getElementById('addProfilePicBtn');
-    const removePicBtn = document.getElementById('removeProfilePicBtn');
-    const picInput = document.getElementById('profilePicInput');
-
-    // Helper function for translations (from user_status.js)
-    const getTranslatedText = (key, fallback) => {
-        const t = window.currentTranslations || {};
-        return key.split(".").reduce((acc, k) => (acc && acc[k] ? acc[k] : null), t) || fallback;
-    };
-
-    // 1. Load and Display User Data
-    function loadUserProfile(user) {
-        const name = user.displayName || user.email.split("@")[0];
-        userNameSpan.textContent = name;
-        userEmailSpan.textContent = user.email;
-
-        // NOTE: Phone Number is usually stored in a database (like Firestore), 
-        // not directly in Firebase Auth. We display a placeholder here.
-        // If you store phone in 'displayName' or somewhere else, update this line:
-        // document.getElementById('profileUserPhone').textContent = user.phoneNumber || 'N/A (Update in Edit Details)';
-        
-        mainProfilePic.src = user.photoURL || 'images/default-avatar.png';
+        if (el('displayName')) el('displayName').value = user.displayName || '';
+        if (el('email-value')) el('email-value').textContent = user.email || '';
+      }
+    } catch (err) {
+      console.error('Profile load error', err);
+      showToast('Failed to load profile data', false);
     }
+  });
 
-    // 2. Profile Picture Upload/Change
-    addPicBtn.addEventListener('click', () => {
-        picInput.click();
+  // Save changes
+  if (el('saveBtn')) {
+    el('saveBtn').addEventListener('click', async () => {
+      const user = auth.currentUser;
+      if (!user) { window.location.href = 'login.html'; return; }
+      const uid = user.uid;
+      const ref = doc(db, 'users', uid);
+      const payload = {
+        name: el('displayName').value.trim(),
+        phone: el('phone').value.trim(),
+        pincode: el('pincode').value.trim(),
+        state: el('state').value.trim(),
+        profileImageUrl: el('profileImageURL').value.trim(),
+        updatedAt: serverTimestamp()
+      };
+      try {
+        await updateDoc(ref, payload);
+        showToast('Profile updated successfully', true);
+        if (payload.profileImageUrl && el('avatar-img')) el('avatar-img').src = payload.profileImageUrl;
+      } catch (err) {
+        console.error('Save error', err);
+        showToast('Failed to save profile', false);
+      }
     });
+  }
 
-    picInput.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const user = auth.currentUser;
-        if (!user) {
-            popup(getTranslatedText("error.notLoggedIn", "You must be logged in to upload."), false);
-            return;
-        }
-
-        try {
-            popup(getTranslatedText("profile.uploading", "Uploading profile picture..."), true);
-            const storageRef = storage.ref();
-            // Use user's UID to name the file
-            const avatarRef = storageRef.child(`avatars/${user.uid}/profile.jpg`); 
-            
-            const snapshot = await avatarRef.put(file);
-            const url = await snapshot.ref.getDownloadURL();
-
-            // Update photoURL in Firebase Auth
-            await user.updateProfile({ photoURL: url });
-
-            // Update UI
-            mainProfilePic.src = url;
-            popup(getTranslatedText("profile.updateSuccess", "Profile picture updated successfully!"), true, 2500);
-            
-            // Reload user status in navbar if it's already loaded (optional)
-            if (window.updateUserStatus) window.updateUserStatus(user);
-
-        } catch (error) {
-            console.error("Avatar Upload Error:", error);
-            popup(getTranslatedText("profile.updateFailed", "Failed to update profile picture."), false);
-        }
+  if (el('cancelBtn')) {
+    el('cancelBtn').addEventListener('click', () => {
+      location.reload();
     });
+  }
 
-    // 3. Profile Picture Removal
-    removePicBtn.addEventListener('click', async () => {
-        const user = auth.currentUser;
-        if (!user) return;
+  // Logout action on profile page
+  el('logoutBtnLocal').addEventListener('click', async () => {
+    try {
+      await signOut(auth);
+      // show toast immediately
+      showToast('Logout successful', true);
+      // set session flag so navbar on index shows "You have logged out" if needed
+      sessionStorage.setItem('logoutSuccess', 'true');
+      setTimeout(() => window.location.href = 'index.html', 700);
+    } catch (err) {
+      console.error('Logout error', err);
+      showToast('Logout failed', false);
+    }
+  });
 
-        // Confirm removal
-        const result = await Swal.fire({
-            title: getTranslatedText("profile.confirmRemoveTitle", "Remove Picture?"),
-            text: getTranslatedText("profile.confirmRemoveText", "Are you sure you want to remove your profile picture?"),
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#dc2626',
-            cancelButtonColor: '#6b7280',
-            confirmButtonText: getTranslatedText("profile.yesRemove", "Yes, remove it!")
-        });
-
-        if (result.isConfirmed) {
-            try {
-                // Delete the file from Firebase Storage
-                const storageRef = storage.ref();
-                const avatarRef = storageRef.child(`avatars/${user.uid}/profile.jpg`);
-                await avatarRef.delete().catch(err => {
-                    // Ignore error if file doesn't exist
-                    if (err.code !== 'storage/object-not-found') throw err;
-                });
-
-                // Set photoURL to null in Firebase Auth
-                await user.updateProfile({ photoURL: null });
-
-                // Update UI
-                mainProfilePic.src = 'images/default-avatar.png';
-                popup(getTranslatedText("profile.removeSuccess", "Profile picture removed."), true, 2500);
-
-                // Reload user status in navbar (optional)
-                if (window.updateUserStatus) window.updateUserStatus(user);
-
-            } catch (error) {
-                console.error("Avatar Removal Error:", error);
-                popup(getTranslatedText("profile.removeFailed", "Failed to remove profile picture."), false);
-            }
-        }
+  // Delete account (careful)
+  if (el('deleteAccountBtn')) {
+    el('deleteAccountBtn').addEventListener('click', async () => {
+      const proceed = confirm('Delete account permanently? This will remove your users/{uid} document and sign you out.');
+      if (!proceed) return;
+      const user = auth.currentUser;
+      if (!user) { window.location.href = 'login.html'; return; }
+      const uid = user.uid;
+      try {
+        await deleteDoc(doc(db, 'users', uid));
+        await deleteUser(user);
+        showToast('Account deleted', true);
+        setTimeout(() => window.location.href = 'index.html', 900);
+      } catch (err) {
+        console.error('Delete error', err);
+        alert('Unable to delete account (you may need to re-login then try). Error: ' + err.message);
+      }
     });
-
-    // 4. Logout Functionality (using the one from user_status.js if possible, or re-implement)
-    logoutBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        popup(getTranslatedText("navbar.loggingOut", "Logging out..."), true, 800);
-
-        auth.signOut()
-            .then(() => {
-                sessionStorage.setItem("logoutSuccess", "true");
-                setTimeout(() => (window.location.href = "index.html"), 1000);
-            })
-            .catch((err) => {
-                popup(getTranslatedText("navbar.logoutFailed", "Logout failed. Please try again."), false);
-                console.error("Logout Error:", err);
-            });
-    });
-
+  }
 });

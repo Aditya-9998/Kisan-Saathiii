@@ -661,3 +661,28 @@ h3 {
         font-size: 15px;
     }
 }
+
+/* Eye icon inside input */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 42px;   /* space for eye icon */
+}
+
+.password-wrapper .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.password-wrapper .toggle-password:hover {
+    color: #1e7d3b;
+}

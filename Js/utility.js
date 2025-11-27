@@ -1,30 +1,47 @@
-// ============================================================================
-// Js/utility.js — STATUS POPUP HANDLER (Language handled by Js/language.js)
-// ============================================================================
+// Js/utility.js — plain script
+(function () {
+  // If SweetAlert2 available, use it. Else fallback.
+  window.showStatusPopup = function (message = "", success = true, timeout = 3000) {
+    if (window.Swal && typeof window.Swal.fire === "function") {
+      // small styled toast
+      window.Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: success ? "success" : "error",
+        title: message,
+        showConfirmButton: false,
+        timer: timeout,
+        background: success ? "#e8ffe8" : undefined,
+      });
+      return;
+    }
 
-let popupTimeout;
+    // Fallback toast
+    let container = document.getElementById("__fallback_toast_container");
+    if (!container) {
+      container = document.createElement("div");
+      container.id = "__fallback_toast_container";
+      container.style.position = "fixed";
+      container.style.top = "20px";
+      container.style.right = "20px";
+      container.style.zIndex = 99999;
+      document.body.appendChild(container);
+    }
 
-// ============================
-// ✅ Status Popup Function
-// ============================
-function showStatusPopup(message, isSuccess = true, duration = 3000) {
-  const popup = document.getElementById("status-popup");
-  const msg = document.getElementById("popup-message");
-  if (!popup || !msg) return;
+    const toast = document.createElement("div");
+    toast.textContent = message;
+    toast.style.marginTop = "6px";
+    toast.style.padding = "10px 14px";
+    toast.style.borderRadius = "8px";
+    toast.style.boxShadow = "0 3px 8px rgba(0,0,0,0.12)";
+    toast.style.background = success ? "#dff2df" : "#ffdede";
+    toast.style.color = "#222";
+    container.appendChild(toast);
 
-  msg.textContent = message;
-  popup.classList.remove("show", "success", "error");
-  popup.classList.add(isSuccess ? "success" : "error", "show");
-
-  if (popupTimeout) clearTimeout(popupTimeout);
-  popupTimeout = setTimeout(() => popup.classList.remove("show"), duration);
-}
-
-// Make available globally
-window.showStatusPopup = showStatusPopup;
-
-// ============================================================================
-// NOTE:
-// The multilingual logic previously here has been moved to `Js/language.js`.
-// Do NOT duplicate `changeLanguage()` or `loadLanguage()` in this file.
-// ============================================================================
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      toast.style.transition = "opacity 300ms";
+      setTimeout(() => toast.remove(), 350);
+    }, timeout);
+  };
+})();

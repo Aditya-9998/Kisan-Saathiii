@@ -1,43 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Login / Sign Up - Kisaan Saathi</title>
 
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/footer.css">
-  <link rel="stylesheet" href="css/navbar.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 </head>
-
 <body>
   <div id="navbar"></div>
 
   <main class="content login-page">
     <section class="login-container">
-      <h2 data-lang-key="login.loginTitle">Login to Kisaan Saathi</h2>
+      <h2>Login to Kisaan Saathi</h2>
 
       <div id="auth-message" style="display: none; color: red; margin-bottom: 15px;"></div>
 
       <form id="login-form">
         <div class="input-group">
-          <label for="email" data-lang-key="login.emailLabel">Email</label>
-          <input type="email" id="email" name="email" required placeholder="Enter your email"
-            data-lang-key="login.emailPlaceholder">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="Enter your email" />
         </div>
 
         <div class="input-group">
-          <label for="password" data-lang-key="login.passwordLabel">Password</label>
-          <input type="password" id="password" name="password" required placeholder="Enter your password"
-            data-lang-key="login.passwordPlaceholder">
+          <label for="password">Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="password" name="password" required placeholder="Enter your password" />
+            <i class="fa-solid fa-eye toggle-password" data-target="password" aria-hidden="true"></i>
+          </div>
 
-          <a href="#" id="forgot-password-link" data-lang-key="login.forgotPassword" class="forgot-password-link">Forgot
-            Password?</a>
+          <a href="#" id="forgot-password-link" class="forgot-password-link">Forgot Password?</a>
         </div>
 
-        <button type="submit" class="btn-primary" data-lang-key="login.loginButton">Login</button>
+        <button type="submit" class="btn-primary">Login</button>
 
         <div class="separator">OR</div>
 
@@ -45,28 +43,26 @@
           <span class="google-icon-wrapper">
             <img class="google-icon" src="images/G_Logo.png" alt="Google Logo" />
           </span>
-          <span class="btn-text" data-lang-key="login.googleSignIn">Sign In with Google</span>
+          <span class="btn-text">Sign In with Google</span>
         </button>
 
         <p class="signup-text">
-          <span data-lang-key="login.noAccountText">Don't have an account?</span>
-          <a href="signup.html" data-lang-key="login.signupLink">Sign Up</a>
+          Don't have an account? <a href="signup.html">Sign Up</a>
         </p>
       </form>
     </section>
   </main>
 
-  <div id="status-popup" class="status-popup">
-    <p id="popup-message"></p>
-  </div>
-
+  <div id="status-popup" class="status-popup"><p id="popup-message"></p></div>
   <div id="footer"></div>
 
+  <!-- Firebase compat (v9) -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 
+  <!-- Initialize Firebase (compat) - put this BEFORE any JS that uses firebase -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
@@ -79,27 +75,29 @@
     };
 
     const app = firebase.initializeApp(firebaseConfig);
-    const auth = app.auth();
-
-    window.firebaseApp = app;
+    const auth = firebase.auth();
+    // expose to global - used by other scripts
     window.firebaseAuth = auth;
-    window.firebaseDb = app.firestore ? app.firestore() : null;
-    window.firebaseStorage = app.storage ? app.storage() : null;
+    window.firebaseDb = firebase.firestore();
+    window.firebaseStorage = firebase.storage();
   </script>
 
-
-
-
-
-
+  <!-- Your site scripts (correct order) -->
   <script src="Js/utility.js"></script>
   <script src="Js/navbar.js"></script>
   <script src="Js/schemes.js"></script>
   <script src="Js/footer.js"></script>
-  <script type="module" src="Js/user_status.js"></script>
+
+  <!-- USER STATUS must be plain script (not module) and uses compat auth -->
+  <script src="Js/user_status.js"></script>
+
+  <!-- Login logic (compat) -->
   <script src="Js/login_auth.js"></script>
 
+  <!-- Password toggle -->
+  <script src="Js/password_toggle.js"></script>
 
+  <!-- Google Translate (optional) -->
   <script>
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
@@ -109,9 +107,6 @@
       }, 'google_element');
     }
   </script>
-
   <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
 </body>
-
 </html>

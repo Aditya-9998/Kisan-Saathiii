@@ -1,5 +1,4 @@
-<!-- //index.html --> 
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -17,25 +16,30 @@
   <!-- Font Awesome & SweetAlert -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </head>
 
 <body>
+
+  <!-- Popup -->
   <div id="status-popup" class="status-popup">
     <span id="popup-message"></span>
   </div>
 
-  <!-- Navbar -->
+  <!-- NAVBAR -->
   <div id="navbar"></div>
 
   <main class="content">
+
+    <!-- HERO SECTION -->
     <section id="home" class="hero-section">
 
       <!-- Government Scheme Slider -->
       <section id="schemes-section" class="government-scheme-card">
         <h2 data-lang-key="schemes.title">Government Schemes for Farmers</h2>
+
         <div class="schemes-carousel-container">
           <div class="schemes-carousel">
+
             <div class="scheme-card active">
               <h3 data-lang-key="scheme.pmkisan.title">
                 Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)
@@ -47,8 +51,10 @@
                 Check Eligibility & Apply
               </a>
             </div>
+
           </div>
         </div>
+
         <div class="carousel-dots"></div>
       </section>
 
@@ -60,30 +66,30 @@
         </p>
       </div>
 
-      <!-- ############################################################## -->
-      <!-- ⭐ NEW PROFESSIONAL 3-CATEGORY AUTO-SLIDER SECTION  -->
-      <!-- ############################################################## -->
+      <!-- ============================= -->
+      <!-- NEW CATEGORY SLIDER SECTION -->
+      <!-- ============================= -->
 
       <section class="new-category-section">
         <h2 class="new-category-title">Explore Farming Essentials</h2>
 
         <div class="category-row">
 
-          <!-- 1️⃣ PESTICIDES -->
+          <!-- PESTICIDES -->
           <div class="category-card-box">
             <h3>Pesticides</h3>
 
             <div class="slider-container" id="slider-pesticide">
               <img src="images/Imidacloprid.webp" class="active" data-name="Imidacloprid">
-              <img src="images/chlorpyrifos 20 EC.webp" data-name="chlorpyrifos 20 EC">
+              <img src="images/chlorpyrifos 20 EC.webp" data-name="Chlorpyrifos 20 EC">
               <img src="images/Lambda-Cyhalothrin.webp" data-name="Lambda-Cyhalothrin">
               <img src="images/Thiamethoxam.avif" data-name="Thiamethoxam">
             </div>
 
-            <p class="item-name" id="name-pesticide">Pesticide A</p>
+            <p class="item-name" id="name-pesticide">Imidacloprid</p>
           </div>
 
-          <!-- 2️⃣ SEEDS -->
+          <!-- SEEDS -->
           <div class="category-card-box">
             <h3>Seeds</h3>
 
@@ -92,14 +98,13 @@
               <img src="images/seed4.webp" data-name="Rice Seeds">
               <img src="images/seed3.webp" data-name="Maize Seeds">
               <img src="images/seed2.webp" data-name="Mustard Seeds">
-              <img src="images/seed5.webp" data-name="Arhar(Dal) Seeds">
-
+              <img src="images/seed5.webp" data-name="Arhar (Dal) Seeds">
             </div>
 
             <p class="item-name" id="name-seeds">Wheat Seeds</p>
           </div>
 
-          <!-- 3️⃣ FERTILIZERS -->
+          <!-- FERTILIZERS -->
           <div class="category-card-box">
             <h3>Fertilizers / Manure</h3>
 
@@ -119,19 +124,17 @@
     </section>
   </main>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <div id="footer"></div>
 
-  <!-- JS LOAD ORDER -->
+  <!-- ========================================================= -->
+  <!-- PAGE SCRIPTS (LOAD BEFORE NAVBAR + USER_STATUS)           -->
+  <!-- ========================================================= -->
   <script src="Js/utility.js"></script>
   <script src="Js/schemes.js"></script>
   <script src="Js/footer.js"></script>
-  <script src="Js/navbar.js"></script>
-  <script type="module" src="Js/user_status.js"></script>
 
-  <!-- ============================= -->
-  <!-- AUTO SLIDER SCRIPT -->
-  <!-- ============================= -->
+  <!-- AUTO SLIDERS -->
   <script>
     function autoSlider(sliderId, nameId) {
       const slider = document.getElementById(sliderId);
@@ -153,11 +156,9 @@
     autoSlider("slider-fert", "name-fert");
   </script>
 
-  <!-- ===================================================== -->
-  <!-- ⭐ GOOGLE TRANSLATE WIDGET (SAFE COMMENTED VERSION)  -->
-  <!-- ===================================================== -->
-
-  
+  <!-- ========================================================= -->
+  <!-- GOOGLE TRANSLATE SAFE LOAD                                -->
+  <!-- ========================================================= -->
   <script>
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
@@ -169,7 +170,13 @@
   </script>
 
   <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  
+
+  <!-- ========================================================= -->
+  <!-- ⭐ LOAD NAVBAR FIRST — THEN USER STATUS                   -->
+  <!-- ========================================================= -->
+  <script src="Js/navbar.js"></script>
+  <script type="module" src="Js/user_status.js"></script>
+
 </body>
 
 </html>
