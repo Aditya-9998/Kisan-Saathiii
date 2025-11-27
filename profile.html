@@ -1,4 +1,7 @@
-<!-- profile.html -->
+
+<!--profile.html-->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,15 +9,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Profile - Kisaan Saathiii</title>
 
-  <!-- site navbar + footer css -->
   <link rel="stylesheet" href="css/navbar.css" />
   <link rel="stylesheet" href="css/footer.css" />
-
-  <!-- profile page styles -->
   <link rel="stylesheet" href="css/profile.css" />
 </head>
+
 <body>
-  <!-- navbar placeholder -->
+
   <div id="navbar"></div>
 
   <main class="profile-main">
@@ -23,6 +24,7 @@
 
       <div class="profile-grid">
         <div class="left-col">
+
           <div class="avatar">
             <img id="avatar-img" src="images/default-avatar.png" alt="avatar" />
           </div>
@@ -33,12 +35,15 @@
           </div>
 
           <div class="actions">
-            <button id="logoutBtnLocal" class="btn btn-ghost">Logout</button>
+            <!-- FIXED ID -->
+            <button id="logout-btn" class="btn btn-ghost">Logout</button>
             <button id="deleteAccountBtn" class="btn btn-danger">Delete Account</button>
           </div>
+
         </div>
 
         <form id="profileForm" class="right-col">
+
           <label for="displayName">Full name</label>
           <input id="displayName" type="text" placeholder="Your full name" />
 
@@ -58,18 +63,24 @@
             <button id="saveBtn" type="button" class="btn btn-primary">Save Changes</button>
             <button id="cancelBtn" type="button" class="btn btn-ghost">Cancel</button>
           </div>
+
         </form>
+
       </div>
     </section>
   </main>
 
   <div id="footer"></div>
 
-  <!-- firebase modular SDK + profile logic -->
+  <!-- Profile logic -->
   <script type="module" src="Js/profile.js"></script>
 
-  <!-- load navbar AFTER profile.js registered listeners? navbar.js will add DOM navbar and user_status.js will update it -->
+  <!-- LOGOUT logic -->
+  <script type="module" src="Js/logout.js"></script>
+
+  <!-- Navbar + Footer -->
   <script src="Js/navbar.js"></script>
   <script src="Js/footer.js"></script>
+
 </body>
 </html>

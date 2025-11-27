@@ -1,5 +1,9 @@
+<!--login.html-->
+
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -10,6 +14,7 @@
   <link rel="stylesheet" href="css/navbar.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 </head>
+
 <body>
   <div id="navbar"></div>
 
@@ -53,7 +58,9 @@
     </section>
   </main>
 
-  <div id="status-popup" class="status-popup"><p id="popup-message"></p></div>
+  <div id="status-popup" class="status-popup">
+    <p id="popup-message"></p>
+  </div>
   <div id="footer"></div>
 
   <!-- Firebase compat (v9) -->
@@ -88,11 +95,12 @@
   <script src="Js/schemes.js"></script>
   <script src="Js/footer.js"></script>
 
-  <!-- USER STATUS must be plain script (not module) and uses compat auth -->
-  <script src="Js/user_status.js"></script>
 
-  <!-- Login logic (compat) -->
-  <script src="Js/login_auth.js"></script>
+
+  <!-- USER STATUS must be plain script (not module) and uses compat auth -->
+  <script type="module" src="Js/user_status.js"></script>
+  <script type="module" src="Js/login_auth.js"></script>
+
 
   <!-- Password toggle -->
   <script src="Js/password_toggle.js"></script>
@@ -109,4 +117,5 @@
   </script>
   <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
+
 </html>

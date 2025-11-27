@@ -1,5 +1,5 @@
 // =======================
-// user_status.js (FINAL CLEAN VERSION)
+// user_status.js (FINAL MODULAR VERSION)
 // =======================
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -19,12 +19,16 @@ const firebaseConfig = {
   measurementId: "G-XJ0T10GRND"
 };
 
+// Init Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 console.log("🔥 user_status.js: Firebase initialized.");
 
+// Wait for navbar to load first
 document.addEventListener("navbarLoaded", initUserStatus);
+
+// Backup fallback in case event doesn't fire
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(initUserStatus, 400);
 });
@@ -34,27 +38,40 @@ function initUserStatus() {
 
   const loginBtn = document.getElementById("login-btn");
   const userNameEl = document.getElementById("user-name");
+  const logoutBtn = document.getElementById("logout-btn");
 
+  // If navbar not loaded yet
   if (!loginBtn || !userNameEl) {
-    console.warn("⚠ Navbar elements missing. Retrying...");
-    setTimeout(initUserStatus, 300);
-    return;
+    console.warn("⏳ Navbar elements not ready — retrying...");
+    return setTimeout(initUserStatus, 300);
   }
 
-  console.log("✅ Navbar elements found. Starting auth listener...");
+  console.log("✅ Navbar found. Starting auth listener...");
 
+  // Firebase auth state listener
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      const displayName = user.displayName || user.email?.split("@")[0] || "User";
+      // ------------------------
+      // USER IS LOGGED IN
+      // ------------------------
+
+      const displayName =
+        user.displayName || user.email?.split("@")[0] || "User";
 
       console.log("👤 Logged In as:", displayName);
 
+      // Show Username / Hide Login
       loginBtn.style.display = "none";
 
       userNameEl.style.display = "inline-block";
       userNameEl.textContent = "Hey " + displayName;
       userNameEl.href = "profile.html";
 
+      if (logoutBtn) {
+        logoutBtn.style.display = "inline-block";
+      }
+
+      // Show login success toast
       if (sessionStorage.getItem("loginSuccess")) {
         sessionStorage.removeItem("loginSuccess");
 
@@ -72,11 +89,20 @@ function initUserStatus() {
       }
 
     } else {
+      // ------------------------
+      // USER IS LOGGED OUT
+      // ------------------------
+
       console.log("🚫 User Logged Out");
 
       userNameEl.style.display = "none";
       loginBtn.style.display = "inline-block";
 
+      if (logoutBtn) {
+        logoutBtn.style.display = "none";
+      }
+
+      // Show logout success toast
       if (sessionStorage.getItem("logoutSuccess")) {
         sessionStorage.removeItem("logoutSuccess");
 
@@ -85,11 +111,13 @@ function initUserStatus() {
             toast: true,
             position: "top-end",
             icon: "success",
-            title: "You have logged out.",
+            title: "You have logged out successfully.",
             showConfirmButton: false,
             timer: 3000,
             background: "#e8ffe8",
           });
+        } else {
+          alert("You have logged out successfully!");
         }
       }
     }
