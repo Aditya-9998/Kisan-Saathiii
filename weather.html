@@ -1,62 +1,1044 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kisaan Saathi - Weather</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/navbar.css">
+  <meta charset="UTF-8" />
+  <title>Village Weather – Multi Language</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * { box-sizing: border-box; }
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!-- Updated version -->
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f7ff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
 
-    <!-- SweetAlert2 (Required for user_status.js) -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    .app {
+      width: 100%;
+      max-width: 480px;
+      padding: 16px;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0 0 6px;
+      font-size: 26px;
+      color: #005f99;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    /* Language dropdown */
+    .lang-select {
+      margin-bottom: 14px;
+    }
+
+    .lang-select label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .lang-select select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #0077cc;
+      font-size: 14px;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      margin-bottom: 14px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .input-row input {
+      flex: 1;
+      padding: 12px;
+      font-size: 14px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .btn {
+      padding: 12px;
+      font-size: 14px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: #0077cc;
+      color: white;
+      white-space: nowrap;
+    }
+
+    .btn-secondary { background: #00a36c; }
+
+    .btn-block {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .status {
+      font-size: 12px;
+      color: #555;
+      margin-top: 4px;
+    }
+
+    .alert {
+      background: #ffe5e5;
+      color: #b30000;
+      padding: 8px;
+      border-radius: 10px;
+      font-size: 14px;
+      margin-bottom: 8px;
+      display: none;
+    }
+
+    .current-main {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+
+    .location-name {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .current-date {
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .temp-big {
+      font-size: 40px;
+      font-weight: bold;
+      margin: 4px 0;
+    }
+
+    .condition-text {
+      font-size: 16px;
+      margin-bottom: 4px;
+      text-transform: capitalize;
+    }
+
+    .current-extra {
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
+    .two-col {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .forecast-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .forecast-list {
+      max-height: 260px;
+      overflow-y: auto;
+    }
+
+    .day-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      border-radius: 10px;
+      background: #e8f4ff;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .day-left { text-align: left; }
+
+    .day-date {
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+
+    .day-cond {
+      font-size: 12px;
+      color: #333;
+    }
+
+    .day-temp {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .day-rain {
+      font-size: 12px;
+      color: #005f99;
+      text-align: right;
+    }
+
+    .speak-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .tip-text {
+      font-size: 14px;
+      color: #225522;
+    }
+
+    .offline-note {
+      font-size: 12px;
+      color: #555;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 360px) {
+      h1 { font-size: 22px; }
+      .temp-big { font-size: 34px; }
+    }
+
+    /* ================================
+       🌦 HEAVY ANIMATION ON CURRENT CARD
+       ================================*/
+
+    #currentCard {
+      position: relative;
+      overflow: hidden;
+      background: #222;
+      color: #fff;
+    }
+
+    #currentCard::before,
+    #currentCard::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* --- SUNNY (soft, text clearly visible) --- */
+    #currentCard.weather-sunny {
+      background: linear-gradient(
+        180deg,
+        #FFFDE5 0%,
+        #FFF4C6 45%,
+        #FFE8A4 100%
+      );
+    }
+
+    #currentCard.weather-sunny::before {
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,255,255,0.7) 0, transparent 60%),
+        radial-gradient(circle at 80% 0%,  rgba(255,255,255,0.5) 0, transparent 65%);
+      animation: sunnyRays 4s infinite alternate;
+      opacity: 0.75;
+    }
+
+    @keyframes sunnyRays {
+      0% { transform: scale(1); opacity: 0.7; }
+      100% { transform: scale(1.08); opacity: 0.9; }
+    }
+
+    /* --- CLOUDY --- */
+    #currentCard.weather-cloudy {
+      background: linear-gradient(#3d4f60, #222b33);
+    }
+    #currentCard.weather-cloudy::before {
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.9) 0, transparent 55%),
+        radial-gradient(circle at 40% 10%, rgba(255,255,255,0.9) 0, transparent 55%),
+        radial-gradient(circle at 80% 25%, rgba(255,255,255,0.8) 0, transparent 55%);
+      background-repeat: no-repeat;
+      background-size: 180px 100px;
+      animation: cloudsMove 18s linear infinite;
+      opacity: 0.9;
+    }
+    @keyframes cloudsMove {
+      0% { background-position: -150px 10px, 80px -10px, 300px 20px; }
+      100% { background-position: 0px 10px, 230px -10px, 450px 20px; }
+    }
+
+    /* --- RAIN --- */
+    #currentCard.weather-rain {
+      background: radial-gradient(circle at top, #2c3e50, #111822);
+    }
+    #currentCard.weather-rain::before {
+      background-image: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.0) 0,
+        rgba(173,216,230,0.8) 60%,
+        rgba(173,216,230,0.2) 100%
+      );
+      background-size: 2px 18px;
+      background-repeat: repeat;
+      animation: rainFall 0.35s linear infinite;
+      opacity: 0.95;
+    }
+    @keyframes rainFall {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 18px; }
+    }
+    #currentCard.weather-rain::after {
+      background: radial-gradient(circle at top, rgba(255,255,255,0.2), transparent 60%);
+    }
+
+    /* --- FOG / COLD --- */
+    #currentCard.weather-fog {
+      background: linear-gradient(#52606d, #222831);
+    }
+    #currentCard.weather-fog::before {
+      background: rgba(255,255,255,0.55);
+      filter: blur(10px);
+      transform: translateX(-60%);
+      animation: fogDrift 10s linear infinite;
+      opacity: 0.8;
+    }
+    #currentCard.weather-fog::after {
+      background: radial-gradient(circle at bottom, rgba(255,255,255,0.5), transparent 60%);
+      opacity: 0.6;
+    }
+    @keyframes fogDrift {
+      0% { transform: translateX(-60%); }
+      100% { transform: translateX(60%); }
+    }
+
+    /* --- STORM --- */
+    #currentCard.weather-storm {
+      background: radial-gradient(circle at top, #3b3f60, #050716 60%, #000);
+    }
+    #currentCard.weather-storm::before {
+      background-image: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.0) 0,
+        rgba(173,216,230,0.9) 60%,
+        rgba(173,216,230,0.3) 100%
+      );
+      background-size: 2px 20px;
+      background-repeat: repeat;
+      animation: rainFall 0.28s linear infinite;
+      opacity: 0.85;
+    }
+    #currentCard.weather-storm::after {
+      background: radial-gradient(circle at 30% 0%, rgba(255,255,255,0.9), transparent 55%);
+      mix-blend-mode: screen;
+      opacity: 0;
+      animation: lightningFlash 4s infinite;
+    }
+    @keyframes lightningFlash {
+      0%, 80%, 100% { opacity: 0; }
+      81% { opacity: 1; }
+      83% { opacity: 0; }
+      86% { opacity: 1; }
+      88% { opacity: 0; }
+    }
+  </style>
 </head>
-
 <body>
-    <!-- ✅ Navbar Container (navbar.js will insert full navbar with user-name, logout-btn) -->
-    <div id="navbar"></div>
+  <div class="app">
+    <h1>🌦️ Village Weather</h1>
+    <div class="subtitle" id="subtitle">
+      Simple 14-day weather for village people
+    </div>
 
-    <main class="content">
-        <section id="weather" class="section-card">
-            <h2 data-lang-key="weather.title">Local Weather Forecast</h2>
-            <p data-lang-key="weather.subtitle">Accurate, hyper-local weather information to help you plan your farming
-                activities.</p>
-            <div class="weather-content">
-                <h3 data-lang-key="weather.currentConditions">Current Conditions</h3>
-                <!-- Add weather widgets here if needed -->
-            </div>
-        </section>
-    </main>
+    <!-- Language Dropdown -->
+    <div class="lang-select">
+      <label for="languageSelect">🌐 Language / भाषा चुनें</label>
+      <select id="languageSelect">
+        <option value="hi">हिंदी (Hindi)</option>
+        <option value="en">English</option>
+        <option value="bho">भोजपुरी (Bhojpuri)</option>
+        <option value="mai">मैथिली (Maithili)</option>
+      </select>
+    </div>
 
-    <!-- ✅ Footer -->
-    <div id="footer"></div>
+    <!-- Search & GPS -->
+    <div class="card">
+      <div class="input-row">
+        <input
+          id="placeInput"
+          type="text"
+          placeholder="Apna gaon / city name likhe"
+        />
+        <button class="btn" id="btnSearch">🔍</button>
+      </div>
+      <button class="btn btn-secondary btn-block" id="btnLocation">
+        📍 Use my location
+      </button>
+      <div class="status" id="statusText"></div>
+    </div>
 
-    
-    <!-- ✅ JS Files (Non-module First) -->
-    <script src="Js/utility.js"></script>
-    <script src="Js/navbar.js"></script>
-    <script src="Js/schemes.js"></script>
-    <script src="Js/footer.js"></script>
-    <script type="module" src="Js/language.js"></script>
-    <script type="module" src="Js/user_status.js"></script>
+    <!-- Alert Banner -->
+    <div class="alert" id="alertBox"></div>
 
-    <script>
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,hi,bn,mr,pa',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_element');
+    <!-- Current Weather Card WITH ANIMATION -->
+    <div class="card" id="currentCard" style="display:none;">
+      <div class="current-main">
+        <div class="location-name" id="locationName"></div>
+        <div class="current-date" id="currentDate"></div>
+        <div class="temp-big" id="currentTemp"></div>
+        <div class="condition-text" id="conditionText"></div>
+        <div class="current-extra" id="extraText"></div>
+        <div class="two-col">
+          <div id="rangeText"></div>
+          <div id="sunText"></div>
+        </div>
+      </div>
+      <div class="speak-row">
+        <button class="btn btn-block" id="btnSpeakToday">🔊 Speak Today</button>
+        <button class="btn btn-block" id="btnSpeakSummary">
+          🗣️ Speak 14 Days
+        </button>
+      </div>
+    </div>
+
+    <!-- Forecast Card -->
+    <div class="card" id="forecastCard" style="display:none;">
+      <div class="forecast-title" id="forecastTitle">14-Day Forecast</div>
+      <div class="forecast-list" id="forecastList"></div>
+    </div>
+
+    <!-- Farming Tip Card -->
+    <div class="card" id="tipCard" style="display:none;">
+      <strong id="tipTitle">Farming Tip</strong>
+      <div class="tip-text" id="tipText"></div>
+      <div class="offline-note" id="offlineNote">
+        Last weather is saved. You can see it even without internet.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --------- Language Texts ---------
+    const texts = {
+      hi: {
+        subtitle: "गाँव वालों के लिए आसान 14 दिन का मौसम",
+        placeholder: "अपना गाँव / शहर का नाम लिखें",
+        useLocation: "📍 अपने स्थान से मौसम देखें",
+        statusIdle: "ऊपर गाँव का नाम लिखें या लोकेशन से देखें।",
+        searching: "रुकिए... मौसम खोजा जा रहा है...",
+        usingLocation: "लोकेशन लिया जा रहा है...",
+        notFound: "गाँव/शहर नहीं मिला, सही नाम लिखें।",
+        geoError: "लोकेशन नहीं मिल पाई। कृपया नाम से खोजें।",
+        forecastTitle: "14 दिन का मौसम",
+        farmingTipTitle: "किसान सलाह",
+        offlineNote:
+          "आखिरी देखा हुआ मौसम सेव है। इंटरनेट न होने पर भी देख सकते हैं।",
+        speakTodayLabel: "🔊 आज का मौसम सुनें",
+        speakSummaryLabel: "🗣️ 14 दिन का मौसम सुनें",
+        rainAlertHeavy:
+          "⚠️ तेज बारिश या आंधी की संभावना है। बाहर काम करते समय सावधान रहें।",
+        rainAlertNormal:
+          "☔ आज बारिश की अच्छी संभावना है, फसल और पशुओं को सुरक्षित रखें।",
+        noAlert: "",
+        tipHotDry:
+          "आज गर्मी ज्यादा है और बारिश कम है। सिंचाई समय पर करें और खेत में नमी बचाने की कोशिश करें।",
+        tipRainy:
+          "आज या आने वाले दिनों में अच्छी बारिश है। पानी निकासी का ध्यान रखें ताकि खेत में पानी न भरे।",
+        tipNormal:
+          "मौसम सामान्य है। आज की योजना के अनुसार खेती का काम आराम से कर सकते हैं।",
+        currentSummary: (loc, max, min, cond, rain) =>
+          `${loc} में आज का अधिकतम तापमान ${max} डिग्री और न्यूनतम ${min} डिग्री रहेगा। मौसम ${cond} रहेगा। बारिश की संभावना लगभग ${rain} प्रतिशत है।`,
+        summary14: (loc, maxArr, minArr) => {
+          const firstMax = maxArr[0];
+          const firstMin = minArr[0];
+          const lastMax = maxArr[maxArr.length - 1];
+          const lastMin = minArr[minArr.length - 1];
+          return `${loc} के लिए 14 दिन का मौसम तैयार है। पहले दिन अधिकतम तापमान ${firstMax} और न्यूनतम ${firstMin} डिग्री के आस-पास रहेगा। आखिरी दिन अधिकतम लगभग ${lastMax} और न्यूनतम ${lastMin} डिग्री रहने की संभावना है।`;
+        },
+        conditionName: {
+          clear: "खुला आसमान",
+          cloudy: "बादल",
+          rain: "बारिश",
+          storm: "आंधी-तूफान",
+          snow: "बर्फबारी",
+          drizzle: "हल्की फुहारें",
+          fog: "कोहरा"
         }
-    </script>
+      },
+      en: {
+        subtitle: "Simple 14-day weather for village people",
+        placeholder: "Type your village / city name",
+        useLocation: "📍 Use my location",
+        statusIdle: "Type village name above or use location.",
+        searching: "Please wait... fetching weather...",
+        usingLocation: "Getting your location...",
+        notFound: "Place not found. Please check the spelling.",
+        geoError: "Could not get your location. Please search by name.",
+        forecastTitle: "14-Day Forecast",
+        farmingTipTitle: "Farming Tip",
+        offlineNote:
+          "Last seen weather is saved. You can see it without internet.",
+        speakTodayLabel: "🔊 Speak Today",
+        speakSummaryLabel: "🗣️ Speak 14 Days",
+        rainAlertHeavy:
+          "⚠️ Heavy rain or storm expected. Be careful while working outside.",
+        rainAlertNormal:
+          "☔ Good chance of rain today. Keep crops and animals safe.",
+        noAlert: "",
+        tipHotDry:
+          "It is hot and dry today. Water your crops on time and keep soil moisture.",
+        tipRainy:
+          "Good rain today or in coming days. Take care of drainage so fields do not flood.",
+        tipNormal:
+          "Weather is normal. You can do regular farming work comfortably.",
+        currentSummary: (loc, max, min, cond, rain) =>
+          `In ${loc}, today's maximum temperature will be around ${max} degrees and minimum around ${min} degrees. Weather will be ${cond}. Chance of rain is about ${rain} percent.`,
+        summary14: (loc, maxArr, minArr) => {
+          const firstMax = maxArr[0];
+          const firstMin = minArr[0];
+          const lastMax = maxArr[maxArr.length - 1];
+          const lastMin = minArr[minArr.length - 1];
+          return `14-day forecast ready for ${loc}. On the first day, max temperature is about ${firstMax} and min about ${firstMin} degrees. On the last day, max is about ${lastMax} and min about ${lastMin} degrees.`;
+        },
+        conditionName: {
+          clear: "clear sky",
+          cloudy: "cloudy",
+          rain: "rainy",
+          storm: "stormy",
+          snow: "snowy",
+          drizzle: "light drizzle",
+          fog: "fog"
+        }
+      },
+      bho: {
+        subtitle: "गाँव वाला लोग खातिर आसान 14 दिन के मौसम",
+        placeholder: "आपन गाँव / सहर के नाव लिखीं",
+        useLocation: "📍 आपन जगह से मौसम देखीं",
+        statusIdle: "ऊपर गाँव के नाव लिखीं चाहे लोकेशन से देखीं।",
+        searching: "रुकहीं... मौसम निकाले जा रहल बा...",
+        usingLocation: "लोकेशन लेहल जा रहल बा...",
+        notFound: "गाँव / सहर ना मिलल, सही नाव से फेर लिखीं।",
+        geoError: "लोकेशन ना मिल पावल। किरपा कके नाव से खोजीं।",
+        forecastTitle: "14 दिन के मौसम",
+        farmingTipTitle: "किसान सलाह",
+        offlineNote:
+          "पिछला देखल मौसम सेव बा, बिना नेट भी देख सकत बानी।",
+        speakTodayLabel: "🔊 आज के मौसम सुनीं",
+        speakSummaryLabel: "🗣️ 14 दिन के मौसम सुनीं",
+        rainAlertHeavy:
+          "⚠️ आज तेज बरखा आंधी के आसार बा। बाहर काम करत बेरा सावधान रहीं।",
+        rainAlertNormal:
+          "☔ आज बरखा के अच्छा मौका बा, फसल आ जानवर के सुरक्षित जगह पर राखीं।",
+        noAlert: "",
+        tipHotDry:
+          "आज गरमी जादे बा आ बरखा कम बा। बेरा पर पानी दीहीं आ खेत में नमी बचा के रखीं।",
+        tipRainy:
+          "आज ना त आवे वाला दिन में बढ़िया बरखा बा। खेत में पानी निकासी ठीक राखीं, जेकरे से पानी जमा ना होखे।",
+        tipNormal:
+          "मौसम सामान्य बा। आज आराम से आपन खेती-करी कर सकत बानी।",
+        currentSummary: (loc, max, min, cond, rain) =>
+          `${loc} में आज के अधिकतम तापमान करीब ${max} डिग्री आ न्यूनतम ${min} डिग्री रही। मौसम ${cond} जइसन रही। बरखा के संभावना करीब ${rain} प्रतिशत बा।`,
+        summary14: (loc, maxArr, minArr) => {
+          const firstMax = maxArr[0];
+          const firstMin = minArr[0];
+          const lastMax = maxArr[maxArr.length - 1];
+          const lastMin = minArr[minArr.length - 1];
+          return `${loc} खातिर 14 दिन के मौसम तयार बा। पहिले दिन अधिकतम तापमान करीब ${firstMax} आ न्यूनतम ${firstMin} डिग्री रही, आखिरी दिन अधिकतम ${lastMax} आ न्यूनतम ${lastMin} डिग्री के आसपास रहे के उमेद बा।`;
+        },
+        conditionName: {
+          clear: "खुला आसमान",
+          cloudy: "बादर लागल",
+          rain: "बरखा",
+          storm: "आंधी-तूफान",
+          snow: "बरफबारी",
+          drizzle: "हल्का फुहार",
+          fog: "कोहरा"
+        }
+      },
+      mai: {
+        subtitle: "गाँवक मनुख लेल साधारण 14 दिनक मौसम जानकारी",
+        placeholder: "अपन गाम / शहरक नाम लिखू",
+        useLocation: "📍 अपन जगह सँ मौसम देखू",
+        statusIdle: "उप्पर गामक नाम लिखू या लोकेशन सँ देखू।",
+        searching: "रुकू... मौसम निकालल जाएत अछि...",
+        usingLocation: "लोकेशन ल लेल जाएत अछि...",
+        notFound: "गाम / शहर नहि भेटल, सही नाम सँ पुन्ह लिखू।",
+        geoError: "लोकेशन नहि भेटि सकल। कृपया नाम सँ खोजू।",
+        forecastTitle: "14 दिनक मौसम",
+        farmingTipTitle: "किसान सलाह",
+        offlineNote:
+          "अखेरी बेर देखल मौसम सेव अछि, बिनु नेटो देखि सकइत छी।",
+        speakTodayLabel: "🔊 आइक मौसम सुनू",
+        speakSummaryLabel: "🗣️ 14 दिनक मौसम सुनू",
+        rainAlertHeavy:
+          "⚠️ आइ जोरदार बरखा आ आँधीक संभावना अछि। बाहरे काज करैत समय सावधान रहू।",
+        rainAlertNormal:
+          "☔ आइ नीक बरखा भ सकैत अछि, फसल आ जनावर सुरक्षित जगह पर राखू।",
+        noAlert: "",
+        tipHotDry:
+          "आइ गर्मी बेसी अछि आ बरखा कम अछि। समय सँ सिंचाई करू आ खेतमे नमी बचा कए रखू।",
+        tipRainy:
+          "आइ अथवा आगाँक दिनमे नीक बरखा अछि। खेतमे पानी निकासी पर ध्यान राखू जेना पानि भरि नहि जाय।",
+        tipNormal:
+          "मौसम सामान्य अछि। अपन योजना अनुसार आराम सँ खेतीक काज करू।",
+        currentSummary: (loc, max, min, cond, rain) =>
+          `${loc} मे आइ अधिकतम तापमान करीब ${max} डिग्री आ न्यूनतम ${min} डिग्री रहत। मौसम ${cond} जकाँ रहत। बरखाेक संभावना करीब ${rain} प्रतिशत अछि।`,
+        summary14: (loc, maxArr, minArr) => {
+          const firstMax = maxArr[0];
+          const firstMin = minArr[0];
+          const lastMax = maxArr[maxArr.length - 1];
+          const lastMin = minArr[minArr.length - 1];
+          return `${loc} लेल 14 दिनक मौसम तयार अछि। पहिलदिन अधिकतम तापमान ${firstMax} आ न्यूनतम ${firstMin} डिग्रीक आसपास रहत, आ आखिरी दिन अधिकतम ${lastMax} आ न्यूनतम ${lastMin} डिग्री होएबाक संभावना अछि।`;
+        },
+        conditionName: {
+          clear: "खुल्ला आकाश",
+          cloudy: "बादल छलैल",
+          rain: "बरखा",
+          storm: "आँधी-तूफान",
+          snow: "बरफबारी",
+          drizzle: "हल्का फुहार",
+          fog: "कोहरा"
+        }
+      }
+    };
 
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    let currentLang = "hi";
+    let lastWeatherData = null;
+    let lastMeta = null;
 
+    function setLanguage(lang) {
+      currentLang = lang;
+      const t = texts[lang];
 
+      document.getElementById("subtitle").textContent = t.subtitle;
+      document.getElementById("placeInput").placeholder = t.placeholder;
+      document.getElementById("btnLocation").textContent = t.useLocation;
+      document.getElementById("forecastTitle").textContent = t.forecastTitle;
+      document.getElementById("tipTitle").textContent = t.farmingTipTitle;
+      document.getElementById("offlineNote").textContent = t.offlineNote;
+      document.getElementById("btnSpeakToday").textContent = t.speakTodayLabel;
+      document.getElementById("btnSpeakSummary").textContent =
+        t.speakSummaryLabel;
+
+      if (document.getElementById("statusText").textContent === "" ||
+          document.getElementById("statusText").textContent === texts.hi.statusIdle ||
+          document.getElementById("statusText").textContent === texts.en.statusIdle) {
+        document.getElementById("statusText").textContent = t.statusIdle;
+      }
+
+      if (lastWeatherData && lastMeta) {
+        renderWeather(lastWeatherData, lastMeta);
+      }
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      const day = d.getDate().toString().padStart(2, "0");
+      const month = (d.getMonth() + 1).toString().padStart(2, "0");
+      return `${day}-${month}`;
+    }
+
+    function mapWeatherCodeToType(code) {
+      if (code === 0) return "clear";
+      if ([1, 2, 3].includes(code)) return "cloudy";
+      if ([51, 53, 55, 61, 63, 65, 66, 67, 80, 81, 82].includes(code))
+        return "rain";
+      if ([95, 96, 99].includes(code)) return "storm";
+      if ([71, 73, 75, 77, 85, 86].includes(code)) return "snow";
+      if ([45, 48].includes(code)) return "fog";
+      if ([56, 57].includes(code)) return "drizzle";
+      return "cloudy";
+    }
+
+    function getConditionLabel(type) {
+      const labelMap = texts[currentLang].conditionName;
+      return labelMap[type] || type;
+    }
+
+    function buildAlert(rainProb, code) {
+      const t = texts[currentLang];
+      const type = mapWeatherCodeToType(code);
+      if (type === "storm" || rainProb >= 80) {
+        return t.rainAlertHeavy;
+      }
+      if (rainProb >= 50) {
+        return t.rainAlertNormal;
+      }
+      return t.noAlert;
+    }
+
+    function buildFarmingTip(maxTemp, rainProb) {
+      const t = texts[currentLang];
+      if (maxTemp >= 35 && rainProb < 40) {
+        return t.tipHotDry;
+      }
+      if (rainProb >= 60) {
+        return t.tipRainy;
+      }
+      return t.tipNormal;
+    }
+
+    function speak(text) {
+      if (!window.speechSynthesis) return;
+      const utter = new SpeechSynthesisUtterance(text);
+      // Hindi engine for hi / bho / mai, English engine for en
+      utter.lang = currentLang === "en" ? "en-IN" : "hi-IN";
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utter);
+    }
+
+    function saveOffline(data, meta) {
+      try {
+        localStorage.setItem(
+          "villageWeatherData",
+          JSON.stringify({ data, meta, at: Date.now() })
+        );
+      } catch (_) {}
+    }
+
+    function loadOffline() {
+      try {
+        const raw = localStorage.getItem("villageWeatherData");
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function applyCardAnimation(type) {
+      const card = document.getElementById("currentCard");
+      card.classList.remove(
+        "weather-sunny",
+        "weather-rain",
+        "weather-cloudy",
+        "weather-fog",
+        "weather-storm"
+      );
+
+      if (type === "clear") card.classList.add("weather-sunny");
+      else if (type === "rain" || type === "drizzle")
+        card.classList.add("weather-rain");
+      else if (type === "storm") card.classList.add("weather-storm");
+      else if (type === "fog" || type === "snow")
+        card.classList.add("weather-fog");
+      else card.classList.add("weather-cloudy");
+    }
+
+    // --------- Rendering ---------
+    function renderWeather(apiData, meta) {
+      lastWeatherData = apiData;
+      lastMeta = meta;
+
+      const t = texts[currentLang];
+      const current = apiData.current_weather;
+      const daily = apiData.daily;
+
+      const currentCard = document.getElementById("currentCard");
+      currentCard.style.display = "block";
+      document.getElementById("forecastCard").style.display = "block";
+      document.getElementById("tipCard").style.display = "block";
+
+      const locationName = meta.placeName || "Your Place";
+
+      const todayIndex = 0;
+      const todayMax = Math.round(daily.temperature_2m_max[todayIndex]);
+      const todayMin = Math.round(daily.temperature_2m_min[todayIndex]);
+      const todayRainProb = daily.precipitation_probability_max[todayIndex];
+      const todayCode = daily.weathercode[todayIndex];
+      const type = mapWeatherCodeToType(todayCode);
+      const condLabel = getConditionLabel(type);
+
+      const todayDate = new Date(daily.time[todayIndex]);
+      const dateStr = todayDate.toLocaleDateString(
+        currentLang === "en" ? "en-IN" : "hi-IN",
+        { weekday: "short", day: "numeric", month: "short" }
+      );
+
+      document.getElementById("locationName").textContent = locationName;
+      document.getElementById("currentDate").textContent = dateStr;
+      document.getElementById("currentTemp").textContent =
+        Math.round(current.temperature) + "°C";
+      document.getElementById("conditionText").textContent = condLabel;
+      document.getElementById("extraText").textContent =
+        currentLang === "en"
+          ? `Wind speed ${current.windspeed} km/h`
+          : currentLang === "bho"
+          ? `हवा के रफतार ${current.windspeed} km/h`
+          : currentLang === "mai"
+          ? `हावाक रफ्तार ${current.windspeed} km/h`
+          : `हवा की रफ़्तार ${current.windspeed} km/h`;
+
+      document.getElementById("rangeText").textContent =
+        todayMax + "° / " + todayMin + "°";
+
+      const sunrise = daily.sunrise[todayIndex].split("T")[1]?.slice(0, 5);
+      const sunset = daily.sunset[todayIndex].split("T")[1]?.slice(0, 5);
+
+      let sunText;
+      if (currentLang === "en") {
+        sunText = `Sunrise ${sunrise}, Sunset ${sunset}`;
+      } else if (currentLang === "bho") {
+        sunText = `सूरज उगला ${sunrise}, अस्त ${sunset} बजे`;
+      } else if (currentLang === "mai") {
+        sunText = `सूर्योदय ${sunrise}, सूर्यास्त ${sunset}`;
+      } else {
+        sunText = `सूर्योदय ${sunrise}, सूर्यास्त ${sunset}`;
+      }
+      document.getElementById("sunText").textContent = sunText;
+
+      applyCardAnimation(type);
+
+      const alertMsg = buildAlert(todayRainProb, todayCode);
+      const alertBox = document.getElementById("alertBox");
+      if (alertMsg) {
+        alertBox.style.display = "block";
+        alertBox.textContent = alertMsg;
+      } else {
+        alertBox.style.display = "none";
+      }
+
+      const listEl = document.getElementById("forecastList");
+      listEl.innerHTML = "";
+      for (let i = 0; i < daily.time.length; i++) {
+        const dateLabel =
+          i === 0
+            ? currentLang === "en"
+              ? "Today"
+              : currentLang === "bho"
+              ? "आज"
+              : currentLang === "mai"
+              ? "आइ"
+              : "आज"
+            : formatDate(daily.time[i]);
+
+        const maxT = Math.round(daily.temperature_2m_max[i]);
+        const minT = Math.round(daily.temperature_2m_min[i]);
+        const rainP = daily.precipitation_probability_max[i];
+        const wType = mapWeatherCodeToType(daily.weathercode[i]);
+        const wLabel = getConditionLabel(wType);
+
+        const rainLabel =
+          currentLang === "en"
+            ? "Rain:"
+            : currentLang === "bho"
+            ? "बरखा:"
+            : "बारिश:";
+
+        const item = document.createElement("div");
+        item.className = "day-item";
+        item.innerHTML = `
+          <div class="day-left">
+            <div class="day-date">${dateLabel}</div>
+            <div class="day-cond">${wLabel}</div>
+          </div>
+          <div>
+            <div class="day-temp">${maxT}° / ${minT}°</div>
+            <div class="day-rain">
+              ${rainLabel} ${rainP}%
+            </div>
+          </div>
+        `;
+        listEl.appendChild(item);
+      }
+
+      const tip = buildFarmingTip(todayMax, todayRainProb);
+      document.getElementById("tipText").textContent = tip;
+
+      document.getElementById("statusText").textContent = "";
+    }
+
+    // --------- API Calls ---------
+    async function fetchWeatherByName(name) {
+      const t = texts[currentLang];
+      document.getElementById("statusText").textContent = t.searching;
+
+      try {
+        const geoResp = await fetch(
+          `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
+            name
+          )}&count=1&language=en&format=json`
+        );
+        const geo = await geoResp.json();
+        if (!geo.results || !geo.results.length) {
+          document.getElementById("statusText").textContent = t.notFound;
+          return;
+        }
+        const place = geo.results[0];
+        await fetchWeatherByCoords(
+          place.latitude,
+          place.longitude,
+          `${place.name}, ${place.country}`
+        );
+      } catch (e) {
+        document.getElementById("statusText").textContent = t.notFound;
+      }
+    }
+
+    async function fetchWeatherByCoords(lat, lon, placeName = "") {
+      const t = texts[currentLang];
+      document.getElementById("statusText").textContent = t.searching;
+
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&current_weather=true&timezone=auto&forecast_days=14`;
+
+      try {
+        const resp = await fetch(url);
+        const data = await resp.json();
+        const meta = { placeName, lat, lon };
+        renderWeather(data, meta);
+        saveOffline(data, meta);
+      } catch (e) {
+        document.getElementById("statusText").textContent = "Error fetching.";
+      }
+    }
+
+    function useMyLocation() {
+      const t = texts[currentLang];
+      if (!navigator.geolocation) {
+        document.getElementById("statusText").textContent = t.geoError;
+        return;
+      }
+      document.getElementById("statusText").textContent = t.usingLocation;
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          let placeName =
+            currentLang === "en"
+              ? "Your Place"
+              : currentLang === "bho"
+              ? "तोहार इलाका"
+              : currentLang === "mai"
+              ? "अहाँक जगह"
+              : "आपका क्षेत्र";
+          try {
+            const geoResp = await fetch(
+              `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&count=1&language=en&format=json`
+            );
+            const geo = await geoResp.json();
+            if (geo.results && geo.results.length) {
+              const p = geo.results[0];
+              placeName = `${p.name}, ${p.country}`;
+            }
+          } catch (_) {}
+          fetchWeatherByCoords(lat, lon, placeName);
+        },
+        () => {
+          document.getElementById("statusText").textContent = t.geoError;
+        }
+      );
+    }
+
+    // --------- Voice Buttons ---------
+    function speakTodayWeather() {
+      if (!lastWeatherData || !lastMeta) return;
+      const t = texts[currentLang];
+      const daily = lastWeatherData.daily;
+      const todayIndex = 0;
+
+      let loc =
+        lastMeta.placeName ||
+        (currentLang === "en"
+          ? "your area"
+          : currentLang === "bho"
+          ? "रउवा इलाका"
+          : currentLang === "mai"
+          ? "अहाँक इलाका"
+          : "आपका क्षेत्र");
+      const max = Math.round(daily.temperature_2m_max[todayIndex]);
+      const min = Math.round(daily.temperature_2m_min[todayIndex]);
+      const rain = daily.precipitation_probability_max[todayIndex];
+      const type = mapWeatherCodeToType(daily.weathercode[todayIndex]);
+      const condLabel = getConditionLabel(type);
+
+      const text = t.currentSummary(loc, max, min, condLabel, rain);
+      speak(text);
+    }
+
+    function speakSummary14() {
+      if (!lastWeatherData || !lastMeta) return;
+      const t = texts[currentLang];
+      const daily = lastWeatherData.daily;
+      const loc =
+        lastMeta.placeName ||
+        (currentLang === "en"
+          ? "your area"
+          : currentLang === "bho"
+          ? "रउवा इलाका"
+          : currentLang === "mai"
+          ? "अहाँक इलाका"
+          : "आपका क्षेत्र");
+      const maxArr = daily.temperature_2m_max.map((v) => Math.round(v));
+      const minArr = daily.temperature_2m_min.map((v) => Math.round(v));
+      const text = t.summary14(loc, maxArr, minArr);
+      speak(text);
+    }
+
+    // --------- Init ---------
+    window.addEventListener("DOMContentLoaded", () => {
+      // default Hindi
+      setLanguage("hi");
+      document.getElementById("languageSelect").value = "hi";
+
+      document
+        .getElementById("languageSelect")
+        .addEventListener("change", (e) => {
+          setLanguage(e.target.value);
+        });
+
+      document.getElementById("btnSearch").addEventListener("click", () => {
+        const val = document.getElementById("placeInput").value.trim();
+        if (!val) return;
+        fetchWeatherByName(val);
+      });
+
+      document
+        .getElementById("placeInput")
+        .addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            document.getElementById("btnSearch").click();
+          }
+        });
+
+      document
+        .getElementById("btnLocation")
+        .addEventListener("click", useMyLocation);
+
+      document
+        .getElementById("btnSpeakToday")
+        .addEventListener("click", speakTodayWeather);
+
+      document
+        .getElementById("btnSpeakSummary")
+        .addEventListener("click", speakSummary14);
+
+      const stored = loadOffline();
+      if (stored && stored.data && stored.meta) {
+        renderWeather(stored.data, stored.meta);
+      } else {
+        document.getElementById("statusText").textContent =
+          texts[currentLang].statusIdle;
+      }
+    });
+  </script>
 </body>
-
 </html>
