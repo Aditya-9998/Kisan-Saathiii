@@ -1,151 +1,126 @@
-/* css/profile.css */
-:root {
-  --green: #1f7a35;
-  --muted: #f4f7f4;
-  --card: #fff;
-  --danger: #c62828;
-}
-
-/* page layout */
-body {
-  background: var(--muted);
-  font-family: "Poppins", Helvetica, Arial, sans-serif;
-  margin: 0;
-  color: #222;
-}
-
-/* center main */
+/* Main Container */
 .profile-main {
-  max-width: 1100px;
-  margin: 36px auto;
-  padding: 0 18px;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
 }
 
-/* card */
 .profile-card {
-  background: var(--card);
-  border-radius: 12px;
-  padding: 28px;
-  box-shadow: 0 8px 26px rgba(12, 20, 12, 0.06);
+  width: 75%;
+  max-width: 850px;
+  background: white;
+  border-radius: 18px;
+  padding: 35px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
 .profile-card h1 {
-  margin: 0 0 18px 0;
-  color: var(--green);
-  font-size: 28px;
   text-align: center;
+  font-size: 28px;
+  color: #2d7a2f;
+  margin-bottom: 18px;
 }
 
-/* grid */
+/* Email Top Box */
+.profile-email-top {
+  width: 100%;
+  padding: 14px;
+  background: #eef5ef;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid #dcdcdc;
+  color: #2d7a2f;
+  margin-bottom: 25px;
+}
+
+/* Grid */
 .profile-grid {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 28px;
-  align-items: start;
-}
-
-/* left */
-.left-col {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-  align-items: center;
+  width: 100%;
 }
 
-.avatar {
-  width: 180px;
-  height: 180px;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid #e6e6e6;
-  background: #fafafa;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.avatar img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.email-block {
-  width:100%;
-  text-align:center;
-}
-
-.readonly-field {
-  background:#f8faf7;
-  border:1px solid #e6efe6;
-  padding:10px;
-  border-radius:8px;
-  color:#333;
-}
-
-/* actions */
-.actions {
-  display:flex;
-  gap:12px;
-  width:100%;
-  justify-content:center;
-}
-
-/* right (form) */
 .right-col {
-  display:flex;
-  flex-direction:column;
-  gap:12px;
+  width: 100%;
 }
 
+/* Inputs */
 .right-col label {
-  font-weight:600;
-  margin-top: 6px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: #333;
 }
 
 .right-col input {
-  padding:12px 14px;
-  border-radius:8px;
-  border:1px solid #ddebdc;
-  background:#fbfdfb;
-  font-size:15px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  margin-bottom: 18px;
 }
 
-/* buttons */
-.btn {
-  padding:12px 18px;
-  border-radius:8px;
-  cursor:pointer;
-  border:none;
-  font-weight:600;
+#profileImageURL::placeholder {
+  color: transparent;
 }
 
-.btn-primary {
-  background:var(--green);
-  color:white;
+/* Bottom Buttons */
+.button-row-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 15px;
 }
 
-.btn-ghost {
-  background:transparent;
-  border:1px solid #ddd;
-  color:#222;
+/* Logout */
+.btn-logout {
+  flex: 1;
+  padding: 12px;
+  background: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-.btn-danger {
-  background:var(--danger);
-  color:white;
+/* Delete */
+.btn-delete {
+  flex: 1;
+  padding: 12px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-/* form actions */
-.form-actions {
-  display:flex;
-  gap:12px;
-  margin-top:6px;
+/* Save */
+.btn-save {
+  flex: 1;
+  padding: 12px;
+  background: #198754;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-/* responsive */
-@media (max-width:900px) {
-  .profile-grid { grid-template-columns: 1fr; }
-  .avatar { width:140px; height:140px; }
-  .form-actions { flex-direction: column; }
+/* Popup */
+.popup-box {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 14px 22px;
+  background: #2ecc71;
+  color: white;
+  border-radius: 10px;
+  font-size: 16px;
+  display: none;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+  z-index: 999;
 }

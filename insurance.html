@@ -43,9 +43,9 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
     <script>
-        // 🚨 REPLACE WITH YOUR ACTUAL CONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
             authDomain: "kisan-saathiii.firebaseapp.com",
@@ -56,12 +56,17 @@
             measurementId: "G-XJ0T10GRND"
         };
 
-        // Initialize Firebase and set global variables
+        // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+        const db = firebase.firestore();   // ✅ IMPORTANT
+
+        // Expose globally for user_status.js
         window.firebaseApp = app;
         window.firebaseAuth = auth;
+        window.firebaseDb = db;            // ✅ IMPORTANT
     </script>
+
 
 
 
@@ -72,18 +77,9 @@
 
     <script src="Js/navbar.js"></script>
     <script type="module" src="Js/user_status.js"></script>
+    <script type="module" src="Js/auth_guard.js"></script>
 
-    <script>
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,hi,bn,mr,pa',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_element');
-        }
-    </script>
 
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 
 

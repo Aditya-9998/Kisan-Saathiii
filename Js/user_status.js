@@ -1,125 +1,91 @@
-// =======================
-// user_status.js (FINAL MODULAR VERSION)
-// =======================
+// user_status.js (FINAL - V8 Compatible, Login + Logout Popup Fixed)
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {
-  getAuth,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+(function () {
+  console.log("user_status.js loaded...");
 
-// Firebase Config
-const firebaseConfig = {
-  apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
-  authDomain: "kisan-saathiii.firebaseapp.com",
-  projectId: "kisan-saathiii",
-  storageBucket: "kisan-saathiii.appspot.com",
-  messagingSenderId: "1069746635685",
-  appId: "1:1069746635685:web:b6cade8247e56094011e4c",
-  measurementId: "G-XJ0T10GRND"
-};
+  document.addEventListener("navbarLoaded", initUserStatus);
 
-// Init Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-console.log("🔥 user_status.js: Firebase initialized.");
-
-// Wait for navbar to load first
-document.addEventListener("navbarLoaded", initUserStatus);
-
-// Backup fallback in case event doesn't fire
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(initUserStatus, 400);
-});
-
-function initUserStatus() {
-  console.log("🔍 Checking navbar elements...");
-
-  const loginBtn = document.getElementById("login-btn");
-  const userNameEl = document.getElementById("user-name");
-  const logoutBtn = document.getElementById("logout-btn");
-
-  // If navbar not loaded yet
-  if (!loginBtn || !userNameEl) {
-    console.warn("⏳ Navbar elements not ready — retrying...");
-    return setTimeout(initUserStatus, 300);
+  function toast(msg, icon = "success") {
+    setTimeout(() => {
+      if (window.Swal) {
+        Swal.fire({
+          toast: true,
+          icon,
+          position: "top-end",
+          title: msg,
+          timer: 2200,
+          showConfirmButton: false,
+        });
+      } else alert(msg);
+    }, 250);
   }
 
-  console.log("✅ Navbar found. Starting auth listener...");
+  function initUserStatus() {
+    console.log("initUserStatus running...");
 
-  // Firebase auth state listener
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // ------------------------
-      // USER IS LOGGED IN
-      // ------------------------
-
-      const displayName =
-        user.displayName || user.email?.split("@")[0] || "User";
-
-      console.log("👤 Logged In as:", displayName);
-
-      // Show Username / Hide Login
-      loginBtn.style.display = "none";
-
-      userNameEl.style.display = "inline-block";
-      userNameEl.textContent = "Hey " + displayName;
-      userNameEl.href = "profile.html";
-
-      if (logoutBtn) {
-        logoutBtn.style.display = "inline-block";
-      }
-
-      // Show login success toast
-      if (sessionStorage.getItem("loginSuccess")) {
-        sessionStorage.removeItem("loginSuccess");
-
-        if (window.Swal) {
-          Swal.fire({
-            toast: true,
-            position: "top-end",
-            icon: "success",
-            title: `Welcome back, ${displayName}!`,
-            showConfirmButton: false,
-            timer: 3000,
-            background: "#e8ffe8",
-          });
-        }
-      }
-
-    } else {
-      // ------------------------
-      // USER IS LOGGED OUT
-      // ------------------------
-
-      console.log("🚫 User Logged Out");
-
-      userNameEl.style.display = "none";
-      loginBtn.style.display = "inline-block";
-
-      if (logoutBtn) {
-        logoutBtn.style.display = "none";
-      }
-
-      // Show logout success toast
-      if (sessionStorage.getItem("logoutSuccess")) {
-        sessionStorage.removeItem("logoutSuccess");
-
-        if (window.Swal) {
-          Swal.fire({
-            toast: true,
-            position: "top-end",
-            icon: "success",
-            title: "You have logged out successfully.",
-            showConfirmButton: false,
-            timer: 3000,
-            background: "#e8ffe8",
-          });
-        } else {
-          alert("You have logged out successfully!");
-        }
-      }
+    // Firebase ready?
+    if (!window.firebaseAuth || !window.firebaseDb) {
+      console.warn("Firebase not loaded on this page. Skipping user_status.js");
+      return;
     }
-  });
-}
+
+
+    const auth = window.firebaseAuth;
+    const db = window.firebaseDb;
+
+    const loginBtn = document.getElementById("login-btn");
+    const userNameEl = document.getElementById("user-name");
+
+    if (!loginBtn || !userNameEl) {
+      console.warn("Navbar elements not ready, retrying...");
+      return setTimeout(initUserStatus, 300);
+    }
+
+    // MAIN AUTH LISTENER
+    auth.onAuthStateChanged(async (user) => {
+      /* ===============================
+         WHEN USER LOGS OUT  (user = null)
+      ================================== */
+      if (!user) {
+
+        // Show logout popup after redirect
+        if (sessionStorage.getItem("logoutSuccess")) {
+          setTimeout(() => {
+            toast("Logged out successfully!", "success");
+            sessionStorage.removeItem("logoutSuccess");
+          }, 400);
+        }
+
+        loginBtn.style.display = "inline-block";
+        userNameEl.style.display = "none";
+        return;
+      }
+
+      /* ===============================
+         WHEN USER IS LOGGED IN
+      ================================== */
+      let name = user.displayName || user.email.split("@")[0];
+
+      // Try Firestore name override
+      try {
+        const snap = await db.collection("users").doc(user.uid).get();
+        if (snap.exists && snap.data().name) {
+          name = snap.data().name;
+        }
+      } catch (e) {
+        console.warn("Firestore read failed", e);
+      }
+
+      // Update UI
+      loginBtn.style.display = "none";
+      userNameEl.style.display = "inline-block";
+      userNameEl.textContent = "Hey " + name;
+
+      // Login popup
+      if (sessionStorage.getItem("loginSuccess")) {
+        toast("Welcome " + name, "success");
+        sessionStorage.removeItem("loginSuccess");
+      }
+    });
+  }
+})();

@@ -1,6 +1,3 @@
-<!--index.html-->
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,13 +7,13 @@
   <title>Kisaan Saathi</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/footer.css" />
-  <link rel="stylesheet" href="css/profile.css" />
-  <link rel="stylesheet" href="css/index.css" />
-  <link rel="stylesheet" href="css/navbar.css?v=10" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/footer.css" />
+  <link rel="stylesheet" href="./css/profile.css" />
+  <link rel="stylesheet" href="./css/index.css" />
+  <link rel="stylesheet" href="./css/navbar.css?v=10" />
 
-  <!-- Font Awesome & SweetAlert -->
+  <!-- Icons + SweetAlert -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -38,23 +35,17 @@
 
       <!-- Government Scheme Slider -->
       <section id="schemes-section" class="government-scheme-card">
-        <h2 data-lang-key="schemes.title">Government Schemes for Farmers</h2>
+        <h2>Government Schemes for Farmers</h2>
 
         <div class="schemes-carousel-container">
           <div class="schemes-carousel">
-
             <div class="scheme-card active">
-              <h3 data-lang-key="scheme.pmkisan.title">
-                Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)
-              </h3>
-              <p data-lang-key="scheme.pmkisan.subtitle">
-                A welfare initiative providing income support to landholding farmer families.
-              </p>
-              <a href="schemes.html" class="cta-scheme" data-lang-key="scheme.pmkisan.cta">
+              <h3>Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)</h3>
+              <p>A welfare initiative providing income support to landholding farmer families.</p>
+              <a href="schemes.html" class="cta-scheme">
                 Check Eligibility & Apply
               </a>
             </div>
-
           </div>
         </div>
 
@@ -63,39 +54,29 @@
 
       <!-- HERO TEXT -->
       <div class="hero-content">
-        <h1 data-lang-key="hero.title">Your Farming Partner</h1>
-        <p data-lang-key="hero.subtitle">
-          Empowering farmers with data-driven insights for better yields and profits.
-        </p>
+        <h1>Your Farming Partner</h1>
+        <p>Empowering farmers with data-driven insights for better yields and profits.</p>
       </div>
 
-      <!-- ============================= -->
-      <!-- NEW CATEGORY SLIDER SECTION -->
-      <!-- ============================= -->
-
+      <!-- CATEGORY SLIDER SECTION -->
       <section class="new-category-section">
         <h2 class="new-category-title">Explore Farming Essentials</h2>
 
         <div class="category-row">
 
-          <!-- PESTICIDES -->
           <div class="category-card-box">
             <h3>Pesticides</h3>
-
             <div class="slider-container" id="slider-pesticide">
               <img src="images/Imidacloprid.webp" class="active" data-name="Imidacloprid">
               <img src="images/chlorpyrifos 20 EC.webp" data-name="Chlorpyrifos 20 EC">
               <img src="images/Lambda-Cyhalothrin.webp" data-name="Lambda-Cyhalothrin">
               <img src="images/Thiamethoxam.avif" data-name="Thiamethoxam">
             </div>
-
             <p class="item-name" id="name-pesticide">Imidacloprid</p>
           </div>
 
-          <!-- SEEDS -->
           <div class="category-card-box">
             <h3>Seeds</h3>
-
             <div class="slider-container" id="slider-seeds">
               <img src="images/seed1.webp" class="active" data-name="Wheat Seeds">
               <img src="images/seed4.webp" data-name="Rice Seeds">
@@ -103,21 +84,17 @@
               <img src="images/seed2.webp" data-name="Mustard Seeds">
               <img src="images/seed5.webp" data-name="Arhar (Dal) Seeds">
             </div>
-
             <p class="item-name" id="name-seeds">Wheat Seeds</p>
           </div>
 
-          <!-- FERTILIZERS -->
           <div class="category-card-box">
             <h3>Fertilizers / Manure</h3>
-
             <div class="slider-container" id="slider-fert">
               <img src="images/fert1.jpg" class="active" data-name="DAP Fertilizer">
               <img src="images/fert2.jpg" data-name="Urea">
               <img src="images/fert3.jpg" data-name="Organic Compost">
               <img src="images/fert4.webp" data-name="Liquid Fertilizer">
             </div>
-
             <p class="item-name" id="name-fert">DAP Fertilizer</p>
           </div>
 
@@ -130,9 +107,7 @@
   <!-- FOOTER -->
   <div id="footer"></div>
 
-  <!-- ========================================================= -->
-  <!-- PAGE SCRIPTS (LOAD BEFORE NAVBAR + USER_STATUS)           -->
-  <!-- ========================================================= -->
+  <!-- PAGE SCRIPTS -->
   <script src="Js/utility.js"></script>
   <script src="Js/schemes.js"></script>
   <script src="Js/footer.js"></script>
@@ -159,26 +134,18 @@
     autoSlider("slider-fert", "name-fert");
   </script>
 
-  <!-- ========================================================= -->
-  <!-- GOOGLE TRANSLATE SAFE LOAD                                -->
-  <!-- ========================================================= -->
-  <script>
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'en,hi,bn,mr,pa',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_element');
-    }
-  </script>
+  <!-- ⭐ FIREBASE SDK v8 (COMPATIBLE WITH USER_STATUS) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
-  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <!-- FIREBASE INIT -->
+  <script src="Js/firebase_init.js"></script>
 
-  <!-- ========================================================= -->
-  <!-- ⭐ LOAD NAVBAR FIRST — THEN USER STATUS                   -->
-  <!-- ========================================================= -->
+  <!-- NAVBAR & USER STATUS -->
   <script src="Js/navbar.js"></script>
-  <script type="module" src="Js/user_status.js"></script>
+  <script src="Js/user_status.js"></script>
 
 </body>
 

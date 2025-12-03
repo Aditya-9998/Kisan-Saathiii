@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "@google-cloud/translate": "^9.2.1"
+    "@google-cloud/translate": "^9.2.1",
+    "express": "^5.1.0",
+    "selfsigned": "^4.0.0"
   }
 }

@@ -9,63 +9,85 @@
   <link rel="stylesheet" href="css/footer.css" />
   <link rel="stylesheet" href="css/navbar.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <style>
+    .login-page { display:flex; justify-content:center; padding:40px 16px; }
+    .login-container { width:420px; background:#fbf6ef; padding:28px; border-radius:14px; box-shadow:0 8px 22px rgba(0,0,0,0.12); }
+    .login-container h2 { text-align:center; color:#2d7a2f; margin-bottom:18px; font-size:28px; }
+    .input-group { margin-bottom:14px; }
+    .input-group label { display:block; margin-bottom:6px; font-weight:600; color:#333; }
+    .input-group input, .input-group select { width:100%; padding:12px 14px; border-radius:8px; border:1px solid #e6e0d6; font-size:14px; }
+    .btn-primary { width:100%; padding:12px; background:#2f7c21; color:white; border:none; border-radius:10px; font-weight:700; cursor:pointer; }
+    #auth-message { min-height:18px; font-size:14px; margin-bottom:8px; }
+  </style>
 </head>
+
 <body>
+
   <div id="navbar"></div>
 
   <main class="content login-page">
     <section class="login-container">
       <h2>Create a Kisaan Saathi Account</h2>
 
-      <div id="auth-message" style="color: red; margin-bottom: 15px;"></div>
+      <div id="auth-message" style="color:red; margin-bottom:10px;"></div>
 
       <form id="signup-form">
-        <div class="input-group profile-upload-group">
-          <label>Profile Picture (Optional)</label>
-          <div class="profile-preview-container">
-            <img id="profile-preview" src="images/Abhi 2.png" alt="Profile Image Preview">
-            <input type="file" id="profile-image-upload" accept="image/*" style="display:none;">
-            <div class="button-row">
-              <button type="button" class="btn-secondary" id="upload-img-btn"><i class="fas fa-camera"></i> Upload Image</button>
-              <button type="button" class="btn-remove-img" id="remove-img-btn" style="display:none;"><i class="fas fa-times"></i> Remove</button>
-            </div>
-          </div>
+
+        <div class="input-group">
+          <label for="name">Full Name</label>
+          <input id="name" name="name" required placeholder="Enter your full name">
         </div>
 
-        <div class="input-group"><label for="name">Full Name</label><input id="name" name="name" required placeholder="Enter your full name"></div>
-        <div class="input-group"><label for="phone">Phone Number</label><input id="phone" name="phone" required placeholder="e.g., +91 9876543210"></div>
-        <div class="input-group"><label for="email">Email</label><input id="email" name="email" type="email" required placeholder="Enter your email address"></div>
+        <div class="input-group">
+          <label for="phone">Phone Number</label>
+          <input id="phone" name="phone" required placeholder="e.g., +91 9876543210">
+        </div>
+
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required placeholder="Enter your email address">
+        </div>
 
         <div class="input-group">
           <label for="password">Password</label>
-          <div class="password-wrapper">
-            <input type="password" id="password" name="password" required placeholder="Create a strong password (min 6 chars)">
-            <i class="fa-solid fa-eye toggle-password" data-target="password" aria-hidden="true"></i>
+          <div style="position:relative;">
+            <input type="password" id="password" name="password" required placeholder="Create a strong password (min 6 chars)" style="padding-right:40px;">
+            <i class="fa-solid fa-eye toggle-password" data-target="password" style="position:absolute; right:10px; top:10px; cursor:pointer;"></i>
           </div>
         </div>
 
-        <div class="input-group"><label for="location">Location</label>
-          <select id="location" name="location" required><option value="india" selected>India</option></select>
+        <div class="input-group">
+          <label for="location">Location</label>
+          <select id="location" name="location" required>
+            <option value="India" selected>India</option>
+          </select>
         </div>
 
-        <div class="input-group"><label for="state">State</label><input id="state" name="state" required placeholder="e.g., Punjab"></div>
-        <div class="input-group"><label for="pincode">Pincode</label><input id="pincode" name="pincode" pattern="[0-9]{6}" required placeholder="e.g., 141001"></div>
+        <div class="input-group">
+          <label for="state">State</label>
+          <input id="state" name="state" required placeholder="e.g., Punjab">
+        </div>
+
+        <div class="input-group">
+          <label for="pincode">Pincode</label>
+          <input id="pincode" name="pincode" required pattern="[0-9]{6}" placeholder="e.g., 141001">
+        </div>
 
         <button type="submit" class="btn-primary">Sign Up</button>
       </form>
 
-      <p class="signup-text">Already have an account? <a href="login.html">Login</a></p>
+      <p style="text-align:center; margin-top:12px;">Already have an account? <a href="login.html">Login</a></p>
     </section>
   </main>
 
   <div id="status-popup" class="status-popup"><p id="popup-message"></p></div>
   <div id="footer"></div>
 
-  <!-- Firebase compat (v9) -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 
   <script>
     const firebaseConfig = {
@@ -77,35 +99,21 @@
       appId: "1:1069746635685:web:b6cade8247e56094011e4c",
       measurementId: "G-XJ0T10GRND"
     };
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    window.firebaseAuth = auth;
+    firebase.initializeApp(firebaseConfig);
+    window.firebaseAuth = firebase.auth();
     window.firebaseDb = firebase.firestore();
-    window.firebaseStorage = firebase.storage();
   </script>
 
+  <!-- JS Files -->
   <script src="Js/utility.js"></script>
   <script src="Js/navbar.js"></script>
   <script src="Js/schemes.js"></script>
   <script src="Js/footer.js"></script>
-
-  <!-- user_status (compat) -->
   <script src="Js/user_status.js"></script>
-
-  <!-- signup handler -->
   <script src="Js/signup_auth.js"></script>
-
   <script src="Js/password_toggle.js"></script>
 
-  <script>
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'en,hi,bn,mr,pa',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_element');
-    }
-  </script>
-  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <!-- Translate -->
+ 
 </body>
 </html>

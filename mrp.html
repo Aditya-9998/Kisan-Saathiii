@@ -5,55 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kisaan Saathi - MRP Rate</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/navbar.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
 
-<body>
-    <div id="navbar"></div>
-
-    <main class="content">
-        <section id="mrp-rate" class="section-card">
-            <h2 data-lang-key="mrp.mrpTitle">MRP Rate Lookup</h2>
-            <p data-lang-key="mrp.mrpSubtitle">
-                Check the latest Maximum Retail Price (MRP) of essential agricultural products like fertilizers,
-                pesticides, and seeds.
-            </p>
-            <div class="mrp-rate-content">
-                <div class="search-bar">
-                    <input type="text" data-lang-key="mrp.mrpSearchPlaceholder"
-                        placeholder="Search for a product (e.g., Urea, DAP)">
-                    <button class="btn-primary"><i class="fas fa-search"></i> <span
-                            data-lang-key="mrp.search">Search</span></button>
-                </div>
-                <div class="rate-list">
-                    <div class="product-item">
-                        <span class="product-name" data-lang-key="mrp.urea">Urea (45kg Bag)</span>
-                        <span class="product-rate">₹266.50</span>
-                    </div>
-                    <div class="product-item">
-                        <span class="product-name" data-lang-key="mrp.dap">DAP (50kg Bag)</span>
-                        <span class="product-rate">₹1,350.00</span>
-                    </div>
-                    <div class="product-item">
-                        <span class="product-name" data-lang-key="mrp.potash">Potash (50kg Bag)</span>
-                        <span class="product-rate">₹1,700.00</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <div id="footer"></div>
-
+    <!-- ⭐ Firebase (Compat SDK Same Across All Pages) -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
     <script>
-        // 🚨 REPLACE WITH YOUR ACTUAL CONFIGURATION (login.html se copy karein)
+        /* 🔥 Firebase Initialization (GLOBAL) */
+
         const firebaseConfig = {
             apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
             authDomain: "kisan-saathiii.firebaseapp.com",
@@ -64,36 +31,70 @@
             measurementId: "G-XJ0T10GRND"
         };
 
-        // Initialize Firebase and set global variables
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+        const db = firebase.firestore();
+
         window.firebaseApp = app;
         window.firebaseAuth = auth;
+        window.firebaseDb = db;  /* Required for user_status.js */
     </script>
 
+</head>
 
+<body>
 
+    <div id="navbar"></div>
 
+    <main class="content">
+        <section id="mrp-rate" class="section-card">
+            <h2 data-lang-key="mrp.mrpTitle">MRP Rate Lookup</h2>
+            <p data-lang-key="mrp.mrpSubtitle">
+                Check the latest Maximum Retail Price (MRP) of essential agricultural products like fertilizers,
+                pesticides, and seeds.
+            </p>
 
+            <div class="mrp-rate-content">
 
+                <div class="search-bar">
+                    <input type="text" placeholder="Search for a product (e.g., Urea, DAP)"
+                        data-lang-key="mrp.mrpSearchPlaceholder">
+                    <button class="btn-primary"><i class="fas fa-search"></i> <span
+                            data-lang-key="mrp.search">Search</span></button>
+                </div>
 
+                <div class="rate-list">
+                    <div class="product-item">
+                        <span class="product-name" data-lang-key="mrp.urea">Urea (45kg Bag)</span>
+                        <span class="product-rate">₹266.50</span>
+                    </div>
+
+                    <div class="product-item">
+                        <span class="product-name" data-lang-key="mrp.dap">DAP (50kg Bag)</span>
+                        <span class="product-rate">₹1,350.00</span>
+                    </div>
+
+                    <div class="product-item">
+                        <span class="product-name" data-lang-key="mrp.potash">Potash (50kg Bag)</span>
+                        <span class="product-rate">₹1,700.00</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <div id="footer"></div>
+
+    <!-- PROJECT SCRIPTS (Correct Order) -->
     <script src="Js/utility.js"></script>
     <script src="Js/navbar.js"></script>
     <script src="Js/schemes.js"></script>
     <script src="Js/footer.js"></script>
+
+    <!-- User Login Status -->
     <script type="module" src="Js/user_status.js"></script>
-
-    <script>
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,hi,bn,mr,pa',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_element');
-        }
-    </script>
-
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="module" src="Js/auth_guard.js"></script>
 
 
 </body>

@@ -92,45 +92,62 @@
   background-color: #145a29;
 }
 
-/* ===============================
-   Google Translate – Desktop Only
-=============================== */
-#google_translate_wrapper {
+/* GOOGLE TRANSLATE ICON STYLE */
+.translate-icon-box {
+  position: relative;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.translate-icon {
+  font-size: 22px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #f0f0f0;
+  transition: 0.2s;
+}
+
+.translate-icon:hover {
+  background: #dcdcdc;
+}
+
+.translate-popup {
+  position: absolute;
+  top: 32px;
+  left: 0;
+  display: none;
+  background: white;
+  padding: 6px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+}
+
+.translate-icon-box:hover .translate-popup {
   display: block;
 }
 
-#google_element {
-  transform: scale(0.72);
-  transform-origin: right center;
-  margin-right: -6px !important;
+/* LOGOUT BUTTON */
+.nav-logout-btn {
+  padding: 6px 12px;
+  border: none;
+  background: #d9534f;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-/* Hide Google label text */
-.goog-te-gadget {
-  font-size: 0 !important;
+.nav-logout-btn:hover {
+  background: #c9302c;
 }
 
-/* Style dropdown */
-.goog-te-gadget select {
-  font-size: 12px !important;
-  padding: 2px 6px !important;
-  border-radius: 6px !important;
-  border: 1px solid #ccc !important;
-}
-
-/* Remove Google blue bar */
-.goog-te-banner-frame.skiptranslate {
-  display: none !important;
-}
-body {
-  top: 0px !important;
-}
 
 /* ----------------------------
    Mobile Google Translate
 -----------------------------*/
 #mobile_translate_box {
-  display: none; /* hidden until JS clones widget */
+  display: none;
+  /* hidden until JS clones widget */
   margin-top: 10px;
   text-align: center;
 }
@@ -210,4 +227,47 @@ body {
   .nav-right {
     width: 70%;
   }
+}
+
+
+
+
+/* ===============================
+   GOOGLE TRANSLATE ICON
+=============================== */
+
+.translate-icon-box {
+  position: relative;
+  cursor: pointer;
+}
+
+.translate-icon {
+  font-size: 20px;
+  background: #e9ecef;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.translate-icon:hover {
+  background: #d7dadc;
+}
+
+/* Dropdown box */
+
+.translate-popup {
+  position: absolute;
+  top: 36px;
+  left: 0;
+  display: none;
+  background: white;
+  padding: 6px;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  z-index: 9999;
+}
+
+.translate-icon-box:hover .translate-popup {
+  display: block;
 }

@@ -1,67 +1,53 @@
-
-<!--profile.html-->
-
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Profile - Kisaan Saathiii</title>
 
-  <link rel="stylesheet" href="css/navbar.css" />
-  <link rel="stylesheet" href="css/footer.css" />
-  <link rel="stylesheet" href="css/profile.css" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="./css/navbar.css" />
+  <link rel="stylesheet" href="./css/footer.css" />
+  <link rel="stylesheet" href="./css/profile.css" />
 </head>
 
 <body>
 
+  <!-- NAVBAR -->
   <div id="navbar"></div>
 
+  <!-- MAIN PROFILE SECTION -->
   <main class="profile-main">
     <section class="profile-card">
+
       <h1>Your Profile</h1>
 
+      <!-- EMAIL TOP -->
+      <div class="profile-email-top" id="email-value">—</div>
+
       <div class="profile-grid">
-        <div class="left-col">
 
-          <div class="avatar">
-            <img id="avatar-img" src="images/default-avatar.png" alt="avatar" />
-          </div>
-
-          <div class="email-block">
-            <label>Email</label>
-            <div id="email-value" class="readonly-field">—</div>
-          </div>
-
-          <div class="actions">
-            <!-- FIXED ID -->
-            <button id="logout-btn" class="btn btn-ghost">Logout</button>
-            <button id="deleteAccountBtn" class="btn btn-danger">Delete Account</button>
-          </div>
-
-        </div>
-
+        <!-- RIGHT COLUMN (FORM) -->
         <form id="profileForm" class="right-col">
 
-          <label for="displayName">Full name</label>
-          <input id="displayName" type="text" placeholder="Your full name" />
+          <label>Full name</label>
+          <input id="displayName" type="text">
 
-          <label for="phone">Phone</label>
-          <input id="phone" type="tel" placeholder="+91 9xxxxxxxxx" />
+          <label>Phone</label>
+          <input id="phone" type="text">
 
-          <label for="pincode">Pincode</label>
-          <input id="pincode" type="text" placeholder="Enter pincode" />
+          <label>Pincode</label>
+          <input id="pincode" type="text">
 
-          <label for="state">State</label>
-          <input id="state" type="text" placeholder="State" />
+          <label>State</label>
+          <input id="state" type="text">
 
-          <label for="profileImageURL">Profile Image URL (optional)</label>
-          <input id="profileImageURL" type="url" placeholder="https://..." />
-
-          <div class="form-actions">
-            <button id="saveBtn" type="button" class="btn btn-primary">Save Changes</button>
-            <button id="cancelBtn" type="button" class="btn btn-ghost">Cancel</button>
+          <!-- BUTTON ROW -->
+          <div class="button-row-bottom">
+            <button id="logoutBtn" type="button" class="btn-logout">Logout</button>
+            <button id="deleteAccountBtn" type="button" class="btn-delete">Delete</button>
+            <button id="saveBtn" type="button" class="btn-save">Save Changes</button>
           </div>
 
         </form>
@@ -70,17 +56,37 @@
     </section>
   </main>
 
+  <!-- FOOTER -->
   <div id="footer"></div>
 
-  <!-- Profile logic -->
-  <script type="module" src="Js/profile.js"></script>
+  <!-- POPUP SYSTEM -->
+  <div id="popup" class="popup-box"></div>
 
-  <!-- LOGOUT logic -->
-  <script type="module" src="Js/logout.js"></script>
 
-  <!-- Navbar + Footer -->
-  <script src="Js/navbar.js"></script>
-  <script src="Js/footer.js"></script>
+  <!-- ------------------------------------------------ -->
+  <!-- 🔥 REQUIRED FIREBASE COMPAT LIBRARIES (V9.6.1) -->
+  <!-- ------------------------------------------------ -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 
+
+  <!-- ------------------------------------------------ -->
+  <!-- 🔥 Firebase Init (Compat API) -->
+  <!-- ------------------------------------------------ -->
+  <script src="./Js/firebase_init.js"></script>
+
+  <!-- Site scripts -->
+  <script src="./Js/footer.js"></script>
+  <script src="./Js/navbar.js"></script>
+  <script src="./Js/user_status.js"></script>
+  <script src="./Js/profile.js"></script>
+  <script type="module" src="Js/auth_guard.js"></script>
+
+
+  <!-- Google Translate -->
+ 
 </body>
+
 </html>

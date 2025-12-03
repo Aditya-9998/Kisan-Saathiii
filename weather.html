@@ -14,15 +14,43 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
-  <!-- SweetAlert2 (optional for toasts) -->
+  <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- ⭐ IMPORTANT: Load Firebase BEFORE any JS that uses it -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+  <script>
+    /* ⭐ Firebase Initialization (GLOBAL) */
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
+      authDomain: "kisan-saathiii.firebaseapp.com",
+      projectId: "kisan-saathiii",
+      storageBucket: "kisan-saathiii.appspot.com",
+      messagingSenderId: "1069746635685",
+      appId: "1:1069746635685:web:b6cade8247e56094011e4c",
+      measurementId: "G-XJ0T10GRND"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    /* Make global for user_status.js */
+    window.firebaseApp = app;
+    window.firebaseAuth = auth;
+    window.firebaseDb = db;
+  </script>
+
 </head>
 <body>
 
   <!-- Navbar placeholder -->
   <div id="navbar"></div>
 
-  <!-- Main app container -->
+  <!-- Main Weather App -->
   <main class="weather-app container">
     <header class="wa-header">
       <h1>🌦️ Weather</h1>
@@ -33,8 +61,7 @@
       <div class="wa-row">
         <div class="lang-select">
           <label for="languageSelect">Language</label>
-          <select id="languageSelect" aria-label="Select language">
-            
+          <select id="languageSelect">
             <option value="en">English</option>
             <option value="hi">हिंदी</option>
             <option value="bho">भोजपुरी</option>
@@ -43,7 +70,7 @@
         </div>
 
         <div class="search-block">
-          <input id="placeInput" type="text" placeholder="Type village or city name" aria-label="Place name" />
+          <input id="placeInput" type="text" placeholder="Type village or city name" />
           <button id="btnSearch" class="btn">🔍</button>
         </div>
       </div>
@@ -54,10 +81,10 @@
       </div>
     </section>
 
-    <!-- Alert -->
-    <div id="alertBox" class="alert" role="status" aria-hidden="true"></div>
+    <!-- Alert Box -->
+    <div id="alertBox" class="alert"></div>
 
-    <!-- Current card -->
+    <!-- Current Weather Card -->
     <section id="currentCard" class="card current-card" style="display:none;">
       <div class="cc-top">
         <div>
@@ -66,7 +93,7 @@
         </div>
         <div class="temp-block">
           <div id="currentTemp" class="temp-big">--°C</div>
-          <div id="conditionText" class="cond-text">-</div>
+          <div id="conditionText" class="cond-text">--</div>
         </div>
       </div>
 
@@ -86,13 +113,13 @@
       </div>
     </section>
 
-    <!-- Forecast -->
+    <!-- 14 Day Forecast -->
     <section id="forecastCard" class="card forecast-card" style="display:none;">
-      <h3 class="forecast-title" id="forecastTitle">14-Day Forecast</h3>
-      <div id="forecastList" class="forecast-list" aria-live="polite"></div>
+      <h3 id="forecastTitle" class="forecast-title">14-Day Forecast</h3>
+      <div id="forecastList" class="forecast-list"></div>
     </section>
 
-    <!-- Tip card -->
+    <!-- Tip Card -->
     <section id="tipCard" class="card tip-card" style="display:none;">
       <strong id="tipTitle">Farming Tip</strong>
       <div id="tipText" class="tip-text"></div>
@@ -104,31 +131,21 @@
   <!-- Footer -->
   <div id="footer"></div>
 
-  <!-- Page scripts: core utility + navbar/footer + user_status + weather logic -->
+  <!-- Project Core Scripts -->
   <script src="Js/utility.js"></script>
   <script src="Js/schemes.js"></script>
   <script src="Js/footer.js"></script>
 
-  <!-- load navbar (plain script) -->
+  <!-- Navbar -->
   <script src="Js/navbar.js"></script>
 
-  <!-- user_status (modular) -->
+  <!-- User Login Status -->
   <script type="module" src="Js/user_status.js"></script>
 
-  <!-- weather logic (modular) -->
+  <!-- Weather Logic -->
   <script type="module" src="Js/weather.js"></script>
+  <script type="module" src="Js/auth_guard.js"></script>
 
-  <!-- Google Translate -->
-  <script>
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'en,hi,bn,mr,pa',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_element');
-    }
-  </script>
-  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>

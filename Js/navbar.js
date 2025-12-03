@@ -1,4 +1,5 @@
-// Js/navbar.js — plain script (non-module)
+// Js/navbar.js — FINAL VERSION (Google Translate included + Clean)
+
 document.addEventListener("DOMContentLoaded", function () {
   const navbarContainer = document.getElementById("navbar");
   if (!navbarContainer) return console.error("Navbar container not found.");
@@ -6,13 +7,22 @@ document.addEventListener("DOMContentLoaded", function () {
   navbarContainer.innerHTML = `
     <header class="navbar">
       <div class="container">
+
+        <!-- LEFT SIDE LOGO -->
         <div class="nav-left">
-          <div class="logo">🌿Kisaan Saathiii🌿</div>
+          <div class="logo">🌿 Kisaan Saathiii 🌿</div>
         </div>
 
+        <!-- RIGHT SIDE -->
         <div class="nav-right" id="navRightGroup">
-          <div id="google_element" class="translate-box"></div>
 
+          <!-- TRANSLATE DROPDOWN -->
+          <div class="translate-icon-box">
+            <span class="translate-icon">文A</span>
+            <div id="google_element" class="translate-popup"></div>
+          </div>
+
+          <!-- LINKS -->
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="advisory.html">Advisory</a></li>
@@ -22,20 +32,17 @@ document.addEventListener("DOMContentLoaded", function () {
             <li><a href="insurance.html">Crop Insurance</a></li>
             <li><a href="about.html">About</a></li>
 
-            <!-- LOGIN / HEY USER -->
-            <li>
-              <a id="login-btn" href="login.html" class="login-btn">Login / Signup</a>
-            </li>
-            <li>
-              <a id="user-name" href="profile.html" style="display:none;">Hey User</a>
-            </li>
+            <li><a id="login-btn" class="login-btn" href="login.html">Login / Signup</a></li>
+            <li><a id="user-name" href="profile.html" style="display:none;">Hey User</a></li>
           </ul>
         </div>
 
-        <div class="menu-icon" id="menuIcon" aria-label="Toggle menu" role="button" tabindex="0">
+        <!-- MOBILE MENU ICON -->
+        <div class="menu-icon" id="menuIcon" role="button" tabindex="0">
           <span class="hamburger">☰</span>
           <span class="close" style="display:none;">✕</span>
         </div>
+
       </div>
     </header>
   `;
@@ -43,74 +50,76 @@ document.addEventListener("DOMContentLoaded", function () {
   // Tell other scripts navbar is ready
   document.dispatchEvent(new Event("navbarLoaded"));
 
-  // Mobile menu behavior (kept as you had it)
+  /* -----------------------
+     GOOGLE TRANSLATE LOADER
+  ------------------------*/
+  function loadGoogleTranslate() {
+    const script = document.createElement("script");
+    script.src =
+      "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    document.body.appendChild(script);
+  }
+
+  // Callback required by Google
+  window.googleTranslateElementInit = function () {
+    new google.translate.TranslateElement(
+      {
+        pageLanguage: "en",
+        includedLanguages: "en,hi,bn,mr,pa",
+      },
+      "google_element"
+    );
+  };
+
+  loadGoogleTranslate();
+
+  /* -----------------------
+     MOBILE NAVIGATION
+  ------------------------*/
+
   const navRight = document.getElementById("navRightGroup");
   const menuIcon = document.getElementById("menuIcon");
-  const hamburger = menuIcon?.querySelector(".hamburger");
-  const closeIcon = menuIcon?.querySelector(".close");
+  const hamburger = menuIcon.querySelector(".hamburger");
+  const closeIcon = menuIcon.querySelector(".close");
 
   function openMenu() {
     navRight.classList.add("is-open");
-    if (hamburger) hamburger.style.display = "none";
-    if (closeIcon) closeIcon.style.display = "inline-block";
+    hamburger.style.display = "none";
+    closeIcon.style.display = "inline-block";
     document.documentElement.style.overflow = "hidden";
   }
 
   function closeMenu() {
     navRight.classList.remove("is-open");
-    if (hamburger) hamburger.style.display = "inline-block";
-    if (closeIcon) closeIcon.style.display = "none";
+    hamburger.style.display = "inline-block";
+    closeIcon.style.display = "none";
     document.documentElement.style.overflow = "";
   }
 
-  function toggleMenu() {
+  menuIcon.addEventListener("click", () => {
     navRight.classList.contains("is-open") ? closeMenu() : openMenu();
-  }
-
-  if (menuIcon && navRight) {
-    menuIcon.addEventListener("click", toggleMenu);
-    menuIcon.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        toggleMenu();
-      }
-    });
-  }
+  });
 
   navRight.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => closeMenu());
+    link.addEventListener("click", closeMenu);
   });
 
   document.addEventListener("click", (e) => {
     if (!navRight.classList.contains("is-open")) return;
-    const inside = navRight.contains(e.target) || menuIcon.contains(e.target);
-    if (!inside) closeMenu();
+    if (!navRight.contains(e.target) && !menuIcon.contains(e.target)) {
+      closeMenu();
+    }
   });
 
-  document.addEventListener("touchstart", (e) => {
-    if (!navRight.classList.contains("is-open")) return;
-    const inside = navRight.contains(e.target) || menuIcon.contains(e.target);
-    if (!inside) closeMenu();
-  }, { passive: true });
+  window.addEventListener("resize", closeMenu);
 
-  let scrollTimer = null;
-  window.addEventListener("scroll", () => {
-    if (!navRight.classList.contains("is-open")) return;
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(() => closeMenu(), 120);
+  /* -----------------------
+     ACTIVE LINK HIGHLIGHT
+  ------------------------*/
+  const current = location.pathname.split("/").pop();
+  document.querySelectorAll(".nav-right a").forEach((a) => {
+    if (a.getAttribute("href") === current) {
+      a.classList.add("active");
+    }
   });
-
-  window.addEventListener("resize", () => closeMenu());
-
-  try {
-    const currentPath = window.location.pathname.split("/").pop();
-    document.querySelectorAll(".nav-right a").forEach((a) => {
-      const href = a.getAttribute("href");
-      if (href === currentPath || (currentPath === "" && href === "index.html")) {
-        a.classList.add("active");
-      }
-    });
-  } catch (err) {
-    console.warn("Active link highlight failed:", err);
-  }
 });
