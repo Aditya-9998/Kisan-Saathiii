@@ -1,9 +1,12 @@
+// Js/profile.js (COMPAT) - updated to be tolerant and display QR with QRious (canvas)
 document.addEventListener("DOMContentLoaded", () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
 
+  // DOM refs
   const emailEl = document.getElementById("email-value");
   const farmerIdEl = document.getElementById("farmer-id");
+  const qrCanvas = document.getElementById("qr-code");
 
   const nameEl = document.getElementById("displayName");
   const phoneEl = document.getElementById("phone");
@@ -14,64 +17,132 @@ document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.getElementById("logoutBtn");
   const delBtn = document.getElementById("deleteAccountBtn");
 
-  let currentUser = null;
+  const popupBox = document.getElementById("popup");
 
-  function popup(msg) {
-    const box = document.getElementById("popup");
-    box.innerText = msg;
-    box.style.display = "block";
-    setTimeout(() => (box.style.display = "none"), 2000);
+  function popup(msg, ok = true) {
+    if (!popupBox) return alert(msg);
+    popupBox.textContent = msg;
+    popupBox.style.background = ok ? "#2ecc71" : "#e74c3c";
+    popupBox.style.display = "block";
+    setTimeout(() => (popupBox.style.display = "none"), 2200);
   }
 
+  let currentUser = null;
+  let currentDoc = null;
+
   auth.onAuthStateChanged(async (u) => {
-    if (!u) return (location.href = "login.html");
-
+    if (!u) {
+      // not logged in
+      return (location.href = "login.html");
+    }
     currentUser = u;
-    emailEl.textContent = u.email;
+    emailEl.textContent = u.email || "—";
 
-    const snap = await db.collection("users").doc(u.uid).get();
-    const data = snap.data();
+    try {
+      const docRef = db.collection("users").doc(u.uid);
+      const snap = await docRef.get();
+      if (!snap.exists) {
+        // If Google user signed up via Google but doc not created — create one with minimal fields
+        const farmerId = `FS-AGRI-${Math.floor(100000 + Math.random() * 900000)}`;
+        const newData = {
+          uid: u.uid,
+          email: u.email || "",
+          name: u.displayName || "",
+          farmerId,
+          phone: u.phoneNumber || "",
+          pincode: "",
+          state: "",
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        await docRef.set(newData);
+        currentDoc = newData;
+      } else {
+        currentDoc = snap.data();
+      }
 
-    farmerIdEl.textContent = data.farmerId;
-    nameEl.value = data.name || "";
-    phoneEl.value = data.phone || "";
-    pinEl.value = data.pincode || "";
-    stateEl.value = data.state || "";
+      // Populate UI
+      farmerIdEl.textContent = currentDoc.farmerId || "—";
+      nameEl.value = currentDoc.name || u.displayName || "";
+      phoneEl.value = currentDoc.phone || currentDoc.phoneNumber || "";
+      pinEl.value = currentDoc.pincode || "";
+      stateEl.value = currentDoc.state || "";
 
-    // QR GENERATE
-    const qr = new QRious({
-      element: document.getElementById("qr-code"),
-      size: 200,
-      value: `Farmer ID: ${data.farmerId}\nName: ${data.name}`
-    });
+      // Generate QR via QRious (canvas)
+      try {
+        if (typeof QRious !== "undefined" && qrCanvas) {
+          const qrValue = `Farmer ID: ${currentDoc.farmerId || "-"}\nName: ${currentDoc.name || "-" }\nEmail: ${currentDoc.email || "-"}`;
+          // make QR a bit smaller if container small
+          new QRious({
+            element: qrCanvas,
+            value: qrValue,
+            size: 200,
+            level: "H"
+          });
+        } else {
+          console.warn("QRious or qr canvas missing");
+        }
+      } catch (qrErr) {
+        console.error("QR error", qrErr);
+      }
+    } catch (err) {
+      console.error("Profile load error", err);
+      popup("Cannot load profile.", false);
+    }
   });
 
-  saveBtn.onclick = async () => {
-    await db.collection("users").doc(currentUser.uid).set(
-      {
-        name: nameEl.value,
-        phone: phoneEl.value,
-        pincode: pinEl.value,
-        state: stateEl.value,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      },
-      { merge: true }
-    );
-    popup("Profile updated!");
-  };
+  // Save updates
+  if (saveBtn) {
+    saveBtn.addEventListener("click", async () => {
+      if (!currentUser) return popup("Not authenticated", false);
+      try {
+        await db.collection("users").doc(currentUser.uid).set({
+          name: nameEl.value,
+          phone: phoneEl.value,
+          pincode: pinEl.value,
+          state: stateEl.value,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
 
-  logoutBtn.onclick = async () => {
-    await auth.signOut();
-    location.href = "index.html";
-  };
+        // update displayName in auth profile too
+        await currentUser.updateProfile({ displayName: nameEl.value });
 
-  delBtn.onclick = async () => {
-    if (!confirm("Delete account permanently?")) return;
+        popup("Profile updated", true);
+      } catch (err) {
+        console.error("Save error", err);
+        popup("Save failed", false);
+      }
+    });
+  }
 
-    await db.collection("users").doc(currentUser.uid).delete();
-    await currentUser.delete();
+  // Logout
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await auth.signOut();
+        sessionStorage.setItem("logoutSuccess", "true");
+        location.href = "index.html";
+      } catch (err) {
+        console.error("Logout failed", err);
+        popup("Logout failed", false);
+      }
+    });
+  }
 
-    popup("Account deleted!");
-    setTimeout(() => (location.href = "index.html"), 1200);
-  };
+  // Delete
+  if (delBtn) {
+    delBtn.addEventListener("click", async () => {
+      if (!confirm("Delete account permanently?")) return;
+      try {
+        // delete firestore doc first
+        await db.collection("users").doc(currentUser.uid).delete();
+        // delete auth user
+        await currentUser.delete();
+        popup("Account deleted", true);
+        setTimeout(() => (location.href = "index.html"), 1000);
+      } catch (err) {
+        console.error("Delete failed", err);
+        popup("Delete failed (maybe re-login required)", false);
+      }
+    });
+  }
 });

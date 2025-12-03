@@ -1,61 +1,68 @@
-// =======================
-// signup_auth.js (FINAL + FARMER ID v8)
-// =======================
-
+// Js/signup_auth.js (COMPAT) - replace your old signup_auth.js
 document.addEventListener("DOMContentLoaded", () => {
-  const auth = window.firebaseAuth;
-  const db = window.firebaseDb;
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
   const form = document.getElementById("signup-form");
-  const msg = (m, e = false) => {
-    const box = document.getElementById("auth-message");
-    box.style.color = e ? "red" : "green";
-    box.textContent = m;
-  };
+  const msgBox = document.getElementById("auth-message");
 
-  // Generate Unique Farmer ID (Format C)
-  function generateFarmerID() {
-    const random = Math.floor(100000 + Math.random() * 900000);
-    return `FS-AGRI-${random}`; // Example: FS-AGRI-582491
+  function showMsg(m, isError = false) {
+    if (!msgBox) return alert(m);
+    msgBox.style.color = isError ? "red" : "green";
+    msgBox.textContent = m;
   }
+
+  // generate farmer id
+  function genRandom() {
+    return Math.floor(100000 + Math.random() * 900000);
+  }
+  async function generateUniqueFarmerId() {
+    for (let i = 0; i < 6; i++) {
+      const id = `FS-AGRI-${genRandom()}`;
+      const q = await db.collection("users").where("farmerId", "==", id).limit(1).get();
+      if (q.empty) return id;
+    }
+    return `FS-AGRI-${genRandom()}-${Date.now().toString().slice(-4)}`;
+  }
+
+  if (!form) return;
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const pass = document.getElementById("password").value;
-    const phone = document.getElementById("phone").value;
-    const state = document.getElementById("state").value;
-    const pin = document.getElementById("pincode").value;
+    const name = (document.getElementById("name").value || "").trim();
+    const email = (document.getElementById("email").value || "").trim();
+    const pass = document.getElementById("password").value || "";
+    const phone = (document.getElementById("phone").value || "").trim();
+    const state = (document.getElementById("state").value || "").trim();
+    const pin = (document.getElementById("pincode").value || "").trim();
 
-    if (!name || !email || !pass) return msg("Fill all required fields", true);
+    if (!name || !email || !pass) return showMsg("Fill required fields", true);
 
     try {
       const cred = await auth.createUserWithEmailAndPassword(email, pass);
       const user = cred.user;
-
       await user.updateProfile({ displayName: name });
 
-      const farmerId = generateFarmerID();
+      const farmerId = await generateUniqueFarmerId();
 
-      // Save to Firestore
       await db.collection("users").doc(user.uid).set({
+        uid: user.uid,
         name,
         email,
         phone,
         state,
         pincode: pin,
-        farmerId, // 🔥 NEW
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        farmerId,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
 
       sessionStorage.setItem("loginSuccess", "true");
-
-      msg("Registered! Redirecting...");
+      showMsg("Registered! Redirecting...");
       setTimeout(() => (location.href = "login.html"), 1200);
-    } catch (er) {
-      msg(er.message, true);
+    } catch (err) {
+      console.error("Signup error", err);
+      showMsg(err.message || "Signup failed", true);
     }
   });
 });

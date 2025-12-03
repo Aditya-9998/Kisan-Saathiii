@@ -1,183 +1,189 @@
-// =======================
-// login_auth.js (OPTION B - GOOGLE USERS GET FARMER ID + PASSWORD)
-// =======================
+// Js/login_auth.js (COMPAT - supports Farmer ID login and Google sign-in account creation)
+// Place alongside your other Js files and include it in login.html (like you currently do for other scripts).
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-  onAuthStateChanged,
-  updatePassword
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  getDoc,
-  getDocs,
-  collection,
-  query,
-  where
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-// ==========================================
-// Firebase Config
-// ==========================================
-
-const firebaseConfig = {
-  apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
-  authDomain: "kisan-saathiii.firebaseapp.com",
-  projectId: "kisan-saathiii",
-  storageBucket: "kisan-saathiii.appspot.com",
-  messagingSenderId: "1069746635685",
-  appId: "1:1069746635685:web:b6cade8247e56094011e4c",
-  measurementId: "G-XJ0T10GRND"
-};
-
-let app;
-try { app = initializeApp(firebaseConfig); } 
-catch (e) { console.log("Already initialized"); }
-
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// ==========================================
-// Function: Generate Farmer ID
-// ==========================================
-function generateFarmerId() {
-  const num = Math.floor(100000 + Math.random() * 900000);
-  return `FS-AGRI-${num}`;
-}
-
-// ==========================================
-// Function: Generate Random Password
-// ==========================================
-function generateRandomPassword() {
-  return Math.random().toString(36).slice(-8); // 8-char password
-}
-
-// ==========================================
-// Farmer ID → Email
-// ==========================================
-async function farmerIdToEmail(farmerId) {
-  const q = query(collection(db, "users"), where("farmerId", "==", farmerId));
-  const snap = await getDocs(q);
-  if (!snap.empty) return snap.docs[0].data().email;
-  return null;
-}
-
-// ==========================================
-// Google Login → Create Firestore User + Password
-// ==========================================
-async function handleGoogleUser(user) {
-  const userDocRef = doc(db, "users", user.uid);
-  const userSnap = await getDoc(userDocRef);
-
-  if (!userSnap.exists()) {
-    const farmerId = generateFarmerId();
-    const autoPassword = generateRandomPassword();
-
-    await setDoc(userDocRef, {
-      uid: user.uid,
-      email: user.email,
-      name: user.displayName || "",
-      phone: user.phoneNumber || "",
-      state: "",
-      pincode: "",
-      farmerId: farmerId,
-      createdAt: new Date().toISOString(),
-      password: autoPassword
-    });
-
-    // SET LOGIN PASSWORD FOR GOOGLE USER
-    try {
-      await updatePassword(user, autoPassword);
-    } catch (err) {
-      console.warn("Password update blocked until re-auth", err);
-    }
-
-    alert(
-      "Welcome!\nYour Farmer ID: " + farmerId + 
-      "\nYour Login Password: " + autoPassword +
-      "\n\nPLEASE SAVE THIS PASSWORD!"
-    );
-  }
-}
-
-// ==========================================
-// MAIN LOGIN SCRIPT
-// ==========================================
 document.addEventListener("DOMContentLoaded", () => {
+  // firebase should be already initialized by firebase_init.js (compat)
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
   const loginForm = document.getElementById("login-form");
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
   const googleLoginBtn = document.getElementById("google-login-btn");
+  const forgotPasswordLink = document.getElementById("forgot-password-link");
 
-  // --------------------------
-  // AUTO REDIRECT IF LOGGED IN
-  // --------------------------
-  onAuthStateChanged(auth, (user) => {
-    if (user && window.location.pathname.includes("login.html")) {
-      window.location.href = "index.html";
+  function showStatus(msg, isSuccess = true) {
+    // try to use your site's showStatusPopup or fallback to alert
+    if (window.showStatusPopup) return window.showStatusPopup(msg, isSuccess);
+    alert(msg);
+  }
+
+  // helper: generate farmer id (ensure collisions low)
+  function generateFarmerId() {
+    const num = Math.floor(100000 + Math.random() * 900000);
+    return `FS-AGRI-${num}`;
+  }
+
+  // helper: ensure unique farmerId (if already exists, regenerate a few times)
+  async function generateUniqueFarmerId() {
+    for (let i = 0; i < 6; i++) {
+      const id = generateFarmerId();
+      const q = await db.collection("users").where("farmerId", "==", id).limit(1).get();
+      if (q.empty) return id;
+    }
+    // fallback
+    return `${generateFarmerId()}-${Date.now().toString().slice(-4)}`;
+  }
+
+  // helper: find email by farmerId
+  async function farmerIdToEmail(farmerId) {
+    const snap = await db.collection("users").where("farmerId", "==", farmerId).limit(1).get();
+    if (!snap.empty) {
+      const doc = snap.docs[0].data();
+      return doc.email || null;
+    }
+    return null;
+  }
+
+  // when user is already logged in on login page -> redirect
+  auth.onAuthStateChanged((user) => {
+    if (user && /login\.html$/i.test(location.pathname)) {
+      sessionStorage.setItem("loginSuccess", "true");
+      setTimeout(() => (location.href = "index.html"), 600);
     }
   });
 
-  // --------------------------
-  // EMAIL / FARMER ID LOGIN
-  // --------------------------
+  // Form login (supports Farmer ID)
   if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
+      let identifier = (emailInput.value || "").trim();
+      const password = (passwordInput.value || "").trim();
 
-      let email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
-
-      if (!email || !password) {
-        alert("Please enter Email/Farmer ID & Password.");
+      if (!identifier || !password) {
+        showStatus("Enter email/farmer ID and password.", false);
         return;
       }
 
-      // If user entered Farmer ID
-      if (!email.includes("@")) {
-        const foundEmail = await farmerIdToEmail(email);
-        if (!foundEmail) {
-          alert("Invalid Farmer ID.");
+      // If user typed Farmer ID (no '@'), convert to email via Firestore
+      if (!identifier.includes("@")) {
+        try {
+          const foundEmail = await farmerIdToEmail(identifier);
+          if (!foundEmail) {
+            showStatus("Invalid Farmer ID.", false);
+            return;
+          }
+          identifier = foundEmail;
+        } catch (err) {
+          console.error("Farmer lookup failed", err);
+          showStatus("Server error during farmer-id lookup.", false);
           return;
         }
-        email = foundEmail;
       }
 
+      // Try sign-in
       try {
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "index.html";
+        await auth.signInWithEmailAndPassword(identifier, password);
+        sessionStorage.setItem("loginSuccess", "true");
+        showStatus("Login successful.", true);
+        setTimeout(() => (location.href = "index.html"), 700);
       } catch (err) {
-        console.error(err);
-        alert("Login failed. Check credentials.");
+        console.error("Login error:", err);
+        // map common codes
+        if (err.code === "auth/wrong-password" || err.code === "auth/user-not-found") {
+          showStatus("Incorrect email/ID or password.", false);
+        } else if (err.code === "auth/invalid-email") {
+          showStatus("Invalid email format.", false);
+        } else {
+          showStatus("Login failed. Check credentials.", false);
+        }
       }
     });
   }
 
-  // --------------------------
-  // GOOGLE LOGIN
-  // --------------------------
+  // Google sign-in
   if (googleLoginBtn) {
     googleLoginBtn.addEventListener("click", async () => {
-      const provider = new GoogleAuthProvider();
-
+      const provider = new firebase.auth.GoogleAuthProvider();
       try {
-        const result = await signInWithPopup(auth, provider);
+        const result = await auth.signInWithPopup(provider);
         const user = result.user;
+        if (!user) throw new Error("No user returned.");
 
-        await handleGoogleUser(user);
+        // Ensure firestore user exists and has farmerId, if not create one.
+        const userDocRef = db.collection("users").doc(user.uid);
+        const existing = await userDocRef.get();
 
-        window.location.href = "index.html";
+        if (!existing.exists) {
+          // generate unique farmerId
+          const farmerId = await generateUniqueFarmerId();
 
+          // generate a random password and save to Firestore (ONLY FOR USER REFERENCE)
+          // Important: The actual Auth account password is blank (Google provider). We'll attempt to set a password on the Auth user (works because user just signed-in).
+          const autoPassword = Math.random().toString(36).slice(-8);
+
+          const docData = {
+            uid: user.uid,
+            email: user.email || "",
+            name: user.displayName || "",
+            phone: user.phoneNumber || "",
+            pincode: "",
+            state: "",
+            farmerId,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            // store password ONLY IF you want to show it to user — it's sensitive. You can also omit storing it.
+            // We store it so the user can use farmerId+password later (we also attempt to set auth password).
+            password: autoPassword
+          };
+
+          await userDocRef.set(docData);
+
+          // Try to set the auth password so that user can login also with email+password
+          // This can succeed because user just signed-in via Google (recent login).
+          try {
+            await user.updatePassword(autoPassword); // sets password on auth user
+            // notify user
+            showStatus(`Google account linked. Farmer ID: ${farmerId}. Password set. Save it.`, true);
+            // Provide a non-blocking alert with credentials (you can replace with nicer UI)
+            setTimeout(() => {
+              alert(`Welcome!\nYour Farmer ID: ${farmerId}\nPassword (save it): ${autoPassword}\nYou can login using Farmer ID or Google.`);
+            }, 200);
+          } catch (pwErr) {
+            // If updatePassword fails (rare), still user can use Google sign-in; show credentials and ask user to set password with reset link.
+            console.warn("updatePassword failed:", pwErr);
+            alert(`Welcome!\nYour Farmer ID: ${farmerId}\nPassword: ${autoPassword}\nNOTE: we couldn't set the auth password automatically. Please use 'Forgot Password' to set one if needed.`);
+          }
+        } else {
+          // Document exists — ensure farmerId is present
+          const data = existing.data();
+          if (!data.farmerId) {
+            const farmerId = await generateUniqueFarmerId();
+            await userDocRef.set({ farmerId }, { merge: true });
+            alert(`Your Farmer ID: ${farmerId}`);
+          }
+        }
+
+        // redirect after sign-in
+        setTimeout(() => (location.href = "index.html"), 600);
       } catch (err) {
-        console.error("Google Login Error:", err);
+        console.error("Google sign-in failed:", err);
+        showStatus("Google sign-in failed.", false);
+      }
+    });
+  }
+
+  // Forgot password link
+  if (forgotPasswordLink) {
+    forgotPasswordLink.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const email = (emailInput.value || "").trim();
+      if (!email) return showStatus("Enter your email first.", false);
+      try {
+        await auth.sendPasswordResetEmail(email);
+        showStatus("Password reset email sent.", true);
+      } catch (err) {
+        console.error("Reset email failed", err);
+        showStatus("Unable to send reset email.", false);
       }
     });
   }
