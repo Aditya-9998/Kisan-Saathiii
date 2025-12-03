@@ -1,4 +1,6 @@
-// signup_auth.js (FINAL - Firebase v8)
+// =======================
+// signup_auth.js (FINAL + FARMER ID v8)
+// =======================
 
 document.addEventListener("DOMContentLoaded", () => {
   const auth = window.firebaseAuth;
@@ -10,6 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
     box.style.color = e ? "red" : "green";
     box.textContent = m;
   };
+
+  // Generate Unique Farmer ID (Format C)
+  function generateFarmerID() {
+    const random = Math.floor(100000 + Math.random() * 900000);
+    return `FS-AGRI-${random}`; // Example: FS-AGRI-582491
+  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -29,12 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       await user.updateProfile({ displayName: name });
 
+      const farmerId = generateFarmerID();
+
+      // Save to Firestore
       await db.collection("users").doc(user.uid).set({
         name,
         email,
         phone,
         state,
         pincode: pin,
+        farmerId, // 🔥 NEW
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
 

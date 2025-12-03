@@ -1,28 +1,87 @@
-/* Main Container */
-.profile-main {
+/* WRAPPER */
+.profile-wrapper {
+  display: flex;
+  gap: 30px;
+  padding: 40px 20px;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* LEFT — FARMER CARD */
+.farmer-card {
+  width: 320px;
+  background: #ffffff;
+  padding: 22px;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  border-left: 6px solid #2d6a4f;
+  text-align: center;
+}
+
+.farmer-card h2 {
+  color: #1b4332;
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+/* Farmer ID Box */
+.farmer-id-box {
+  background: #e9f7ef;
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 18px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #1b4332;
+  letter-spacing: 1px;
+  border: 1px solid #cce9dd;
+}
+
+/* QR Code Wrapper (Center & Fit) */
+.qr-box {
+  width: 150px;
+  height: 150px;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 12px;
+  margin: 12px auto 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  /* STOP overflow */
   display: flex;
   justify-content: center;
-  padding: 40px 20px;
+  align-items: center;
 }
 
-.profile-card {
-  width: 75%;
-  max-width: 850px;
-  background: white;
-  border-radius: 18px;
+/* QR Image — Perfectly Sized */
+.qr-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  /* QR stays sharp */
+}
+
+
+/* RIGHT — PROFILE FORM CARD */
+.profile-section {
+  width: 480px;
+  background: #fff;
   padding: 35px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
-.profile-card h1 {
+.profile-section h1 {
   text-align: center;
   font-size: 28px;
   color: #2d7a2f;
-  margin-bottom: 18px;
+  margin-bottom: 15px;
 }
 
 /* Email Top Box */
-.profile-email-top {
+.email-box {
   width: 100%;
   padding: 14px;
   background: #eef5ef;
@@ -35,25 +94,15 @@
   margin-bottom: 25px;
 }
 
-/* Grid */
-.profile-grid {
-  display: flex;
-  width: 100%;
-}
-
-.right-col {
-  width: 100%;
-}
-
 /* Inputs */
-.right-col label {
+label {
   font-weight: 600;
   margin-bottom: 6px;
   display: block;
   color: #333;
 }
 
-.right-col input {
+input {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
@@ -62,55 +111,38 @@
   margin-bottom: 18px;
 }
 
-#profileImageURL::placeholder {
-  color: transparent;
-}
-
-/* Bottom Buttons */
-.button-row-bottom {
+/* BUTTON ROW */
+.button-row {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 12px;
+  margin-top: 10px;
 }
 
-/* Logout */
-.btn-logout {
+/* Buttons */
+button.btn {
   flex: 1;
   padding: 12px;
+  border-radius: 8px;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn.blue {
   background: #0d6efd;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
 }
 
-/* Delete */
-.btn-delete {
-  flex: 1;
-  padding: 12px;
+.btn.red {
   background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
 }
 
-/* Save */
-.btn-save {
-  flex: 1;
-  padding: 12px;
+.btn.green {
   background: #198754;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
 }
 
-/* Popup */
+/* POPUP */
 .popup-box {
   position: fixed;
   bottom: 30px;
@@ -121,6 +153,19 @@
   border-radius: 10px;
   font-size: 16px;
   display: none;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
   z-index: 999;
+}
+
+/* MOBILE RESPONSIVE */
+@media(max-width: 900px) {
+  .profile-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .farmer-card,
+  .profile-section {
+    width: 95%;
+  }
 }

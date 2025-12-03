@@ -1,5 +1,5 @@
 // =======================
-// login_auth.js (FINAL MODULAR VERSION)
+// login_auth.js (OPTION B - GOOGLE USERS GET FARMER ID + PASSWORD)
 // =======================
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -8,9 +8,24 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
-  sendPasswordResetEmail,
-  onAuthStateChanged
+  onAuthStateChanged,
+  updatePassword
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  getDocs,
+  collection,
+  query,
+  where
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ==========================================
+// Firebase Config
+// ==========================================
 
 const firebaseConfig = {
   apiKey: "AIzaSyC4rfGDs8BqZy6YAcXu7ccvTEMvudL8w4g",
@@ -23,101 +38,146 @@ const firebaseConfig = {
 };
 
 let app;
-try {
-  app = initializeApp(firebaseConfig);
-} catch (e) {
-  console.warn("Firebase already initialized:", e?.message || e);
-}
+try { app = initializeApp(firebaseConfig); } 
+catch (e) { console.log("Already initialized"); }
 
 const auth = getAuth(app);
+const db = getFirestore(app);
 
+// ==========================================
+// Function: Generate Farmer ID
+// ==========================================
+function generateFarmerId() {
+  const num = Math.floor(100000 + Math.random() * 900000);
+  return `FS-AGRI-${num}`;
+}
+
+// ==========================================
+// Function: Generate Random Password
+// ==========================================
+function generateRandomPassword() {
+  return Math.random().toString(36).slice(-8); // 8-char password
+}
+
+// ==========================================
+// Farmer ID → Email
+// ==========================================
+async function farmerIdToEmail(farmerId) {
+  const q = query(collection(db, "users"), where("farmerId", "==", farmerId));
+  const snap = await getDocs(q);
+  if (!snap.empty) return snap.docs[0].data().email;
+  return null;
+}
+
+// ==========================================
+// Google Login → Create Firestore User + Password
+// ==========================================
+async function handleGoogleUser(user) {
+  const userDocRef = doc(db, "users", user.uid);
+  const userSnap = await getDoc(userDocRef);
+
+  if (!userSnap.exists()) {
+    const farmerId = generateFarmerId();
+    const autoPassword = generateRandomPassword();
+
+    await setDoc(userDocRef, {
+      uid: user.uid,
+      email: user.email,
+      name: user.displayName || "",
+      phone: user.phoneNumber || "",
+      state: "",
+      pincode: "",
+      farmerId: farmerId,
+      createdAt: new Date().toISOString(),
+      password: autoPassword
+    });
+
+    // SET LOGIN PASSWORD FOR GOOGLE USER
+    try {
+      await updatePassword(user, autoPassword);
+    } catch (err) {
+      console.warn("Password update blocked until re-auth", err);
+    }
+
+    alert(
+      "Welcome!\nYour Farmer ID: " + farmerId + 
+      "\nYour Login Password: " + autoPassword +
+      "\n\nPLEASE SAVE THIS PASSWORD!"
+    );
+  }
+}
+
+// ==========================================
+// MAIN LOGIN SCRIPT
+// ==========================================
 document.addEventListener("DOMContentLoaded", () => {
+
   const loginForm = document.getElementById("login-form");
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
   const googleLoginBtn = document.getElementById("google-login-btn");
-  const forgotPasswordLink = document.getElementById("forgot-password-link");
 
-  const showStatus = window.showStatusPopup || (() => {});
-
-  // Auto redirect if already authenticated on login page
+  // --------------------------
+  // AUTO REDIRECT IF LOGGED IN
+  // --------------------------
   onAuthStateChanged(auth, (user) => {
     if (user && window.location.pathname.includes("login.html")) {
-      sessionStorage.setItem("loginSuccess", "true");
-      showStatus("Redirecting...", true);
-      setTimeout(() => (window.location.href = "index.html"), 800);
+      window.location.href = "index.html";
     }
   });
 
-  // Email/password login
+  // --------------------------
+  // EMAIL / FARMER ID LOGIN
+  // --------------------------
   if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const email = emailInput.value.trim();
+      let email = emailInput.value.trim();
       const password = passwordInput.value.trim();
 
       if (!email || !password) {
-        showStatus("Please enter both email and password.", false);
+        alert("Please enter Email/Farmer ID & Password.");
         return;
       }
 
-      showStatus("Checking credentials...", true);
+      // If user entered Farmer ID
+      if (!email.includes("@")) {
+        const foundEmail = await farmerIdToEmail(email);
+        if (!foundEmail) {
+          alert("Invalid Farmer ID.");
+          return;
+        }
+        email = foundEmail;
+      }
 
       try {
         await signInWithEmailAndPassword(auth, email, password);
-
-        const name = email.split("@")[0];
-        sessionStorage.setItem("loginSuccess", "true");
-
-        showStatus(`Welcome back, ${name}!`, true);
-        setTimeout(() => (window.location.href = "index.html"), 900);
-
+        window.location.href = "index.html";
       } catch (err) {
         console.error(err);
-        const msg =
-          err.code === "auth/wrong-password" || err.code === "auth/user-not-found"
-            ? "Incorrect email or password."
-            : "Login failed. Try again.";
-        showStatus(msg, false);
+        alert("Login failed. Check credentials.");
       }
     });
   }
 
-  // Google login
+  // --------------------------
+  // GOOGLE LOGIN
+  // --------------------------
   if (googleLoginBtn) {
     googleLoginBtn.addEventListener("click", async () => {
       const provider = new GoogleAuthProvider();
-      showStatus("Signing in with Google...", true);
 
       try {
-        await signInWithPopup(auth, provider);
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
 
-        sessionStorage.setItem("loginSuccess", "true");
-        showStatus("Google login successful", true);
+        await handleGoogleUser(user);
 
-        setTimeout(() => (window.location.href = "index.html"), 800);
+        window.location.href = "index.html";
+
       } catch (err) {
-        console.error(err);
-        showStatus("Google sign-in failed.", false);
-      }
-    });
-  }
-
-  // Forgot password
-  if (forgotPasswordLink) {
-    forgotPasswordLink.addEventListener("click", async (e) => {
-      e.preventDefault();
-
-      const email = emailInput.value.trim();
-      if (!email) return showStatus("Enter your email first.", false);
-
-      try {
-        await sendPasswordResetEmail(auth, email);
-        showStatus("Password reset email sent!", true, 5000);
-      } catch (err) {
-        console.error(err);
-        showStatus("Unable to send reset email.", false);
+        console.error("Google Login Error:", err);
       }
     });
   }

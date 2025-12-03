@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Profile - Kisaan Saathiii</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Profile - Kisaan Saathiii</title>
 
-  <!-- CSS -->
   <link rel="stylesheet" href="./css/navbar.css" />
   <link rel="stylesheet" href="./css/footer.css" />
   <link rel="stylesheet" href="./css/profile.css" />
@@ -17,76 +15,72 @@
   <!-- NAVBAR -->
   <div id="navbar"></div>
 
-  <!-- MAIN PROFILE SECTION -->
-  <main class="profile-main">
-    <section class="profile-card">
+  <main class="profile-wrapper">
+
+    <!-- LEFT: Farmer ID Card -->
+    <section class="farmer-card">
+      <h2>Farmer ID</h2>
+
+      <div class="farmer-id-box">
+        <span id="farmer-id">Loading...</span>
+      </div>
+
+      <div class="qr-container">
+        <canvas id="qr-code"></canvas>
+      </div>
+    </section>
+
+    <!-- RIGHT: Profile Details -->
+    <section class="profile-section">
 
       <h1>Your Profile</h1>
 
-      <!-- EMAIL TOP -->
-      <div class="profile-email-top" id="email-value">—</div>
+      <div id="email-value" class="email-box">—</div>
 
-      <div class="profile-grid">
+      <form id="profileForm">
 
-        <!-- RIGHT COLUMN (FORM) -->
-        <form id="profileForm" class="right-col">
+        <label>Full name</label>
+        <input type="text" id="displayName" />
 
-          <label>Full name</label>
-          <input id="displayName" type="text">
+        <label>Phone</label>
+        <input type="text" id="phone" />
 
-          <label>Phone</label>
-          <input id="phone" type="text">
+        <label>Pincode</label>
+        <input type="text" id="pincode" />
 
-          <label>Pincode</label>
-          <input id="pincode" type="text">
+        <label>State</label>
+        <input type="text" id="state" />
 
-          <label>State</label>
-          <input id="state" type="text">
+        <div class="button-row">
+          <button type="button" id="logoutBtn" class="btn blue">Logout</button>
+          <button type="button" id="deleteAccountBtn" class="btn red">Delete</button>
+          <button type="button" id="saveBtn" class="btn green">Save Changes</button>
+        </div>
 
-          <!-- BUTTON ROW -->
-          <div class="button-row-bottom">
-            <button id="logoutBtn" type="button" class="btn-logout">Logout</button>
-            <button id="deleteAccountBtn" type="button" class="btn-delete">Delete</button>
-            <button id="saveBtn" type="button" class="btn-save">Save Changes</button>
-          </div>
-
-        </form>
-
-      </div>
+      </form>
     </section>
+
   </main>
 
   <!-- FOOTER -->
   <div id="footer"></div>
 
-  <!-- POPUP SYSTEM -->
+  <!-- Popup -->
   <div id="popup" class="popup-box"></div>
 
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 
-  <!-- ------------------------------------------------ -->
-  <!-- 🔥 REQUIRED FIREBASE COMPAT LIBRARIES (V9.6.1) -->
-  <!-- ------------------------------------------------ -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 
-
-  <!-- ------------------------------------------------ -->
-  <!-- 🔥 Firebase Init (Compat API) -->
-  <!-- ------------------------------------------------ -->
   <script src="./Js/firebase_init.js"></script>
-
-  <!-- Site scripts -->
   <script src="./Js/footer.js"></script>
   <script src="./Js/navbar.js"></script>
   <script src="./Js/user_status.js"></script>
+
   <script src="./Js/profile.js"></script>
-  <script type="module" src="Js/auth_guard.js"></script>
 
-
-  <!-- Google Translate -->
- 
 </body>
-
 </html>
