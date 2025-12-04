@@ -243,7 +243,7 @@
 
 .translate-icon {
   font-size: 20px;
-  background: #e9ecef;
+  background: #c4d4ee;
   padding: 6px 12px;
   border-radius: 6px;
   font-weight: 700;
@@ -251,7 +251,7 @@
 }
 
 .translate-icon:hover {
-  background: #d7dadc;
+  background: #b9de14;
 }
 
 /* Dropdown box */
@@ -261,13 +261,44 @@
   top: 36px;
   left: 0;
   display: none;
-  background: white;
+  background: rgb(131, 141, 153);
   padding: 6px;
   border-radius: 6px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 14px rgba(34, 13, 140, 0.15);
   z-index: 9999;
 }
 
+
+
 .translate-icon-box:hover .translate-popup {
   display: block;
+}
+/* Hide "Powered by Google" */
+.goog-logo-link,
+.goog-te-gadget span {
+    display: none !important;
+}
+
+/* Hide the bottom Google Translate frame/box */
+.goog-te-gadget {
+    height: 30px !important;
+    overflow: hidden !important;
+}
+
+/* Hide the big top Google Translate banner */
+body > .skiptranslate {
+    display: none !important;
+}
+
+/* Required to prevent layout shift */
+body {
+    top: 0 !important;
+}
+
+/* Make the dropdown small and clean */
+#google_element select {
+    padding: 1px;
+    font-size: 12px;
+    border:4px solid #aee30d;
+    border-radius: 1000px;
 }

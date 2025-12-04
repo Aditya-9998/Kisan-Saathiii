@@ -1,4 +1,4 @@
-// Js/navbar.js — FINAL VERSION (Google Translate included + Clean)
+// Js/navbar.js — FINAL FULL VERSION (WITH FIXED TRANSLATE POPUP)
 
 document.addEventListener("DOMContentLoaded", function () {
   const navbarContainer = document.getElementById("navbar");
@@ -16,13 +16,29 @@ document.addEventListener("DOMContentLoaded", function () {
         <!-- RIGHT SIDE -->
         <div class="nav-right" id="navRightGroup">
 
-          <!-- TRANSLATE DROPDOWN -->
-          <div class="translate-icon-box">
-            <span class="translate-icon">文A</span>
-            <div id="google_element" class="translate-popup"></div>
+          <!-- TRANSLATE ICON + DROPDOWN -->
+          <div class="translate-wrap" style="position:relative;">
+            <span id="translateIcon" class="translate-icon" style="cursor:pointer;">文A</span>
+
+            <!-- Hidden Popup -->
+            <div id="translatePopup"
+                 style="
+                   display:none;
+                   position:absolute;
+                   top:35px;
+                   right:0;
+                   background:white;
+                   padding:8px 10px;
+                   border-radius:8px;
+                   box-shadow:0 4px 14px rgba(0,0,0,0.15);
+                   width:150px;
+                   z-index:9999;
+                 ">
+                <div id="google_element"></div>
+            </div>
           </div>
 
-          <!-- LINKS -->
+          <!-- NAV LINKS -->
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="advisory.html">Advisory</a></li>
@@ -47,25 +63,25 @@ document.addEventListener("DOMContentLoaded", function () {
     </header>
   `;
 
-  // Tell other scripts navbar is ready
+  // Notify other scripts navbar is ready
   document.dispatchEvent(new Event("navbarLoaded"));
 
-  /* -----------------------
-     GOOGLE TRANSLATE LOADER
-  ------------------------*/
+  /* ----------------------------------
+        GOOGLE TRANSLATE POPUP
+  ----------------------------------- */
+
   function loadGoogleTranslate() {
     const script = document.createElement("script");
-    script.src =
-      "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
     document.body.appendChild(script);
   }
 
-  // Callback required by Google
   window.googleTranslateElementInit = function () {
     new google.translate.TranslateElement(
       {
         pageLanguage: "en",
         includedLanguages: "en,hi,bn,mr,pa",
+        layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
       },
       "google_element"
     );
@@ -73,8 +89,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
   loadGoogleTranslate();
 
+  const translateIcon = document.getElementById("translateIcon");
+  const translatePopup = document.getElementById("translatePopup");
+
+  // Toggle Popup
+  translateIcon.addEventListener("click", (event) => {
+    event.stopPropagation();
+    translatePopup.style.display =
+      translatePopup.style.display === "none" ? "block" : "none";
+  });
+
+  // Don't close when clicking inside
+  translatePopup.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+
+  // Close when clicking outside
+  document.addEventListener("click", () => {
+    translatePopup.style.display = "none";
+  });
+
   /* -----------------------
-     MOBILE NAVIGATION
+     MOBILE MENU
   ------------------------*/
 
   const navRight = document.getElementById("navRightGroup");
@@ -117,6 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
      ACTIVE LINK HIGHLIGHT
   ------------------------*/
   const current = location.pathname.split("/").pop();
+
   document.querySelectorAll(".nav-right a").forEach((a) => {
     if (a.getAttribute("href") === current) {
       a.classList.add("active");
