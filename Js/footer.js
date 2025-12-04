@@ -1,9 +1,10 @@
-// footer.js (Original code, kept intact)
+// footer.js — UPDATED WITH USER MANUAL LINK
 
 // Footer HTML content as a JavaScript string
 const footerHTML = `
 <footer class="footer">
     <div class="footer-container">
+        
         <div class="footer-section about-section">
             <h4 data-lang-key="footer.aboutUsTitle">About Kisaan Saathi</h4>
             <p data-lang-key="footer.aboutMissionText" data-html="true">
@@ -30,6 +31,7 @@ const footerHTML = `
             <ul>
                 <li><a href="contact.html">Contact Us</a></li>
                 <li><a href="faq.html">FAQ</a></li>
+                <li><a href="manual.html">User Manual </a></li> <!-- ⭐ NEW LINK ADDED -->
             </ul>
         </div>
 
@@ -42,6 +44,7 @@ const footerHTML = `
                 <a href="https://linkedin.com" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
             </div>
         </div>
+
     </div>
 
     <div class="copyright">

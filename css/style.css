@@ -686,3 +686,22 @@ h3 {
 .password-wrapper .toggle-password:hover {
     color: #1e7d3b;
 }
+
+.manual-section {
+    padding: 40px;
+    background: #f8f8f8;
+}
+
+.manual-section h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.manual-section .container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
